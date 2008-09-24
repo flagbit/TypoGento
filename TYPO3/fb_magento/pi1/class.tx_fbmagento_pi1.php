@@ -23,7 +23,8 @@
  ***************************************************************/
 
 require_once (PATH_tslib . 'class.tslib_pibase.php');
-
+require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
+require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
 /**
  * Plugin 'Magento' for the 'fb_magento' extension.
  *
@@ -32,7 +33,7 @@ require_once (PATH_tslib . 'class.tslib_pibase.php');
  * @subpackage	tx_fbmagento
  */
 class tx_fbmagento_pi1 extends tslib_pibase {
-	var $prefixId = 'tx_fbmagento_pi1'; // Same as class name
+	var $prefixId = 'tx_fbmagento'; // Same as class name
 	var $scriptRelPath = 'pi1/class.tx_fbmagento_pi1.php'; // Path to this script relative to the extension dir.
 	var $extKey = 'fb_magento'; // The extension key.
 	var $pi_checkCHash = true;
@@ -49,31 +50,14 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults ();
 		$this->pi_loadLL ();
-		
-		// overwrite Magento Autoload Funktion
-		spl_autoload_register ( array (&$this, 'autoload' ) );
-		
+
 		// Flexform
 		$this->pi_initPIflexForm ();
 		$this->view = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'show', 'main' );
 		$product_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'product_id', 'main' );
-		
-		#print_r($this->cObj->data["pi_flexform"]);
-		
 
-		$this->emConf = unserialize ( $GLOBALS ['TYPO3_CONF_VARS'] ['EXT'] ['extConf'] ['fb_magento'] );
-		
-		require_once ($this->emConf ['path'] . 'app/Mage.php');
-		
-		// disable Notices
-		error_reporting ( E_ALL & ~ E_NOTICE );
-		
-		// Init Mage
-		Mage::app ();
-		
-		// Init Typo3connect
-		$connector = Mage::getSingleton ( 'Flagbit_Typo3connect/Core', array ('enabled' => true ) );
-		$connector->setPiBaseObj ( $this );
+		$this->emConf = tx_fbmagento_tools::getExtConfig();
+				
 		
 		// route throw piVars or Flexform 
 		if ($this->piVars ['shop'] ['route']) {
@@ -86,45 +70,19 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			}
 		}
 		
-		$connector->setParams ( $params );
+		// get an Magento Instance
+		$mage = tx_fbmagento_interface::getInstance($this->emConf );
+		$mage->dispatch($params);
 		
-		// get Front Controller
-		$front = Mage::app ()->getFrontController ();
-		
-		// run Dispatch
-		$front->dispatch ();
 		
 		// header 
-		$GLOBALS ['TSFE']->additionalHeaderData [] = $connector->getBlock ( 'head' );
+		$GLOBALS ['TSFE']->additionalHeaderData [] = $mage->getContent( 'head' );
 		
 		// get Content
-		$content = $connector->getBlock ( 'top.links' );
-		$content .= $connector->getBlock ( 'content' );
-		
-		#var_dump($connector->getBlocks());
-		
+		$content = $mage->getContent( 'top.links' );
+		$content .= $mage->getContent( 'content' );
 
 		return $this->pi_wrapInBaseClass ( $content );
-	}
-	
-	/**
-	 * Class autoload
-	 *
-	 * @todo change to spl_autoload_register
-	 * @param string $class
-	 */
-	public function autoload($class) {
-		
-		if (strpos ( $class, '/' ) !== false) {
-			return;
-		}
-		$classFile = uc_words ( $class, DS ) . '.php';
-		
-		try{
-			include ($classFile);
-		}catch (Exception $m){
-			// no output since TYPO3 Classes will also be loaded throw autoload
-		}
 	}
 
 }

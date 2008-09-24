@@ -74,7 +74,7 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 		);
 		if($routeParams) $params = array_merge($params, $routeParams);
 
-		return Mage::getSingleton('Flagbit_Typo3connect/Core')->getPiBaseObj()->pi_linkTP_keepPIvars_url(array('shop'=>$params));
+		return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolink($params);
 	}
 
 

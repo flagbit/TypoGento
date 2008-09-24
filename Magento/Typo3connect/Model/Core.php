@@ -6,7 +6,7 @@ class Flagbit_Typo3connect_Model_Core {
 
     protected  $_output = '';  
     protected $_blocks = array();  
-    protected $_pi_base = null;  
+    protected $_cObj = null;  
     protected $_params = array();
     
     /**
@@ -36,14 +36,33 @@ class Flagbit_Typo3connect_Model_Core {
     	return (defined('TYPO3_MODE') && TYPO3_MODE === 'FE' ? true : false);
     }
     
-    public function setPiBaseObj(&$obj){
-    	$this->_pi_base = &$obj;
+    /**
+     * set TYPO3 cObj
+     *
+     * @param tslib_cObj $obj
+     * @return this
+     */
+    public function setcObj(tslib_cObj &$obj){
+    	$this->_cObj = &$obj;
     	return $this;
     }
     
     
-    public function getPiBaseObj(){
-    	return $this->_pi_base;
+    public function getTypolink(array $params){
+    	return $this->getcObj()->getTypoLink_URL($GLOBALS['TSFE']->id, array('tx_fbmagento' => array('shop' => $params)));
+    }
+    
+    /**
+     * return TYPO3 cObj Reference
+     *
+     * @return tslib_cObj
+     */
+    public function getcObj(){
+    	if($this->_cObj instanceof tslib_cObj){
+    		return $this->_cObj;
+    	}else{
+    		throw new Exception('There is no TYPO3 cObj but it is needed');
+    	}
     }
     
     public function setParams(array $params = array()){

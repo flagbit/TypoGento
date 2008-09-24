@@ -10,16 +10,26 @@ class tx_fbmagento_soapinterface {
 	private $sessionId = null;
 	private $urlPostfix = 'api/soap/?wsdl';
 	
+	/**
+	 * Constructor which needs Soap Connection Details
+	 *
+	 * @param string $url
+	 * @param string $username
+	 * @param string $password
+	 */
 	public function __construct($url, $username, $password){
 		
 		$this->connection = new SoapClient($url.$this->urlPostfix);
 		$this->sessionId = $this->getClient()->login('admin', 'lingo123');
-		
-		// $this->apiResources = $this->getClient()->resources($this->sessionId); 
-		//var_dump($this->getClient()->__getFunctions()); die();
-		
 	}
 	
+	/**
+	 * Magic function which enables SOAP Calls like: resource()->action();
+	 *
+	 * @param string $name
+	 * @param array $params
+	 * @return unknown
+	 */
 	public function __call($name, $params){
 		
 		if($this->resource){
@@ -34,7 +44,7 @@ class tx_fbmagento_soapinterface {
 	
 	
 	/**
-	 * Enter description here...
+	 * get SoapCleint
 	 *
 	 * @return SoapClient
 	 */
