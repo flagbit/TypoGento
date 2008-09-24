@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Flagbit_Typo3connect>
+            <active>
+                true
+            </active>
+            <codePool>
+                local
+            </codePool>
+        </Flagbit_Typo3connect>
+    </modules>
+    <global>
+        <models>
+            <core>
+                <rewrite>
+                    <layout>Flagbit_Typo3connect_Model_Layout</layout>
+                    <url>Flagbit_Typo3connect_Model_Url</url>
+                </rewrite>
+            </core>
+
+	  <catalog>
+                <rewrite>
+                    <product_url>Flagbit_Typo3connect_Model_Product_Url</product_url>
+                </rewrite>	  	
+	</catalog>
+
+	  
+            <Flagbit_Typo3connect>
+                <class>Flagbit_Typo3connect_Model</class>
+            </Flagbit_Typo3connect>	  
+	  
+        </models>
+    </global>
+
+</config>

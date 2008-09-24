@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>database</type>
+		<description>Language labels for database tables/fields belonging to extension 'fb_magento'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="tt_content.list_type_pi1">Magento</label>
+			<label index="flexform.sheet_main">General</label>
+			<label index="flexform.label_productshow">Show</label>
+			<label index="flexform.label_productshow.0">Product Singleview</label>
+			<label index="flexform.label_productlist">Products</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="tt_content.list_type_pi1">Magento</label>
+			<label index="flexform.sheet_main">Produkte</label>
+			<label index="flexform.label_productshow">Ansicht</label>
+			<label index="flexform.label_productshow.0">Produkt Detailansicht</label>
+			<label index="flexform.label_productlist">Produkt</label>			
+		</languageKey>
+	</data>
+</T3locallang>

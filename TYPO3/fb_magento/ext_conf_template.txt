@@ -1,0 +1,11 @@
+# cat=basic; type=text; label=path to Magento root
+path =
+
+# cat=basic; type=text; label=Frontend URL to your Shop
+url = http://www.example-shop.com/
+
+# cat=basic;type=text; label=Magento User which has API access
+username = 
+
+# cat=basic;type=text; label=Password of the Magento User
+password = 

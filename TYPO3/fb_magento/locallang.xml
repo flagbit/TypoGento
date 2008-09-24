@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for extension 'fb_magento'</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pi1_title">Magento</label>
+			<label index="pi1_plus_wiz_description">display Magento Pages</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="pi1_title">Magento</label>
+			<label index="pi1_plus_wiz_description">Magento Inhalte anzeigen</label>
+		</languageKey>
+	</data>
+</T3locallang>

@@ -1,0 +1,48 @@
+<T3DataStructure>
+	<meta>
+    	<langDisable>1</langDisable> 
+    	<!--  <langChildren>1</langChildren>!-->
+  	</meta>
+	<sheets>
+		<main>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:fb_magento/locallang_db.xml:flexform.sheet_main</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<show>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow</label>
+							<config>
+								<type>select</type>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<items type="array">
+
+									<numIndex index="0" type="array">
+										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.0</numIndex>
+										<numIndex index="1">SINGLEPRODUCT</numIndex>
+									</numIndex>
+
+								</items>								
+							</config>
+						</TCEforms>
+					</show>
+					<product_id>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productlist</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_products</itemsProcFunc>
+								<maxitems>1</maxitems>
+								<size>15</size>
+							</config>
+						</TCEforms>
+					</product_id>
+				
+				</el>				
+			</ROOT>
+		</main>
+	</sheets>
+</T3DataStructure>
