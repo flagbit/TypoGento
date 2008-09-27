@@ -17,8 +17,22 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return void
 	 */
 	public function outputBody() {
-	
+		
+		if(Mage::app ()->getFrontController ()->getRequest()->isXmlHttpRequest()){
+			parent::outputBody();
+		}
+
 	}
+	
+	public function sendResponse(){
+		
+		parent::sendResponse();
+		
+		if($this->isRedirect()){
+			exit();
+		}
+	}
+	
 	
 	/**
 	 * Set redirect URL
@@ -31,11 +45,15 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return Zend_Controller_Response_Abstract
 	 */
 	public function setRedirect($url, $code = 302) {
-
+		
 		$this->canSendHeaders ( true );
 		$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl($url), true )->setHttpResponseCode ( $code );
 		$this->sendHeaders();
+		$this->_isRedirect = true;
 
+		header('Location: '.t3lib_div::locationHeaderUrl($url));
+		exit();
+		
 		return $this;
 	}
 

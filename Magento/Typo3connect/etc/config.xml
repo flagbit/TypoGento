@@ -1,37 +1,69 @@
 <?xml version="1.0"?>
 
 <config>
-    <modules>
-        <Flagbit_Typo3connect>
-            <active>
-                true
-            </active>
-            <codePool>
-                local
-            </codePool>
-        </Flagbit_Typo3connect>
-    </modules>
-    <global>
-        <models>
-            <core>
-                <rewrite>
-                    <layout>Flagbit_Typo3connect_Model_Layout</layout>
-                    <url>Flagbit_Typo3connect_Model_Url</url>
-                </rewrite>
-            </core>
+	<modules>
+		<Flagbit_Typo3connect>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Flagbit_Typo3connect>
+	</modules>
+	<global>
+		<models>
+			<core>
+				<rewrite>
+					<layout>Flagbit_Typo3connect_Model_Layout</layout>
+					<url>Flagbit_Typo3connect_Model_Url</url>
+				</rewrite>
+			</core>
 
-	  <catalog>
-                <rewrite>
-                    <product_url>Flagbit_Typo3connect_Model_Product_Url</product_url>
-                </rewrite>	  	
-	</catalog>
+			<catalog>
+				<rewrite>
+					<product_url>Flagbit_Typo3connect_Model_Product_Url</product_url>
+					<url>Flagbit_Typo3connect_Model_Catalog_Url</url>
+				</rewrite>
+			</catalog>
+<!-- 
+			<Flagbit_Typo3connect>
+				<class>Flagbit_Typo3connect_Model</class>
+				<resourceModel>userconnect_entity</resourceModel>
+			</Flagbit_Typo3connect>
+			
+			<userconnect_entity>
+				<class>Flagbit_Typo3connect_Model_Entity</class>
+				<entities>
+					<customer_entity>
+						<table>user</table>
+					</customer_entity>
+				</entities>
+			</userconnect_entity>
+			
+			<customer>
+				<rewrite>
+					<customer>Flagbit_Typo3connect_Model_Customer</customer>
+				</rewrite>
+			</customer>
+-->		
 
-	  
-            <Flagbit_Typo3connect>
-                <class>Flagbit_Typo3connect_Model</class>
-            </Flagbit_Typo3connect>	  
-	  
-        </models>
-    </global>
-
+		</models>
+		<events>
+			<customer_login>
+				<observers>
+					<flagbit_typo3connect_login>
+						<type>model</type>
+						<class>Flagbit_Typo3connect_Helper_Login</class>
+						<method>loginEvent</method>
+					</flagbit_typo3connect_login>
+				</observers>
+			</customer_login>
+			<customer_logout>
+				<observers>
+					<flagbit_typo3connect_logout>
+						<type>model</type>
+						<class>Flagbit_Typo3connect_Helper_Logout</class>
+						<method>logoutEvent</method>
+					</flagbit_typo3connect_logout>
+				</observers>
+			</customer_logout>			
+		</events>		
+	</global>
 </config>

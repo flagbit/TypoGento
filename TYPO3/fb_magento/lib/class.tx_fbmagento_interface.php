@@ -92,23 +92,7 @@ class tx_fbmagento_interface {
 	 */
 	public function dispatch($params){
 		
-		// set dispatch Params
-		$this->connector->setParams ( $params );
-		
-		try{
-			// get Front Controller
-			$front = Mage::app ()->getFrontController ();
-			
-			// run Dispatch
-			$front->dispatch ();
-			
-		}catch (Exception $e){
-			
-			if($this->debug){
-				throw $e;
-			}
-			return false;
-		}
+		$this->connector->dispatch($params);
 
 		return true;
 	}
@@ -119,9 +103,43 @@ class tx_fbmagento_interface {
 	 * @param string $identifier
 	 * @return string HTML Code
 	 */
-	public function getContent($identifier){
-		return $this->connector->getBlock ( $identifier);
+	public function getBlock($identifier){
+		
+		$block = $this->connector->getBlock ( $identifier);
+		
+		if($block instanceof Mage_Core_Block_Abstract){
+			return $this->connector->getBlock ( $identifier);
+		}else {
+			return null;
+		}
 	}
+	
+	
+	/**
+	 * generate Headerdata from Shopsystem
+	 *
+	 * @return string
+	 */
+	public function getHeaderData(){
+		 	
+		$objHead = $this->getBlock( 'head' );
+		$head = array();
+		
+		if($objHead instanceof Mage_Page_Block_Html_Head){
+
+			$head[] = '<script type="text/javascript">';
+			$head[] = '//<![CDATA[';
+			$head[] = '    var BLANK_URL = \''.$objHead->helper('core/js')->getJsUrl('blank.html').'\'';
+			$head[] = '    var BLANK_IMG = \''.$objHead->helper('core/js')->getJsUrl('spacer.gif').'\'';
+			$head[] = '//]]>';
+			$head[] = '</script>';
+			$head[] = $objHead->getCssJsHtml();
+			$head[] = $objHead->getChildHtml();
+			$head[] = $objHead->helper('core/js')->getTranslatorScript();
+		}
+		
+		return implode("\n", $head);
+	}	
 	
 	/**
 	 * Class autoload

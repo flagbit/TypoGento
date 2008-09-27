@@ -56,9 +56,9 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		$this->view = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'show', 'main' );
 		$product_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'product_id', 'main' );
 
+		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
-		
 		// route throw piVars or Flexform 
 		if ($this->piVars ['shop'] ['route']) {
 			$params = $this->piVars ['shop'];	
@@ -69,18 +69,24 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 					break;
 			}
 		}
-		
+		#var_dump($params);
 		// get an Magento Instance
-		$mage = tx_fbmagento_interface::getInstance($this->emConf );
-		$mage->dispatch($params);
-		
+		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+		$this->mage->dispatch($params);
 		
 		// header 
-		$GLOBALS ['TSFE']->additionalHeaderData [] = $mage->getContent( 'head' );
+		$headerBlock = $this->mage->getBlock( 'head' );
+		if($this->mage->getBlock( 'head' ) !== null){
+			$GLOBALS['TSFE']->additionalHeaderData [] = $this->mage->getHeaderData();
+			$GLOBALS['TSFE']->page['title'] = $this->mage->getBlock( 'head' )->getTitle();
+		}
 		
 		// get Content
-		$content = $mage->getContent( 'top.links' );
-		$content .= $mage->getContent( 'content' );
+		if($this->mage->getBlock( 'content' ) !== null){
+			$content .= $this->mage->getBlock( 'top.links' )->toHtml ();
+			// $content .= $this->mage->getBlock( 'checkout.progress' )->toHtml ();
+			$content .= $this->mage->getBlock( 'content' )->toHtml ();
+		}
 
 		return $this->pi_wrapInBaseClass ( $content );
 	}

@@ -41,6 +41,7 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 		/**
 		 * Apply query params, need call after getRouteUrl for rewrite _current values
 		 */
+		/*
 		if (isset($routeParams['_query'])) {
 			if (is_string($routeParams['_query'])) {
 				$this->setQuery($routeParams['_query']);
@@ -52,13 +53,16 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 			}
 			unset($routeParams['_query']);
 		}
+*/
 
 		$session = Mage::getSingleton('core/session');
 		if ($sessionId = $session->getSessionIdForHost($url)) {
 			#$this->setQueryParam($session->getSessionIdQueryParam(), $sessionId);
 		}
 
-		if ($query = $this->getQuery($escapeQuery)) {
+		if (is_array($this->getQueryParams()) && count($this->getQueryParams())) {
+			#var_dump($this->getQueryParams());
+			#var_dump($this->getQueryParams());
 			#$url .= '?'.$query;
 		}
 
@@ -66,6 +70,7 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 			//$url .= '#'.$this->getFragment();
 		}
 		
+
 		
 		$params = array(
 			"route" => $this->getRouteName(),
@@ -73,8 +78,17 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 			"action" => $this->getActionName(),
 		);
 		if($routeParams) $params = array_merge($params, $routeParams);
-
-		return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolink($params);
+		if(is_array($routeParams['_query'])) $params = array_merge($params, $routeParams['_query']);
+		
+		unset($params['_query']);
+		unset($params['_use_rewrite']);
+		
+		if($params['_current']){
+				unset($params['_current']);
+				return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolinkKeepPIvars($params);
+			}else{
+				return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolink($params);
+		}
 	}
 
 
