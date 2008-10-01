@@ -7,7 +7,7 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
 
     function _construct()
     {
-        $this->_init('userconnect/customer');
+        $this->_init('Flagbit_Typo3connect/customer');
     }
 
     /**
@@ -56,6 +56,7 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
         if (is_null($storeId)) {
             $this->setStoreId(Mage::app()->getStore()->getId());
         }
+       
 
         $this->getGroupId();
         return $this;
@@ -92,6 +93,12 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
         $this->setPasswordHash($this->hashPassword($password));
         return $this;
     }
+    
+    
+    public function getLastname(){
+    	return isset($this->_data['name']) ? $this->_data['name'] : $this->_data['lastname'];
+    }
+         
 
     /**
      * Hach customer password
@@ -101,7 +108,9 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
      */
     public function hashPassword($password, $salt=null)
     {
-        return Mage::helper('core')->getHash($password, !is_null($salt) ? $salt : 2);
+		  	return $password;
+    		return md5($password);
+        // return Mage::helper('core')->getHash($password, !is_null($salt) ? $salt : 2);
     }
 
     /**
@@ -113,6 +122,10 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
     public function generatePassword($length=6)
     {
         return substr(md5(uniqid(rand(), true)), 0, $length);
+    }
+    
+    public function getPasswordHash(){
+    	  return $this->getPassword();
     }
 
     /**
@@ -126,7 +139,8 @@ class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
         if (!($hash = $this->getPasswordHash())) {
             return false;
         }
-        return Mage::helper('core')->validateHash($password, $hash);
+        // return Mage::helper('core')->validateHash($password, $hash);
+        return $this->hashPassword($password) === $hash;
     }
 
 

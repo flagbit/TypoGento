@@ -7,6 +7,7 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tt_content.list_type_pi1">Magento</label>
+			<label index="fe_users.tx_fbmagento_firstname">firstname</label>
 			<label index="flexform.sheet_main">General</label>
 			<label index="flexform.label_productshow">Show</label>
 			<label index="flexform.label_productshow.0">Product Singleview</label>
@@ -14,6 +15,7 @@
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tt_content.list_type_pi1">Magento</label>
+			<label index="fe_users.tx_fbmagento_firstname">Vorname</label>
 			<label index="flexform.sheet_main">Produkte</label>
 			<label index="flexform.label_productshow">Ansicht</label>
 			<label index="flexform.label_productshow.0">Produkt Detailansicht</label>

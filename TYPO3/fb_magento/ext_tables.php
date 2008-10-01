@@ -17,4 +17,22 @@ t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","Magento");
 
 
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_fbmagento_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_fbmagento_pi1_wizicon.php';
+
+$tempColumns = Array (
+    "firstname" => Array (        
+        "exclude" => 0,        
+        "label" => "LLL:EXT:fb_magento/locallang_db.xml:fe_users.tx_fbmagento_firstname",        
+        "config" => Array (
+            "type" => "input",    
+            "size" => "30",
+        )
+    ),
+);
+
+
+t3lib_div::loadTCA("fe_users");
+t3lib_extMgm::addTCAcolumns("fe_users",$tempColumns,1);
+t3lib_extMgm::addToAllTCAtypes("fe_users","firstname;;;;1-1-1");
+
+
 ?>

@@ -5,6 +5,7 @@
 		<Flagbit_Typo3connect>
 			<active>true</active>
 			<codePool>local</codePool>
+			<version>0.1.0</version>
 		</Flagbit_Typo3connect>
 	</modules>
 	<global>
@@ -22,29 +23,59 @@
 					<url>Flagbit_Typo3connect_Model_Catalog_Url</url>
 				</rewrite>
 			</catalog>
-<!-- 
+
+			 
 			<Flagbit_Typo3connect>
 				<class>Flagbit_Typo3connect_Model</class>
-				<resourceModel>userconnect_entity</resourceModel>
+				<resourceModel>typo3connect_entity</resourceModel>
 			</Flagbit_Typo3connect>
 			
-			<userconnect_entity>
-				<class>Flagbit_Typo3connect_Model_Entity</class>
-				<entities>
-					<customer_entity>
-						<table>user</table>
-					</customer_entity>
-				</entities>
-			</userconnect_entity>
-			
+			<!-- 
+			<typo3connect_entity>
+			    <class>Flagbit_Typo3connect_Model_Entity</class>
+			    <entities>
+			        <customer>
+			            <table>fe_users</table>
+			        </customer>
+			    </entities>
+			</typo3connect_entity>			
+
 			<customer>
 				<rewrite>
 					<customer>Flagbit_Typo3connect_Model_Customer</customer>
 				</rewrite>
 			</customer>
--->		
-
+			-->
 		</models>
+		
+      <resources>
+          <typo3connect_setup>
+              <setup>
+                  <module>Flagbit_Typo3connect</module>
+              </setup>
+              <connection>
+                  <use>core_setup</use>
+              </connection>
+          </typo3connect_setup>
+          <typo3connect_read>
+              <connection>
+                  <host><![CDATA[localhost]]></host>
+                  <username><![CDATA[root]]></username>
+                  <password><![CDATA[lingo]]></password>
+                  <dbname><![CDATA[TYPO3ext_small_extensions_420]]></dbname>
+                  <active>1</active>
+                  <model>mysql4</model>
+                  <type>pdo_mysql</type>
+              </connection>          
+
+          </typo3connect_read>
+          <typo3connect_write>
+              <connection>
+                  <use>typo3connect_read</use>
+              </connection>
+          </typo3connect_write>
+      </resources>		
+		
 		<events>
 			<customer_login>
 				<observers>
