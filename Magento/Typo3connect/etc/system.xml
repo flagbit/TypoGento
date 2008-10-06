@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+   <sections>
+        <typo3connect translate="label" module="Flagbit_Typo3connect">
+            <label>TYPO3 Connector</label>
+            <tab>service</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>101</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                 <config translate="label">
+                    <label>General Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <fe_user_pid translate="label">
+                            <label>PID TYPO3 Frontend Users</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fe_user_pid>
+                        <fe_user_group_uid translate="label">
+                            <label>Group uid TYPO3 Frontend Users</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fe_user_group_uid>                                               
+                    </fields>
+                </config>
+            </groups>
+        </typo3connect>
+    </sections>
+</config>

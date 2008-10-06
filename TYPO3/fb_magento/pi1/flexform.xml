@@ -14,6 +14,7 @@
 					<show>
 						<TCEforms>
 							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow</label>
+							<onChange>reload</onChange>
 							<config>
 								<type>select</type>
 								<maxitems>1</maxitems>
@@ -24,6 +25,10 @@
 										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.0</numIndex>
 										<numIndex index="1">SINGLEPRODUCT</numIndex>
 									</numIndex>
+									<numIndex index="1" type="array">
+										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.1</numIndex>
+										<numIndex index="1">PRODUCTLIST</numIndex>
+									</numIndex>
 
 								</items>								
 							</config>
@@ -32,6 +37,7 @@
 					<product_id>
 						<TCEforms>
 							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productlist</label>
+							<displayCond>FIELD:show:=:SINGLEPRODUCT</displayCond>
 							<config>
 								<type>select</type>
 								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_products</itemsProcFunc>
@@ -40,7 +46,18 @@
 							</config>
 						</TCEforms>
 					</product_id>
-				
+					<category_id>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_categorylist</label>
+							<displayCond>FIELD:show:=:PRODUCTLIST</displayCond>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_categories</itemsProcFunc>
+								<maxitems>1</maxitems>
+								<size>15</size>
+							</config>
+						</TCEforms>
+					</category_id>				
 				</el>				
 			</ROOT>
 		</main>

@@ -9,6 +9,12 @@
 		</Flagbit_Typo3connect>
 	</modules>
 	<global>
+
+	    <helpers>
+            <Flagbit_Typo3connect>
+                <class>Flagbit_Typo3connect_Helper</class>
+            </Flagbit_Typo3connect>
+        </helpers>	
 		<models>
 			<core>
 				<rewrite>
@@ -27,8 +33,17 @@
 			 
 			<Flagbit_Typo3connect>
 				<class>Flagbit_Typo3connect_Model</class>
-				<resourceModel>typo3connect_entity</resourceModel>
+				<resourceModel>Flagbit_Typo3connect_Mysql4</resourceModel>
 			</Flagbit_Typo3connect>
+            <Flagbit_Typo3connect_Mysql4>
+                <class>Flagbit_Typo3connect_Model_Mysql4</class>
+                <entities>
+                    <typo3_feusers>
+                        <table>fe_users</table>                  
+                    </typo3_feusers>
+                </entities>
+            </Flagbit_Typo3connect_Mysql4>			
+			
 			
 			<!-- 
 			<typo3connect_entity>
@@ -39,25 +54,25 @@
 			        </customer>
 			    </entities>
 			</typo3connect_entity>			
-
+			-->
 			<customer>
 				<rewrite>
 					<customer>Flagbit_Typo3connect_Model_Customer</customer>
 				</rewrite>
 			</customer>
-			-->
+	
 		</models>
 		
       <resources>
-          <typo3connect_setup>
+          <Flagbit_Typo3connect_setup>
               <setup>
                   <module>Flagbit_Typo3connect</module>
               </setup>
               <connection>
                   <use>core_setup</use>
               </connection>
-          </typo3connect_setup>
-          <typo3connect_read>
+          </Flagbit_Typo3connect_setup>
+          <Flagbit_Typo3connect_read>
               <connection>
                   <host><![CDATA[localhost]]></host>
                   <username><![CDATA[root]]></username>
@@ -68,12 +83,12 @@
                   <type>pdo_mysql</type>
               </connection>          
 
-          </typo3connect_read>
-          <typo3connect_write>
+          </Flagbit_Typo3connect_read>
+          <Flagbit_Typo3connect_write>
               <connection>
-                  <use>typo3connect_read</use>
+                  <use>Flagbit_Typo3connect_read</use>
               </connection>
-          </typo3connect_write>
+          </Flagbit_Typo3connect_write>
       </resources>		
 		
 		<events>
@@ -97,4 +112,28 @@
 			</customer_logout>			
 		</events>		
 	</global>
+	
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <typo3connect>
+                                            <title>TYPO3 Connector</title>
+                                        </typo3connect>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>	
+	
+	
 </config>

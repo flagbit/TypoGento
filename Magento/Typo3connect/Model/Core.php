@@ -110,7 +110,7 @@ class Flagbit_Typo3connect_Model_Core {
 		return $this;
 	}
 	
-	public function getTypolinkKeepPIvars(array $overruleParams) {
+	public function getTypolinkKeepPIvars(array $overruleParams = array()) {
 		
 		$get = t3lib_div::_GET();
 		$piVars = $get['tx_fbmagento']['shop'];
@@ -119,7 +119,7 @@ class Flagbit_Typo3connect_Model_Core {
 		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
 	}
 	
-	public function getTypolink(array $params) {
+	public function getTypolink(array $params = array()) {
 		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
 	}	
 	

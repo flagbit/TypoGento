@@ -46,6 +46,10 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function setRedirect($url, $code = 302) {
 		
+		if(strstr($url, Mage::app()->getStore()->getBaseUrl())){
+			$url = Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->getTypolink();
+		}
+		
 		$this->canSendHeaders ( true );
 		$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl($url), true )->setHttpResponseCode ( $code );
 		$this->sendHeaders();

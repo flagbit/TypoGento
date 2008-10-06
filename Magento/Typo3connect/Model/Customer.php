@@ -1,172 +1,51 @@
 <?php
 
-require_once ('app/code/core/Mage/Customer/Model/Customer.php');
+
 
 class Flagbit_Typo3connect_Model_Customer extends Mage_Customer_Model_Customer {
 
+	
+	/**
+	 * create or update an TYPO3 Frontend User
+	 *
+	 */
+	public function _afterSave(){
+		
+		parent::_afterSave();
+		
+		if (! Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->isEnabled ()) return;
+		
 
-    function _construct()
-    {
-        $this->_init('Flagbit_Typo3connect/customer');
-    }
+		$fields = array(
+			'username' => $this->getData('email'),
+			'name' => $this->getData('lastname'),
+			'firstname' => $this->getData('firstname'),
+			'email' => $this->getData('email'),
+			'password' => $this->getData('password'),
+			'usergroup' => Mage::helper('Flagbit_Typo3connect')->getConfigData('fe_user_group_uid'),
+			'pid' => Mage::helper('Flagbit_Typo3connect')->getConfigData('fe_user_pid'),
+			'tx_fbmagento_id' => $this->getId(),
+		);
+		
+		$feUsers = Mage::getSingleton('Flagbit_Typo3connect/Typo3_FeUsers');
+		$this->load($this->getId());
+		
+		if($this->getTypo3_uid()){
+			$feUsers->setId($this->getTypo3_uid());
+		}		
+		
+		foreach($fields as $key => $value){
+			$feUsers->setData($key, $value);
+		}
+		$feUsers->save();
 
-    /**
-     * Authenticate customer
-     *
-     * @param  string $login
-     * @param  string $password
-     * @return true
-     * @throws Exception
-     */
-    public function authenticate($login, $password)
-    {
-        $this->loadByEmail($login);
-        if ($this->getConfirmation() && $this->isConfirmationRequired()) {
-            throw new Exception(Mage::helper('customer')->__('This account is not confirmed.'), self::EXCEPTION_EMAIL_NOT_CONFIRMED);
-        }
-        if (!$this->validatePassword($password)) {
-            throw new Exception(Mage::helper('customer')->__('Invalid login or password.'), self::EXCEPTION_INVALID_EMAIL_OR_PASSWORD);
-        }
-        return true;
-    }
-
-    /**
-     * Load customer by email
-     *
-     * @param   string $customerEmail
-     * @return  Mage_Customer_Model_Customer
-     */
-    public function loadByEmail($customerEmail)
-    {
-        $this->_getResource()->loadByEmail($this, $customerEmail);
-        return $this;
-    }
-
-
-    /**
-     * Processing object before save data
-     *
-     * @return Mage_Core_Model_Abstract
-     */
-    protected function _beforeSave()
-    {
-        parent::_beforeSave();
-
-        $storeId = $this->getStoreId();
-        if (is_null($storeId)) {
-            $this->setStoreId(Mage::app()->getStore()->getId());
-        }
-       
-
-        $this->getGroupId();
-        return $this;
-    }
-
-    /**
-     * Change customer password
-     * $data = array(
-     *      ['password']
-     *      ['confirmation']
-     *      ['current_password']
-     * )
-     *
-     * @param   array $data
-     * @param   bool $checkCurrent
-     * @return  this
-     */
-    public function changePassword($newPassword, $checkCurrent=true)
-    {
-        $this->_getResource()->changePassword($this, $newPassword, $checkCurrent);
-        return $this;
-    }
-
-
-    /**
-     * Set plain and hashed password
-     *
-     * @param string $password
-     * @return Mage_Customer_Model_Customer
-     */
-    public function setPassword($password)
-    {
-        $this->setData('password', $password);
-        $this->setPasswordHash($this->hashPassword($password));
-        return $this;
-    }
-    
-    
-    public function getLastname(){
-    	return isset($this->_data['name']) ? $this->_data['name'] : $this->_data['lastname'];
-    }
-         
-
-    /**
-     * Hach customer password
-     *
-     * @param   string $password
-     * @return  string
-     */
-    public function hashPassword($password, $salt=null)
-    {
-		  	return $password;
-    		return md5($password);
-        // return Mage::helper('core')->getHash($password, !is_null($salt) ? $salt : 2);
-    }
-
-    /**
-     * Retrieve random password
-     *
-     * @param   int $length
-     * @return  string
-     */
-    public function generatePassword($length=6)
-    {
-        return substr(md5(uniqid(rand(), true)), 0, $length);
-    }
-    
-    public function getPasswordHash(){
-    	  return $this->getPassword();
-    }
-
-    /**
-     * Validate password with salted hash
-     *
-     * @param string $password
-     * @return boolean
-     */
-    public function validatePassword($password)
-    {
-        if (!($hash = $this->getPasswordHash())) {
-            return false;
-        }
-        // return Mage::helper('core')->validateHash($password, $hash);
-        return $this->hashPassword($password) === $hash;
-    }
-
-
-    /**
-     * Encrypt password
-     *
-     * @param   string $password
-     * @return  string
-     */
-    public function encryptPassword($password)
-    {
-        return Mage::helper('core')->encrypt($password);
-    }
-
-    /**
-     * Decrypt password
-     *
-     * @param   string $password
-     * @return  string
-     */
-    public function decryptPassword($password)
-    {
-        return Mage::helper('core')->decrypt($password);
-    }
-
+    	$this->setData('typo3_uid', $feUsers->getId());
+    	$this->getResource()->saveAttribute($this, 'typo3_uid');
+	
+	}
+	
  
+
 }
 
 ?>

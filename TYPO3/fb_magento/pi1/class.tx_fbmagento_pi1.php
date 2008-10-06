@@ -53,43 +53,84 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 
 		// Flexform
 		$this->pi_initPIflexForm ();
-		$this->view = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'show', 'main' );
-		$product_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'product_id', 'main' );
 
 		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
-		// route throw piVars or Flexform 
+		// route throw piVars
 		if ($this->piVars ['shop'] ['route']) {
 			$params = $this->piVars ['shop'];	
-		} else {
+
+		// route throw Typoscript
+		} elseif (isset($this->conf['params.']['route'])){
+			$params = $this->conf['params.'];
+
+		// route throw Flexform
+		} else{
+			if(!$this->view){
+				$this->getRoutingDataFromPage();			
+			}
+
 			switch ($this->view) {
 				case "SINGLEPRODUCT" :
+					$product_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'product_id', 'main' );
 					$params = array ('route' => 'catalog', 'controller' => 'product', 'action' => 'view', 'id' => $product_id );
 					break;
-			}
+					
+				case "PRODUCTLIST" :
+					$category_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'category_id', 'main' );
+					$params = array ('route' => 'catalog', 'controller' => 'category', 'action' => 'view', 'id' => $category_id );
+					break;
+			}	
 		}
-		#var_dump($params);
+
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 		$this->mage->dispatch($params);
 		
-		// header 
-		$headerBlock = $this->mage->getBlock( 'head' );
-		if($this->mage->getBlock( 'head' ) !== null){
-			$GLOBALS['TSFE']->additionalHeaderData [] = $this->mage->getHeaderData();
-			$GLOBALS['TSFE']->page['title'] = $this->mage->getBlock( 'head' )->getTitle();
-		}
 		
-		// get Content
-		if($this->mage->getBlock( 'content' ) !== null){
-			$content .= $this->mage->getBlock( 'top.links' )->toHtml ();
-			// $content .= $this->mage->getBlock( 'checkout.progress' )->toHtml ();
-			$content .= $this->mage->getBlock( 'content' )->toHtml ();
+		// render Block specified by Typoscript
+		if(isset($this->conf['block'])){
+			
+			if($this->mage->getBlock( $this->conf['block'] ) !== null){
+			
+				$content .= $this->mage->getBlock( $this->conf['block'] )->toHtml ();
+			}
+			
+		// render default Blocks	
+		}else{
+		
+			// header 
+			if($this->mage->getBlock( 'head' ) !== null){
+				$GLOBALS['TSFE']->additionalHeaderData [] = $this->mage->getHeaderData();
+				$GLOBALS['TSFE']->page['title'] = $this->mage->getBlock( 'head' )->getTitle();
+			}
+			
+			// get Content
+			if($this->mage->getBlock( 'content' ) !== null){
+				// $content .= $this->mage->getBlock( 'checkout.progress' )->toHtml ();
+				
+				$content .= $this->mage->getBlock( 'content' )->toHtml ();
+			}
 		}
 
 		return $this->pi_wrapInBaseClass ( $content );
 	}
+	
+	protected function getRoutingDataFromPage(){
+		
+		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pi_flexform', 'tt_content', 'pid=\''.$GLOBALS ['TSFE']->id.'\' AND list_type=\'fb_magento_pi1\' '.$this->cObj->enableFields('tt_content'), 'sorting');
+		foreach ((array) $rows as $row){
+			if(!$row['pi_flexform']) continue;
+			$this->cObj->data['pi_flexform'] = t3lib_div::xml2array($row['pi_flexform']);
+			$this->view = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'show', 'main' );
+			if($this->view){
+				return true;
+			}
+		}
+		return false;		
+	}
+	
 
 }
 

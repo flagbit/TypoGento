@@ -11,6 +11,7 @@
 			<label index="flexform.sheet_main">General</label>
 			<label index="flexform.label_productshow">Show</label>
 			<label index="flexform.label_productshow.0">Product Singleview</label>
+			<label index="flexform.label_productshow.1">Product List</label>
 			<label index="flexform.label_productlist">Products</label>
 		</languageKey>
 		<languageKey index="de" type="array">
@@ -19,6 +20,7 @@
 			<label index="flexform.sheet_main">Produkte</label>
 			<label index="flexform.label_productshow">Ansicht</label>
 			<label index="flexform.label_productshow.0">Produkt Detailansicht</label>
+			<label index="flexform.label_productshow.1">Produkt Liste</label>
 			<label index="flexform.label_productlist">Produkt</label>			
 		</languageKey>
 	</data>
