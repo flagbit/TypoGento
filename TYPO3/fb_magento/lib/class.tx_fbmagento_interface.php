@@ -9,6 +9,14 @@ class tx_fbmagento_interface {
 	 */
 	protected static $_instance = null;	
 	
+	
+	/**
+	 * allready dispatched?
+	 *
+	 * @var boolan
+	 */
+	protected $allreadyDispatched=false;
+	
 	/**
 	 * instance of Flagbit_Typo3connect
 	 *
@@ -92,8 +100,12 @@ class tx_fbmagento_interface {
 	 */
 	public function dispatch($params){
 		
-		$this->connector->dispatch($params);
-
+		if(!$this->allreadyDispatched){
+			$this->connector->dispatch($params);
+		}
+		
+		$this->allreadyDispatched = true;
+		
 		return true;
 	}
 	

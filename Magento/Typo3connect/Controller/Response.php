@@ -8,6 +8,13 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return void
 	 */
 	public function appendBody($output, $name = null) {
+		
+		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
+			echo $output;
+			exit ();
+		}
+		
+		parent::appendBody ( $output, $name );
 		Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->addOutput ( $output );
 	}
 	
@@ -18,30 +25,33 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function outputBody() {
 		
-		if(Mage::app ()->getFrontController ()->getRequest()->isXmlHttpRequest()){
-			parent::outputBody();
-			exit();
+		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
+			parent::outputBody ();
+			exit ();
 		}
-
+	
 	}
 	
-	public function sendResponse(){
+	public function sendResponse() {
 		
-		parent::sendResponse();
+		parent::sendResponse ();
 		
-		if($this->isRedirect()){
-			exit();
+		if ($this->isRedirect ()) {
+			exit ();
 		}
 	}
 	
-	
-
-	public function setBody($content, $name = null){
-		echo $content;
-		exit();
-    
-	    return $this;
-	}	
+	public function setBody($content, $name = null) {
+		
+		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
+			echo $content;
+			exit ();
+		}
+		
+		parent::setBody ( $content, $name );
+		
+		return $this;
+	}
 	
 	/**
 	 * Set redirect URL
@@ -55,17 +65,17 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function setRedirect($url, $code = 302) {
 		
-		if(strstr($url, Mage::app()->getStore()->getBaseUrl())){
-			$url = Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->getTypolink();
+		if (strstr ( $url, Mage::app ()->getStore ()->getBaseUrl () )) {
+			$url = Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->getTypolink ();
 		}
 		
 		$this->canSendHeaders ( true );
-		$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl($url), true )->setHttpResponseCode ( $code );
-		$this->sendHeaders();
+		$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl ( $url ), true )->setHttpResponseCode ( $code );
+		$this->sendHeaders ();
 		$this->_isRedirect = true;
-
-		header('Location: '.t3lib_div::locationHeaderUrl($url));
-		exit();
+		
+		header ( 'Location: ' . t3lib_div::locationHeaderUrl ( $url ) );
+		exit ();
 		
 		return $this;
 	}
