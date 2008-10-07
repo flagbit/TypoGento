@@ -20,6 +20,7 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 		
 		if(Mage::app ()->getFrontController ()->getRequest()->isXmlHttpRequest()){
 			parent::outputBody();
+			exit();
 		}
 
 	}
@@ -33,6 +34,14 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 		}
 	}
 	
+	
+
+	public function setBody($content, $name = null){
+		echo $content;
+		exit();
+    
+	    return $this;
+	}	
 	
 	/**
 	 * Set redirect URL
