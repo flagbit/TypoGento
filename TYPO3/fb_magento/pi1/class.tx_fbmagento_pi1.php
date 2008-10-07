@@ -36,7 +36,6 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_fbmagento'; // Same as class name
 	var $scriptRelPath = 'pi1/class.tx_fbmagento_pi1.php'; // Path to this script relative to the extension dir.
 	var $extKey = 'fb_magento'; // The extension key.
-	var $pi_checkCHash = true;
 	var $emConf = null;
 	
 	/**
@@ -50,6 +49,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		$this->conf = $conf;
 		$this->pi_setPiVarDefaults ();
 		$this->pi_loadLL ();
+		$this->pi_USER_INT_obj=1;
 
 		// Flexform
 		$this->pi_initPIflexForm ();
