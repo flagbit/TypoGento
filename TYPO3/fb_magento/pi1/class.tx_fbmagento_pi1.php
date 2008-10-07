@@ -92,8 +92,9 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		// render Block specified by Typoscript
 		if(isset($this->conf['block'])){
 			
-			if($this->mage->getBlock( $this->conf['block'] ) !== null){
-			
+			if($this->conf['block'] == 'typo3header'){
+				return $this->mage->getHeaderData();
+			}elseif($this->mage->getBlock( $this->conf['block'] ) !== null){
 				$content .= $this->mage->getBlock( $this->conf['block'] )->toHtml ();
 			}
 			
@@ -101,7 +102,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		}else{
 		
 			// header 
-			if($this->mage->getBlock( 'head' ) !== null){
+			if($this->emConf['auto_header'] && $this->mage->getBlock( 'head' ) !== null){
 				$GLOBALS['TSFE']->additionalHeaderData [] = $this->mage->getHeaderData();
 				$GLOBALS['TSFE']->page['title'] = $this->mage->getBlock( 'head' )->getTitle();
 			}

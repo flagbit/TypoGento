@@ -9,3 +9,6 @@ username =
 
 # cat=basic;type=text; label=Password of the Magento User
 password = 
+
+# cat=basic;type=boolean; label=enable automatic Magento Header integration
+auto_header = 
