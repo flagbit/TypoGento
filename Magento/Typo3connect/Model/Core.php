@@ -114,6 +114,7 @@ class Flagbit_Typo3connect_Model_Core {
 		
 		$get = t3lib_div::_GET();
 		$piVars = $get['tx_fbmagento']['shop'];
+		$piVars = array_merge((array) $this->getParams(), (array) $piVars);
 		unset($piVars['DATA']);
 		$params = t3lib_div::array_merge_recursive_overrule((array) $piVars,$overruleParams);
 		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
