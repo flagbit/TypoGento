@@ -94,6 +94,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			
 			if($this->conf['block'] == 'typo3header'){
 				return $this->mage->getHeaderData();
+				
 			}elseif($this->mage->getBlock( $this->conf['block'] ) !== null){
 				$content .= $this->mage->getBlock( $this->conf['block'] )->toHtml ();
 			}
@@ -115,7 +116,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			}
 		}
 
-		return $this->pi_wrapInBaseClass ( $content );
+		return isset($this->conf['nowrap']) ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
 	
 	protected function getRoutingDataFromPage(){
