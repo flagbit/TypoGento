@@ -114,8 +114,7 @@ class tx_fbmagento_navigation {
 		$this->conf = $conf;
 		$mage = tx_fbmagento_interface::getInstance ( $this->emConf );
 		
-		$helper = Mage::helper ( 'catalog/category' );
-		$categories = $helper->getStoreCategories ();
+		$categories = $this->getStoreCategories ($this->conf['startcategory']);
 		
 		$menu = array ();
 		foreach ( $categories as $category ) {
@@ -125,10 +124,50 @@ class tx_fbmagento_navigation {
 			$menu [] = $item;
 		}
 		
-		#print_r($menu);
 		return $menu;
 	
 	}
+	
+	
+    /**
+     * Retrieve current store categories
+     *
+     * @param   boolean|string $sorted
+     * @param   boolean $asCollection
+     * @return  Varien_Data_Tree_Node_Collection|Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection|array
+     */
+    public function getStoreCategories($parent=null, $sorted=false, $asCollection=false, $toLoad=true)
+    {
+        if(!$parent) $parent = Mage::app()->getStore()->getRootCategoryId();
+        /**
+         * Check if parent node of the store still exists
+         */
+        $category = Mage::getModel('catalog/category');
+        /* @var $category Mage_Catalog_Model_Category */
+        if (!$category->checkId($parent)) {
+            if ($asCollection) {
+                return new Varien_Data_Collection();
+            }
+            return array();
+        }
+
+        $recursionLevel = max(0, (int) Mage::app()->getStore()->getConfig('catalog/navigation/max_depth'));
+
+        $tree = $category->getTreeModel();
+        /* @var $tree Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Tree */
+
+        $nodes = $tree->loadNode($parent)
+            ->loadChildren($recursionLevel)
+            ->getChildren();
+
+        $tree->addCollectionData(null, $sorted, $parent, $toLoad, true);
+
+        if ($asCollection) {
+            return $tree->getCollection();
+        } else {
+            return $nodes;
+        }
+    }	
 
 }
 
