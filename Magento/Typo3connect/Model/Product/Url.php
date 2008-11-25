@@ -15,7 +15,7 @@
 /**
  * TypoGento Product Url Model
  *
- * @version $Id
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Model_Product_Url extends Mage_Catalog_Model_Product_Url {

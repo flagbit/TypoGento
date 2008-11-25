@@ -15,7 +15,7 @@
 /**
  * TypoGento tools
  *
- * @version $Id
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_tools {

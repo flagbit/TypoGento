@@ -15,7 +15,7 @@
 /**
  * TypoGento Logout Helper
  *
- * @version $Id
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Helper_Logout extends Mage_Core_Helper_Abstract {

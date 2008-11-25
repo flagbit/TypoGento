@@ -15,7 +15,7 @@
 /**
  * TypoGento FeUsers Model
  *
- * @version $Id
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Model_Mysql4_Typo3_FeUsers extends Mage_Core_Model_Mysql4_Abstract {
