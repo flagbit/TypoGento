@@ -1,0 +1,1 @@
+ssh dev "cd /var/www/web33/html/svn/trunk; svn update --username server --password lingo123"

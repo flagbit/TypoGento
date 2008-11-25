@@ -1,5 +1,23 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento Core Model
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 class Flagbit_Typo3connect_Model_Core {
 	
 	protected $_output = '';
@@ -28,6 +46,11 @@ class Flagbit_Typo3connect_Model_Core {
 	 */
 	protected $_router = null;
 	
+	/**
+	 * Class Constuctor
+	 *
+	 * @param array $params
+	 */
 	public function __construct($params = array()) {
 		
 		foreach ( $params as $key => $value ) {
@@ -44,6 +67,11 @@ class Flagbit_Typo3connect_Model_Core {
 	
 	}
 	
+	/**
+	 * is Magento is runnig throw TYPO3 respectively is it enabled 
+	 *
+	 * @return boolan
+	 */
 	public function isEnabled() {
 		return (defined ( 'TYPO3_MODE' ) && TYPO3_MODE === 'FE' ? true : false);
 	}
@@ -110,6 +138,12 @@ class Flagbit_Typo3connect_Model_Core {
 		return $this;
 	}
 	
+	/**
+	 * generates an TYPO3 Link which keeps the current pi_Vars
+	 *
+	 * @param array $overruleParams
+	 * @return string URL
+	 */
 	public function getTypolinkKeepPIvars(array $overruleParams = array()) {
 		
 		$get = t3lib_div::_GET();
@@ -120,6 +154,12 @@ class Flagbit_Typo3connect_Model_Core {
 		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
 	}
 	
+	/**
+	 * generates an TYPO3 Link
+	 *
+	 * @param array $params
+	 * @return string URL
+	 */
 	public function getTypolink(array $params = array()) {
 		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
 	}	
@@ -137,11 +177,22 @@ class Flagbit_Typo3connect_Model_Core {
 		}
 	}
 	
+	/**
+	 * set routing params
+	 *
+	 * @param array $params
+	 * @return object $this
+	 */
 	public function setParams(array $params = array()) {
 		$this->_params = $params;
 		return $this;
 	}
 	
+	/**
+	 * get routing param
+	 *
+	 * @return array
+	 */
 	public function getParams() {
 		return $this->_params;
 	}
@@ -161,24 +212,52 @@ class Flagbit_Typo3connect_Model_Core {
 		return self::$_instance;
 	}
 	
-	public function setBlock($name, $html) {
-		$this->_blocks [$name] = $html;
+	/**
+	 * set an Layout Block
+	 *
+	 * @param string $name
+	 * @param Mage_Core_Block_Abstract $html
+	 */
+	public function setBlock($name, $block) {
+		$this->_blocks [$name] = $block;
 	}
 	
+	/**
+	 * get an Layout Block
+	 *
+	 * @param string $name
+	 * @return Mage_Core_Block_Abstract
+	 */
 	public function getBlock($name) {
 		return $this->_blocks [$name];
 	}
 	
+	/**
+	 * return all Layout Blocks as Array
+	 *
+	 * @return array of Mage_Core_Block_Abstract
+	 */
 	public function getBlocks() {
 		return $this->_blocks;
 	}
 	
+	/**
+	 * add something to output
+	 *
+	 * @param string $output
+	 * @return object $this
+	 */
 	public function addOutput($output) {
 		
 		$this->_output .= $output;
 		return $this;
 	}
 	
+	/**
+	 * returns the output
+	 *
+	 * @return string
+	 */
 	public function getOutput() {
 		return $this->_output;
 	}

@@ -1,37 +1,27 @@
 <?php
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2008 Joerg Weller <weller@flagbit.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento pi1
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 require_once (PATH_tslib . 'class.tslib_pibase.php');
 require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
 require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
-/**
- * Plugin 'Magento' for the 'fb_magento' extension.
- *
- * @author	Joerg Weller <weller@flagbit.de>
- * @package	TYPO3
- * @subpackage	tx_fbmagento
- */
+
 class tx_fbmagento_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_fbmagento'; // Same as class name
 	var $scriptRelPath = 'pi1/class.tx_fbmagento_pi1.php'; // Path to this script relative to the extension dir.
@@ -119,6 +109,11 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		return isset($this->conf['nowrap']) ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
 	
+	/**
+	 * gets routing Data from the current Page an the included Plugins
+	 *
+	 * @return boolan
+	 */
 	protected function getRoutingDataFromPage(){
 		
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('pi_flexform', 'tt_content', 'pid=\''.$GLOBALS ['TSFE']->id.'\' AND list_type=\'fb_magento_pi1\' '.$this->cObj->enableFields('tt_content'), 'sorting');

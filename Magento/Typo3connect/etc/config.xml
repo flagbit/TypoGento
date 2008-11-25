@@ -77,7 +77,7 @@
                   <host><![CDATA[localhost]]></host>
                   <username><![CDATA[root]]></username>
                   <password><![CDATA[lingo]]></password>
-                  <dbname><![CDATA[TYPO3ext_small_extensions_420]]></dbname>
+                  <dbname><![CDATA[typogento_TYPO3]]></dbname>
                   <active>1</active>
                   <model>mysql4</model>
                   <type>pdo_mysql</type>

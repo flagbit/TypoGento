@@ -1,11 +1,34 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento Router
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 
 class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien_Router_Standard{
 
+	/**
+	 * determines the Controller / Action throw Request Object
+	 *
+	 * @param Zend_Controller_Request_Http $request
+	 * @return boolan
+	 */
 	public function match(Zend_Controller_Request_Http $request)
 	{
-
 
 		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled()){
 			return parent::match($request);
@@ -82,7 +105,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 		$request->setDispatched(true);
 		$controllerInstance->dispatch($action);
 
-		return true;#$request->isDispatched();
+		return true;
 	}
 
 

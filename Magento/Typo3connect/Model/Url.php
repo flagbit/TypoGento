@@ -1,8 +1,29 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento Url Model
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 
-
+	/**
+	 * class Constructor
+	 *
+	 */
 	public function _construct(){
 		parent::_construct();
 	}
@@ -36,42 +57,6 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 
 		$url = $this->getRouteUrl($routePath, $routeParams);
 
-
-
-		/**
-		 * Apply query params, need call after getRouteUrl for rewrite _current values
-		 */
-		/*
-		if (isset($routeParams['_query'])) {
-			if (is_string($routeParams['_query'])) {
-				$this->setQuery($routeParams['_query']);
-			} elseif (is_array($routeParams['_query'])) {
-				$this->setQueryParams($routeParams['_query'], !empty($routeParams['_current']));
-			}
-			if ($routeParams['_query'] === false) {
-				$this->setQueryParams(array());
-			}
-			unset($routeParams['_query']);
-		}
-*/
-
-		$session = Mage::getSingleton('core/session');
-		if ($sessionId = $session->getSessionIdForHost($url)) {
-			#$this->setQueryParam($session->getSessionIdQueryParam(), $sessionId);
-		}
-
-		if (is_array($this->getQueryParams()) && count($this->getQueryParams())) {
-			#var_dump($this->getQueryParams());
-			#var_dump($this->getQueryParams());
-			#$url .= '?'.$query;
-		}
-
-		if ($this->getFragment()) {
-			//$url .= '#'.$this->getFragment();
-		}
-		
-
-		
 		$params = array(
 			"route" => $this->getRouteName(),
 			"controller" => $this->getControllerName(),
@@ -91,7 +76,13 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 		}
 	}
 
-
+	/**
+	 * return the Route URL
+	 *
+	 * @param string $routePath
+	 * @param array $routeParams
+	 * @return string
+	 */
 	public function getRouteUrl($routePath=null, $routeParams=null)
 	{
 		

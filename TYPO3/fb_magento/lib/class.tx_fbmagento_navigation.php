@@ -1,5 +1,23 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento navigation
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 require_once (t3lib_extmgm::extPath ( 'fb_magento' ) . 'lib/class.tx_fbmagento_tools.php');
 require_once (t3lib_extmgm::extPath ( 'fb_magento' ) . 'lib/class.tx_fbmagento_interface.php');
 
@@ -72,6 +90,14 @@ class tx_fbmagento_navigation {
 		return $menuArr;
 	}
 	
+	/**
+	 * creates HMENU Items Array
+	 *
+	 * @param int $category
+	 * @param int $level
+	 * @param boolan $last
+	 * @return array
+	 */
 	protected function createMenuArrayItem($category, $level = 0, $last = false) {
 		$menuArray = array ();
 		
@@ -108,7 +134,14 @@ class tx_fbmagento_navigation {
 		return $menuArray;
 	}
 	
-	function categories($content, $conf) {
+	/**
+	 * generates HMENU Array
+	 *
+	 * @param string $content
+	 * @param array $conf
+	 * @return array
+	 */
+	public function categories($content, $conf) {
 		
 		$this->emConf = tx_fbmagento_tools::getExtConfig ();
 		$this->conf = $conf;

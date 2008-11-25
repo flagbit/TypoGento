@@ -1,5 +1,23 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
+/**
+ * TypoGento Response Controller
+ *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ */
 class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Response_Http {
 	
 	/**
@@ -32,6 +50,9 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	
 	}
 	
+	/**
+	 * send the Response and exit
+	 */
 	public function sendResponse() {
 		
 		parent::sendResponse ();
@@ -41,6 +62,13 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 		}
 	}
 	
+	/**
+	 * set Body
+	 *
+	 * @param string $content
+	 * @param string $name
+	 * @return $this
+	 */
 	public function setBody($content, $name = null) {
 		
 		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {

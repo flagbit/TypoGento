@@ -1,8 +1,22 @@
 <?php
+/*                                                                        *
+ * This script is part of the TypoGento project 						  *
+ *                                                                        *
+ * TypoGento is free software; you can redistribute it and/or modify it   *
+ * under the terms of the GNU General Public License version 2 as         *
+ * published by the Free Software Foundation.                             *
+ *                                                                        *
+ * This script is distributed in the hope that it will be useful, but     *
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHAN-    *
+ * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
+ * Public License for more details.                                       *
+ *                                                                        */
 
 /**
- * Magento API Soap Interface
+ * TypoGento soapinterface
  *
+ * @version $Id
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_soapinterface {
 
@@ -20,7 +34,7 @@ class tx_fbmagento_soapinterface {
 	public function __construct($url, $username, $password){
 		
 		$this->connection = new SoapClient($url.$this->urlPostfix);
-		$this->sessionId = $this->getClient()->login('admin', 'lingo123');
+		$this->sessionId = $this->getClient()->login($username, $password);
 	}
 	
 	/**
@@ -41,7 +55,6 @@ class tx_fbmagento_soapinterface {
 			return $this;
 		}
 	}
-	
 	
 	/**
 	 * get SoapCleint
