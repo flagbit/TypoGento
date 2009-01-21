@@ -68,6 +68,5 @@ class Flagbit_Typo3connect_Model_Mysql4_Typo3_FeUsers extends Mage_Core_Model_My
 		
 		return $read->fetchRow ( $select );
 	}
-
 }
 

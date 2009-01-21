@@ -62,9 +62,10 @@
           <Flagbit_Typo3connect_setup>
               <setup>
                   <module>Flagbit_Typo3connect</module>
+                  <class>Mage_Eav_Model_Entity_Setup</class>
               </setup>
               <connection>
-                  <use>core_setup</use>
+                  <use>default_setup</use>
               </connection>
           </Flagbit_Typo3connect_setup>
           <Flagbit_Typo3connect_read>
