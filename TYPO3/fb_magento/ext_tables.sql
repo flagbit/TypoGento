@@ -2,6 +2,13 @@
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-    firstname tinytext NOT NULL,
-	tx_fbmagento_id int,
+    firstname tinytext NOT NULL default '',
+	tx_fbmagento_id int(11) default '0',
+);
+
+#
+# Table structure for table 'sys_language'
+#
+CREATE TABLE sys_language (
+	tx_fbmagento_store varchar(255) NOT NULL default '',
 );

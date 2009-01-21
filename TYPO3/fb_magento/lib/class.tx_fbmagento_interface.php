@@ -102,11 +102,12 @@ class tx_fbmagento_interface {
 		spl_autoload_register ( array (&$this, 'autoload' ) );	
 
 		// Init Mage
-		Mage::app ();
+		$store = tx_fbmagento_tools::getFELangStoreCode();
+		Mage::app()->setCurrentStore(Mage::app()->getStore($store));
 
 		// Init Typo3connect
 		$this->connector = Mage::getSingleton ( 'Flagbit_Typo3connect/Core', array ('enabled' => true ) );
-		$this->connector->setcObj ( $GLOBALS['TSFE']->cObj );		
+		$this->connector->setcObj ( $GLOBALS['TSFE']->cObj );
 				
 	}
 	

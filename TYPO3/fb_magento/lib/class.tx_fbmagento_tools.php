@@ -29,6 +29,18 @@ class tx_fbmagento_tools {
 		return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['fb_magento']);
 	}
 	
+	public static function getFELangStoreCode(){
+		//$GLOBALS['TYPO3_DB']->debugOutput = true;
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tx_fbmagento_store', 'sys_language', sprintf('uid = %d', $GLOBALS['TSFE']->config['config']['sys_language_uid']));
+		
+		$res = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res);
+		if (! ($store = $res['tx_fbmagento_store']))
+		{
+			$store = 'default';
+		}
+		return $store;
+	}
+	
 }
 
 ?>
