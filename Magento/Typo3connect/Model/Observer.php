@@ -59,14 +59,7 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		}
 		$feUsers->save ();
 		$customer->setData ( 'typo3_uid', $feUsers->getData ( 'uid' ) );
-		Mage::log("UID: " . $customer->getTypo3Uid());
-		Mage::log("Resource Class: " . get_class($customer->getResource ()));
-		try {
 		$customer->getResource ()->saveAttribute ( $customer, 'typo3_uid' );
-		} catch (Exception $e) {
-			Mage::log($e->getMessage());
-			Mage::throwException($e->getMessage());
-		}
 		Mage::log('after saveAttribute()');
 	}
 }
