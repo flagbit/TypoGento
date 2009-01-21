@@ -57,7 +57,6 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		foreach ( $fields as $key => $value ) {
 			$feUsers->setData ( $key, $value );
 		}
-		Mage::log($feUsers->getData());
 		$feUsers->save ();
 		
 		$customer->setData ( 'typo3_uid', $feUsers->getData ( 'uid' ) );

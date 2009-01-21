@@ -43,6 +43,11 @@ class Flagbit_Typo3connect_Model_Mysql4_Typo3_FeUsers extends Mage_Core_Model_My
 		
 		$connConfig = Mage::getConfig ()->getResourceConnectionConfig ( 'Flagbit_Typo3connect_' . $connectionName );
 		
+		foreach (array('host', 'username', 'password', 'dbname') as $field)
+		{
+			$connConfig->{$field} = (string) Mage::getStoreConfig('typo3connect/typo3_db/' . $field);
+		}
+		
 		$typeInstance = $this->_resources->getConnectionTypeInstance ( ( string ) $connConfig->type );
 		$this->_connections [$connectionName] = $typeInstance->getConnection ( $connConfig );
 		

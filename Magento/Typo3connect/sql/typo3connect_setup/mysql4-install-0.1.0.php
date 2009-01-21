@@ -17,6 +17,7 @@
  *
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @todo use $installer->addAttribute() instead of raw sql
  */
 
 $installer = $this;
@@ -24,7 +25,7 @@ $installer = $this;
 
 $installer->startSetup();
 $installer->run("
-INSERT INTO `magento`.`eav_attribute` (
+INSERT INTO {$this->getTable('eav_attribute')} (
 `attribute_id` ,
 `entity_type_id` ,
 `attribute_code` ,

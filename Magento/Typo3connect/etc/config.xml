@@ -4,7 +4,8 @@
 	<modules>
 		<Flagbit_Typo3connect>
 			<active>true</active>
-			<codePool>local</codePool>
+			<!-- Note: remove this, rather set in app/etc/modules/Flagbit_Typo3connect.xml -->
+			<!-- <codePool>community</codePool> -->
 			<version>0.1.0</version>
 		</Flagbit_Typo3connect>
 	</modules>
@@ -14,7 +15,7 @@
             <Flagbit_Typo3connect>
                 <class>Flagbit_Typo3connect_Helper</class>
             </Flagbit_Typo3connect>
-        </helpers>	
+        </helpers>
 		<models>
 			<core>
 				<rewrite>
@@ -30,7 +31,6 @@
 				</rewrite>
 			</catalog>
 
-			 
 			<Flagbit_Typo3connect>
 				<class>Flagbit_Typo3connect_Model</class>
 				<resourceModel>Flagbit_Typo3connect_Mysql4</resourceModel>
@@ -55,11 +55,6 @@
 			    </entities>
 			</typo3connect_entity>			
 			-->
-			<customer>
-				<rewrite>
-					<customer>Flagbit_Typo3connect_Model_Customer</customer>
-				</rewrite>
-			</customer>
 	
 		</models>
 		
@@ -74,14 +69,16 @@
           </Flagbit_Typo3connect_setup>
           <Flagbit_Typo3connect_read>
               <connection>
+              	<!-- 
                   <host><![CDATA[localhost]]></host>
                   <username><![CDATA[root]]></username>
                   <password><![CDATA[lingo]]></password>
                   <dbname><![CDATA[typogento_TYPO3]]></dbname>
+                -->
                   <active>1</active>
                   <model>mysql4</model>
                   <type>pdo_mysql</type>
-              </connection>          
+              </connection>
 
           </Flagbit_Typo3connect_read>
           <Flagbit_Typo3connect_write>
@@ -92,6 +89,15 @@
       </resources>		
 		
 		<events>
+			<customer_save_after>
+				<observers>
+					<flagbit_typo3connect>
+						<type>singleton</type>
+						<class>Flagbit_Typo3connect/observer</class>
+						<method>customerSaveAfterEvent</method>
+					</flagbit_typo3connect>
+				</observers>
+			</customer_save_after>
 			<customer_login>
 				<observers>
 					<flagbit_typo3connect_login>
@@ -133,7 +139,5 @@
                 </admin>
             </resources>
         </acl>
-    </adminhtml>	
-	
-	
+    </adminhtml>
 </config>

@@ -13,7 +13,7 @@
                  <config translate="label">
                     <label>General Settings</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>1</sort_order>
+                    <sort_order>10</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -21,7 +21,7 @@
                         <fe_user_pid translate="label">
                             <label>PID TYPO3 Frontend Users</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
+                            <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -29,13 +29,55 @@
                         <fe_user_group_uid translate="label">
                             <label>Group uid TYPO3 Frontend Users</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>1</sort_order>
+                            <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </fe_user_group_uid>                                               
+                        </fe_user_group_uid>
                     </fields>
-                </config>
+                 </config>
+                 <typo3_db translate="label">
+                    <label>Typo3 Database</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <host translate="label">
+                            <label>Typo3 DB Host</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </host>
+                        <username translate="label">
+                            <label>Typo3 DB Username</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </username>
+                        <password translate="label">
+                            <label>Typo3 DB Password</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </password>
+                        <dbname translate="label">
+                            <label>Typo3 DB Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </dbname>
+                    </fields>
+                </typo3_db>
             </groups>
         </typo3connect>
     </sections>
