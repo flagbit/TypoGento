@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config>
+    <api>
+        <resources>
+            <typo3connect_storeviews translate="title" module="Flagbit_Typo3connect">
+                <model>Flagbit_Typo3connect/storeviews_api</model>
+                <title>Typo3connect Api</title>
+                <acl>typo3connect/storeviews</acl>
+                <methods>
+                    <list translate="title" module="Flagbit_Typo3connect">
+                        <title>List of storeviews</title>
+                        <method>items</method>
+                    </list>
+                </methods>
+            </typo3connect_storeviews>
+        </resources>
+        <acl>
+            <resources>
+                <all>
+                    <typo3connect translate="title" module="Flagbit_Typo3connect">
+                        <title>Typogento</title>
+                        <sort_order>5</sort_order>
+                        <storeviews translate="title" module="Flagbit_Typo3connect">
+                            <title>Storeviews</title>
+                        </storeviews>
+                    </typo3connect>
+                </all>
+            </resources>
+        </acl>
+    </api>
+</config>

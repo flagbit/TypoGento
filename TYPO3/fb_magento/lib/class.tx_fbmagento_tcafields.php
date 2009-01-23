@@ -39,8 +39,26 @@ class tx_fbmagento_tcafields {
 		foreach ((array) $products as $product){
 			$params['items'][]=Array($product['name'].' - '.$product['sku'], $product['product_id']);
 		}
-
 	}
+	
+	/**
+	 * generates an Storeviewlist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_languages(&$params,&$pObj){
+		
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+		$storeviews = $soapClient->typo3connect_storeviews()->list();
+				
+		foreach ((array) $storeviews as $storeview){
+			$params['items'][]=Array($storeview['label'], $storeview['value']);
+		}
+	}	
+	
 
 	/**
 	 * generates an Category as Array for TCA Select fields

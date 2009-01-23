@@ -50,9 +50,10 @@ $tempColumns = Array (
 		"exclude" => 0,
 		"label" => "LLL:EXT:fb_magento/locallang_db.xml:sys_language.tx_fbmagento_store",
         "config" => Array (
-            "type" => "input",
-            "size" => "30",
-        )
+            "type" => "select",
+			"itemsProcFunc" => "EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_languages",
+            "maxitems" => 1
+        )      
 	)
 );
 
