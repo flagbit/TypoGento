@@ -27,13 +27,28 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function appendBody($output, $name = null) {
 		
-		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
-			echo $output;
-			exit ();
-		}
+		$this->ajaxHandler($output);
 		
 		parent::appendBody ( $output, $name );
 		Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->addOutput ( $output );
+	}
+	
+	/**
+	 * handle Ajax Requests
+	 *
+	 * @param string $output
+	 */
+	protected function ajaxHandler($output) {
+		
+		if(!Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) return;
+		
+		if($GLOBALS['TSFE']->renderCharset){
+			header('Content-Type: text/html; charset='.$GLOBALS['TSFE']->renderCharset);
+		} 
+		
+		echo $output;
+		exit ();
+		
 	}
 	
 	/**
@@ -43,11 +58,7 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function outputBody() {
 		
-		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
-			parent::outputBody ();
-			exit ();
-		}
-	
+		$this->ajaxHandler(parent::outputBody ());
 	}
 	
 	/**
@@ -71,10 +82,7 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 */
 	public function setBody($content, $name = null) {
 		
-		if (Mage::app ()->getFrontController ()->getRequest ()->isXmlHttpRequest ()) {
-			echo $content;
-			exit ();
-		}
+		$this->ajaxHandler($content);
 		
 		parent::setBody ( $content, $name );
 		
