@@ -47,13 +47,24 @@ class tx_fbmagento_soapinterface {
 	public function __call($name, $params){
 		
 		if($this->resource){
-			$result = $this->getClient()->call($this->sessionId, $this->resource.'.'.$name, $params);
+			$result = $this->call($this->resource.'.'.$name, $params);
 			$this->resource = null;
 			return $result;
 		}else{
 			$this->resource = $name;
 			return $this;
 		}
+	}
+	
+	/**
+	 * call Soap Interface
+	 *
+	 * @param string $resource
+	 * @param array $params
+	 * @return unknown
+	 */
+	public function call($resource, $params=array()){
+		return $this->getClient()->call($this->sessionId, $resource, $params);
 	}
 	
 	/**

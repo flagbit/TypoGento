@@ -12,3 +12,6 @@ password =
 
 # cat=basic;type=boolean; label=enable automatic Magento Header integration
 auto_header = 
+
+# cat=basic;type=boolean; label=enable Realurl Functions
+realurl = 
