@@ -1,1 +1,1 @@
-look at https://www.typogento.com/ for further information.
+look at http://www.typogento.com/ for further information.

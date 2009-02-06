@@ -38,6 +38,7 @@ class tx_fbmagento_realurl {
 	public function idRewrite($params, $ref){
 		
 		$this->setRealurlRef($ref);
+
 		
 		if($this->isRouteControllerAction('catalog', 'category', 'view')){
 			
@@ -49,7 +50,7 @@ class tx_fbmagento_realurl {
 			return $this->rewriter($cfg, $params);
 		}
 
-		return $params ['value'];
+		return $params ['value'].'----';
 	}	
 	
 	/**
@@ -81,17 +82,20 @@ class tx_fbmagento_realurl {
 	 */
 	protected function isRouteControllerAction($route, $controller = null, $action = null){
 		
-		$params = (array) $this->getRealurlRef()->orig_paramKeyValues;
+		$params = $this->getRealurlRef()->speakingURIpath_procValue;
 		
-		if($params['tx_fbmagento[shop][route]'] != $route){
+		preg_match('|/shop/([^/]*)/([^/]*)/([^/]*)|', $params, $matches);
+
+		
+		if($matches[1] != $route){
 			return false;
 		}
 		
-		if($controller !== null && $params['tx_fbmagento[shop][controller]'] != $controller){
+		if($controller !== null && $matches[2] != $controller){
 			return false;
 		}
 		
-		if($action !== null && $params['tx_fbmagento[shop][action]'] != $action){
+		if($action !== null && $matches[3] != $action){
 			return false;
 		}
 		
@@ -107,9 +111,9 @@ class tx_fbmagento_realurl {
 	 * @return string
 	 */
 	protected function rewriter($cfg, $params) {
-	
+
 		$cfg['id_field'] = 'id';
-		
+
 		if ($params ['decodeAlias']) {	
 			return $this->alias2id ( $cfg, $params ['value'] );
 		} else {
@@ -184,6 +188,7 @@ class tx_fbmagento_realurl {
 	protected function alias2id($cfg, $value) {
 		
 		$result = $this->getRealurlRef()->lookUp_uniqAliasToId($cfg, $value);
+
 		return $result;
 	}
 	
