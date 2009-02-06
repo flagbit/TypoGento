@@ -50,7 +50,7 @@ class tx_fbmagento_realurl {
 			return $this->rewriter($cfg, $params);
 		}
 
-		return $params ['value'].'----';
+		return $params ['value'];
 	}	
 	
 	/**
