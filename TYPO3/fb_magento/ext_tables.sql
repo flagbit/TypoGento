@@ -12,3 +12,10 @@ CREATE TABLE fe_users (
 CREATE TABLE sys_language (
 	tx_fbmagento_store varchar(255) NOT NULL default '',
 );
+
+#
+# Table structure for table 'be_users'
+#
+CREATE TABLE be_users (
+	tx_fbmagento_group int(11) default '0',
+);

@@ -29,6 +29,38 @@ class tx_fbmagento_tools {
 		return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['fb_magento']);
 	}
 	
+	/**
+	 * throws an Exeption
+	 *
+	 * @param string $message
+	 */
+    public static function throwException($message){
+    	
+        throw new Exception($message);
+    }	
+	
+    /**
+     * displays an Error Message
+     *
+     * @param string $warning
+     * @return unknown
+     */
+    public static function displayError($warning, $stop=true){
+    	
+    	$warning = '<h3>TYPOGENTO</h3>'.$warning;
+    	
+    	t3lib_BEfunc::typo3PrintError('', $warning, '', $stop ? 0 : 1);
+		
+    	if($stop) { 
+			die();
+		}
+    }
+    
+	/**
+	 * get Frontend Languagecode
+	 *
+	 * @return string
+	 */
 	public static function getFELangStoreCode(){
 		//$GLOBALS['TYPO3_DB']->debugOutput = true;
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('tx_fbmagento_store', 'sys_language', sprintf('uid = %d', $GLOBALS['TSFE']->config['config']['sys_language_uid']));

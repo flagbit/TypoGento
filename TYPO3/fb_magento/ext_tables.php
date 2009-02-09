@@ -43,7 +43,6 @@ t3lib_extMgm::addTCAcolumns("fe_users",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("fe_users","firstname;;;;1-1-1");
 t3lib_extMgm::addToAllTCAtypes("fe_users","tx_fbmagento_id;;;;1-1-1");
 
-
 // add store mapping
 $tempColumns = Array (
 	"tx_fbmagento_store" => Array(
@@ -62,5 +61,48 @@ t3lib_div::loadTCA("sys_language");
 t3lib_extMgm::addTCAcolumns("sys_language",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("sys_language","tx_fbmagento_store;;;;1-1-1");
 
+// add group mapping
+$tempColumns = Array (
+	"tx_fbmagento_group" => Array(
+		"exclude" => 0,
+		"label" => "LLL:EXT:fb_magento/locallang_db.xml:be_users.tx_fbmagento_group",
+        "config" => Array (
+            "type" => "select",
+			"items" => array(
+				array('LLL:EXT:fb_magento/locallang_db.xml:be_users.tx_fbmagento_group.0', '')
+			),
+			"itemsProcFunc" => "EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_usergroups",
+            "maxitems" => 1
+        )      
+	)
+);
 
+
+t3lib_div::loadTCA("be_users");
+t3lib_extMgm::addTCAcolumns("be_users",$tempColumns,1);
+t3lib_extMgm::addToAllTCAtypes("be_users","tx_fbmagento_group;;;;1-1-1");
+
+
+if (TYPO3_MODE=="BE")	{
+
+		// add module after 'Web'
+	if (!isset($TBE_MODULES['txfbmagentoMgroup']))	{
+		$temp_TBE_MODULES = array();
+		foreach($TBE_MODULES as $key => $val) {
+			$temp_TBE_MODULES[$key] = $val;
+			if($key == 'web'){
+				$temp_TBE_MODULES['txfbmagentoMgroup'] = $val;
+			}			
+		}
+		$TBE_MODULES = $temp_TBE_MODULES;
+
+	}
+
+		// add group module
+	t3lib_extMgm::addModule('txfbmagentoMgroup','','',t3lib_extmgm::extPath($_EXTKEY).'mod_group/');
+	
+		// add admin module
+	t3lib_extMgm::addModule('txfbmagentoMgroup','txfbmagentoMadmin','',t3lib_extmgm::extPath($_EXTKEY).'mod_admin/');
+
+}
 ?>

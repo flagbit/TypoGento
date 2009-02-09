@@ -107,7 +107,10 @@ class tx_fbmagento_interface {
 
 		// Init Typo3connect
 		$this->connector = Mage::getSingleton ( 'Flagbit_Typo3connect/Core', array ('enabled' => true ) );
-		$this->connector->setcObj ( $GLOBALS['TSFE']->cObj );
+		
+		if($GLOBALS['TSFE']->cObj instanceof tslib_cObj) {
+			$this->connector->setcObj ( $GLOBALS['TSFE']->cObj );
+		}
 				
 	}
 	

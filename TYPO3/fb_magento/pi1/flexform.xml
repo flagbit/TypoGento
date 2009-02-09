@@ -20,13 +20,16 @@
 								<maxitems>1</maxitems>
 								<size>1</size>
 								<items type="array">
-
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.0</numIndex>
-										<numIndex index="1">SINGLEPRODUCT</numIndex>
+										<numIndex index="1"></numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
 										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.1</numIndex>
+										<numIndex index="1">SINGLEPRODUCT</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
+										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.2</numIndex>
 										<numIndex index="1">PRODUCTLIST</numIndex>
 									</numIndex>
 

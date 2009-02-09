@@ -29,6 +29,13 @@ class tx_fbmagento_realurl {
 	protected $_realurlRef = null;
 	
 	/**
+	 * direction
+	 *
+	 * @var string
+	 */
+	protected $_direction = null;
+	
+	/**
 	 * rewrite Category
 	 *
 	 * @param array $params
@@ -36,15 +43,17 @@ class tx_fbmagento_realurl {
 	 * @return string
 	 */
 	public function idRewrite($params, $ref){
-		
+	
 		$this->setRealurlRef($ref);
 
-		
 		if($this->isRouteControllerAction('catalog', 'category', 'view')){
 			
 			$cfg = array(
 				'alias_field' => 'name',
-				'table' => 'catalog_category.info'
+				'table' => 'typo3connect_catalog_category.urlkeys',
+				'type' => 'idList',
+				'storeview' => 1,
+				'cache' => 'memory'
 			);
 			
 			return $this->rewriter($cfg, $params);
@@ -64,7 +73,10 @@ class tx_fbmagento_realurl {
 		
 		$cfg = array(
 			'alias_field' => 'name',
-			'table' => 'catalog_category.info'
+			'table' => 'typo3connect_catalog_category.urlkeys',
+			'type' => 'idList',
+			'storeview' => 1,
+			'cache' => 'memory'
 		);		
 		
 		$this->setRealurlRef($ref);
@@ -82,21 +94,46 @@ class tx_fbmagento_realurl {
 	 */
 	protected function isRouteControllerAction($route, $controller = null, $action = null){
 		
-		$params = $this->getRealurlRef()->speakingURIpath_procValue;
+		switch($this->_direction){
 		
-		preg_match('|/shop/([^/]*)/([^/]*)/([^/]*)|', $params, $matches);
-
-		
-		if($matches[1] != $route){
-			return false;
-		}
-		
-		if($controller !== null && $matches[2] != $controller){
-			return false;
-		}
-		
-		if($action !== null && $matches[3] != $action){
-			return false;
+			case 'encode':
+			
+				$params = (array) $this->getRealurlRef()->orig_paramKeyValues;
+				
+				if($params['tx_fbmagento[shop][route]'] != $route){
+					return false;
+				}
+				
+				if($controller !== null && $params['tx_fbmagento[shop][controller]'] != $controller){
+					return false;
+				}
+				
+				if($action !== null && $params['tx_fbmagento[shop][action]'] != $action){
+					return false;
+				}
+						
+				break;
+				
+				
+			case 'decode':
+			
+				$params = $this->getRealurlRef()->speakingURIpath_procValue;
+			
+				preg_match('|/shop/([^/]*)/([^/]*)/([^/]*)|', $params, $matches);
+			
+				
+				if($matches[1] != $route){
+					return false;
+				}
+				
+				if($controller !== null && $matches[2] != $controller){
+					return false;
+				}
+				
+				if($action !== null && $matches[3] != $action){
+					return false;
+				}			
+				break;
 		}
 		
 		return true;
@@ -115,8 +152,10 @@ class tx_fbmagento_realurl {
 		$cfg['id_field'] = 'id';
 
 		if ($params ['decodeAlias']) {	
+			$this->_direction = 'decode';
 			return $this->alias2id ( $cfg, $params ['value'] );
 		} else {
+			$this->_direction = 'encode';
 			return $this->id2alias ( $cfg, $params ['value'] );
 		}
 	}
@@ -165,10 +204,26 @@ class tx_fbmagento_realurl {
 		
 		// do Soap Call		
 		try {
+			
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
-			$result = $soapClient->call($cfg['table'], array($value));		
-			$newValue = $result[$cfg['alias_field']];
+			$soapClient->enableCache( isset($cfg['cache']) ? $cfg['cache'] : null);
+			
+			switch($cfg['type']){
+				
+				case 'idList':
+					$result = $soapClient->call($cfg['table']);
+					$newValue = $result[$value];
+					break;
+				
+				default:
+					$result = $soapClient->call($cfg['table'], array($value));		
+					$newValue = $result[$cfg['alias_field']];	
+					break;				
+				
+			}
+	
 		}catch (Exception $e){
+			
 			if ($this->getRealurlRef()->enableDevLog) {
 				t3lib_div::devLog('Typogento Soap Error: '.$e->getMessage(), 'realurl', -1);
 			}

@@ -13,6 +13,28 @@
                     </list>
                 </methods>
             </typo3connect_storeviews>
+            <typo3connect_catalog_category translate="title" module="Flagbit_Typo3connect">
+                <model>Flagbit_Typo3connect/catalog_category_api</model>
+                <title>Typo3connect Api</title>
+                <acl>typo3connect/urlkeys</acl>
+                <methods>
+                    <urlkeys translate="title" module="Flagbit_Typo3connect">
+                        <title>List of Category URLs</title>
+                        <method>urlkeys</method>
+                    </urlkeys>
+                </methods>
+            </typo3connect_catalog_category>
+            <typo3connect_admin_roles translate="title" module="Flagbit_Typo3connect">
+                <model>Flagbit_Typo3connect/admin_roles_api</model>
+                <title>Typo3connect Api</title>
+                <acl>typo3connect/roles</acl>
+                <methods>
+                    <list translate="title" module="Flagbit_Typo3connect">
+                        <title>List of Admin Roles</title>
+                        <method>items</method>
+                    </list>
+                </methods>
+            </typo3connect_admin_roles>            
         </resources>
         <acl>
             <resources>
@@ -23,6 +45,12 @@
                         <storeviews translate="title" module="Flagbit_Typo3connect">
                             <title>Storeviews</title>
                         </storeviews>
+                        <urlkeys translate="title" module="Flagbit_Typo3connect">
+                            <title>Category URLs</title>
+                        </urlkeys>                        
+                        <roles translate="title" module="Flagbit_Typo3connect">
+                            <title>Admin Roles</title>
+                        </roles>                        
                     </typo3connect>
                 </all>
             </resources>

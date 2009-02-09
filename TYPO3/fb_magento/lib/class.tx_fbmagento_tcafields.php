@@ -33,11 +33,41 @@ class tx_fbmagento_tcafields {
 		
 		$conf = tx_fbmagento_tools::getExtConfig();
 		
-		$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
-		$products = $soapClient->catalog_product()->list();
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$products = $soapClient->catalog_product()->list();
+			
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
 		
 		foreach ((array) $products as $product){
 			$params['items'][]=Array($product['name'].' - '.$product['sku'], $product['product_id']);
+		}
+	}
+
+	/**
+	 * generates an Grouplist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_usergroups(&$params,&$pObj){
+		
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$roles = $soapClient->typo3connect_admin_roles()->list();
+			
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
+		
+		foreach ((array) $roles as $role){
+			$params['items'][]=Array($role['label'], $role['value']);
 		}
 	}
 	
@@ -50,9 +80,15 @@ class tx_fbmagento_tcafields {
 	public function itemsProcFunc_languages(&$params,&$pObj){
 		
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
-		$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
-		$storeviews = $soapClient->typo3connect_storeviews()->list();
+
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$storeviews = $soapClient->typo3connect_storeviews()->list();
+			
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
 				
 		foreach ((array) $storeviews as $storeview){
 			$params['items'][]=Array($storeview['label'], $storeview['value']);
@@ -70,8 +106,14 @@ class tx_fbmagento_tcafields {
 		
 		$conf = tx_fbmagento_tools::getExtConfig();
 		
-		$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
-		$categories = $soapClient->catalog_category()->tree();
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$categories = $soapClient->catalog_category()->tree();
+			
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}
 
 		$this->getCategoryItems($params['items'], array($categories));
 	}
