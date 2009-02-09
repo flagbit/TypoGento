@@ -44,7 +44,7 @@ class tx_fbmagento_realurl {
 	 */
 	public function idRewrite($params, $ref){
 	
-		$this->setRealurlRef($ref);
+		$this->setConfig($params, $ref);
 
 		if($this->isRouteControllerAction('catalog', 'category', 'view')){
 			
@@ -71,6 +71,8 @@ class tx_fbmagento_realurl {
 	 */
 	public function categoryRewrite($params, $ref){
 		
+		$this->setConfig($params, $ref);
+		
 		$cfg = array(
 			'alias_field' => 'name',
 			'table' => 'typo3connect_catalog_category.urlkeys',
@@ -78,8 +80,6 @@ class tx_fbmagento_realurl {
 			'storeview' => 1,
 			'cache' => 'memory'
 		);		
-		
-		$this->setRealurlRef($ref);
 
 		return $this->rewriter($cfg, $params);
 	}	
@@ -152,23 +152,29 @@ class tx_fbmagento_realurl {
 		$cfg['id_field'] = 'id';
 
 		if ($params ['decodeAlias']) {	
-			$this->_direction = 'decode';
 			return $this->alias2id ( $cfg, $params ['value'] );
 		} else {
-			$this->_direction = 'encode';
 			return $this->id2alias ( $cfg, $params ['value'] );
 		}
 	}
 	
 	/**
-	 * set Reference for tx_realurl
+	 * set Config
 	 *
-	 * @param object $ref
-	 * @return object $this
+	 * @param array $params
+	 * @param tx_realurl $ref
+	 * @return $this
 	 */
-	protected function setRealurlRef($ref){
+	protected function setConfig($params, $ref){
 		
 		$this->_realurlRef = $ref;
+		
+		if ($params ['decodeAlias']) {	
+			$this->_direction = 'decode';
+		} else {
+			$this->_direction = 'encode';
+		}		
+		
 		return $this;
 		
 	}
