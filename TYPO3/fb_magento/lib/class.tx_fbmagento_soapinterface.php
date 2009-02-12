@@ -51,8 +51,10 @@ class tx_fbmagento_soapinterface {
 	public function __call($name, $params){
 				
 		if($this->resource){
-			$result = $this->call($this->resource.'.'.$name, $params);
+			$resource = $this->resource;
 			$this->resource = null;
+			$result = $this->call($resource.'.'.$name, $params);
+			
 			return $result;
 		}else{
 			$this->resource = $name;
