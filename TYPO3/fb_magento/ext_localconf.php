@@ -13,4 +13,19 @@ if($_EXTCONF['realurl']){
 }
 
 t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_fbmagento_pi1.php','_pi1','list_type',0);
+
+/**
+ * Check $_GET Var Values
+ *
+ * @param string key|value $param
+ * @return boolan
+ */
+function tx_fbmagento_getvars($param) {
+	list($key, $value) = explode('|', $param);
+	
+	$pi_getVars = t3lib_div::_GET('tx_fbmagento');
+	return ($pi_getVars['shop'][$key] == $value ? true : false);
+}
+
+
 ?>
