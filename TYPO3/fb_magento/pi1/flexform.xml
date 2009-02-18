@@ -32,6 +32,10 @@
 										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.2</numIndex>
 										<numIndex index="1">PRODUCTLIST</numIndex>
 									</numIndex>
+									<numIndex index="3" type="array">
+										<numIndex index="0">LLL:EXT:fb_magento/locallang_db.xml:flexform.label_productshow.3</numIndex>
+										<numIndex index="1">USER</numIndex>
+									</numIndex>
 
 								</items>								
 							</config>
@@ -60,7 +64,36 @@
 								<size>15</size>
 							</config>
 						</TCEforms>
-					</category_id>				
+					</category_id>
+					
+					<route>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_route</label>
+							<displayCond>FIELD:show:=:USER</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</route>					
+					<controller>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_controller</label>
+							<displayCond>FIELD:show:=:USER</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</controller>
+					<action>
+						<TCEforms>
+							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_action</label>
+							<displayCond>FIELD:show:=:USER</displayCond>
+							<config>
+								<type>input</type>
+							</config>
+						</TCEforms>
+					</action>					
+					
 				</el>				
 			</ROOT>
 		</main>

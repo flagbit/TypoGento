@@ -15,7 +15,11 @@
 			<label index="flexform.label_productshow.0">Please Choose</label>
 			<label index="flexform.label_productshow.1">Product Singleview</label>
 			<label index="flexform.label_productshow.2">Product List</label>
+			<label index="flexform.label_productshow.3">User defined</label>
 			<label index="flexform.label_productlist">Products</label>
+			<label index="flexform.label_route">Route</label>	
+			<label index="flexform.label_controller">Controller</label>	
+			<label index="flexform.label_action">Action</label>				
 			<label index="be_users.tx_fbmagento_group">Magento Role</label>
 			<label index="be_users.tx_fbmagento_group.0">none</label>
 		</languageKey>
@@ -29,7 +33,11 @@
 			<label index="flexform.label_productshow.0">Bitte wählen</label>
 			<label index="flexform.label_productshow.1">Produkt Detailansicht</label>
 			<label index="flexform.label_productshow.2">Produkt Liste</label>
+			<label index="flexform.label_productshow.2">Benutzerdefiniert</label>
 			<label index="flexform.label_productlist">Produkt</label>	
+			<label index="flexform.label_route">Route</label>	
+			<label index="flexform.label_controller">Controller</label>	
+			<label index="flexform.label_action">Action</label>	
 			<label index="be_users.tx_fbmagento_group">Magento Gruppe</label>
 			<label index="be_users.tx_fbmagento_group.0">keine</label>			
 		</languageKey>

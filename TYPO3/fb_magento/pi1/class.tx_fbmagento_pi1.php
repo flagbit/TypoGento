@@ -71,6 +71,13 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 					$category_id = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'category_id', 'main' );
 					$params = array ('route' => 'catalog', 'controller' => 'category', 'action' => 'view', 'id' => $category_id );
 					break;
+					
+				case "USER" :
+					$route = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'route', 'main' );
+					$controller = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'controller', 'main' );
+					$action = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'action', 'main' );
+					$params = array ('route' => $route, 'controller' => $controller, 'action' => $action);
+					break;					
 			}	
 		}
 
