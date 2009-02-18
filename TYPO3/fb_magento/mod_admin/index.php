@@ -133,4 +133,8 @@ $SOBE = t3lib_div::makeInstance('tx_fbmagento_modadmin');
 $SOBE->main();
 $SOBE->printContent();
 
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/mod_admin/index.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/mod_admin/index.php']);
+}
+
 ?>

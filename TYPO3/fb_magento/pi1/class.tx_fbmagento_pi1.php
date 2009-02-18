@@ -76,6 +76,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
 		$this->mage->dispatch($params);
 		
 		
@@ -131,8 +132,9 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 
 }
 
-if (defined ( 'TYPO3_MODE' ) && $TYPO3_CONF_VARS [TYPO3_MODE] ['XCLASS'] ['ext/fb_magento/pi1/class.tx_fbmagento_pi1.php']) {
-	include_once ($TYPO3_CONF_VARS [TYPO3_MODE] ['XCLASS'] ['ext/fb_magento/pi1/class.tx_fbmagento_pi1.php']);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/pi1/class.tx_fbmagento_pi1.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/pi1/class.tx_fbmagento_pi1.php']);
 }
+
 
 ?>

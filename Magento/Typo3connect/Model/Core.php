@@ -24,6 +24,7 @@ class Flagbit_Typo3connect_Model_Core {
 	protected $_blocks = array ();
 	protected $_cObj = null;
 	protected $_params = array ();
+	protected $_TsConfig = array ();
 	
     /**
      * Response object
@@ -64,7 +65,6 @@ class Flagbit_Typo3connect_Model_Core {
 			$this->_router->collectRoutes ( 'frontend', 'standard' );
 			Mage::app ()->getFrontController ()->addRouter ( 'standard', $this->_router );
 		}
-	
 	}
 	
 	/**
@@ -151,7 +151,7 @@ class Flagbit_Typo3connect_Model_Core {
 		$piVars = array_merge((array) $this->getParams(), (array) $piVars);
 		unset($piVars['DATA']);
 		$params = t3lib_div::array_merge_recursive_overrule((array) $piVars,$overruleParams);
-		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
+		return $this->getTypolink ( $params );
 	}
 	
 	/**
@@ -161,8 +161,58 @@ class Flagbit_Typo3connect_Model_Core {
 	 * @return string URL
 	 */
 	public function getTypolink(array $params = array()) {
-		return $this->getcObj ()->getTypoLink_URL ( $GLOBALS ['TSFE']->id, array ('tx_fbmagento' => array ('shop' => $params ) ) );
-	}	
+		return $this->getcObj ()->getTypoLink_URL ( $this->getTypo3SiteId($params), array ('tx_fbmagento' => array ('shop' => $params ) ) );
+	}
+	
+	/**
+	 * get TYPO3 Site ID
+	 * set by Typoscript: plugin.tx_fbmagento_pi1.target_pids
+	 *
+	 * @param array $params
+	 * @return int
+	 */
+	protected function getTypo3SiteId(array $params = array()){
+		
+		$compareParams = array('route', 'controller', 'action');
+		$pid = $GLOBALS ['TSFE']->id;
+
+		if(isset($this->_TsConfig['target_pids.']) && count($params)){
+			
+			foreach($this->_TsConfig['target_pids.'] as $routeSet){
+				
+				$setPid = true;
+				
+				foreach ($compareParams as $paramName){
+
+					if((isset($params[$paramName])
+						&& isset($routeSet[$paramName])
+						&& $params[$paramName] != $routeSet[$paramName])
+						|| (!isset($params[$paramName]) 
+						&& isset($routeSet[$paramName]))
+						){
+							$setPid = false;
+							break 2;
+						}
+					
+				}
+
+				if($setPid === true){
+					$pid = $routeSet['pid'];
+				}
+			}
+		}
+		
+		return $pid;
+	}
+	
+	/**
+	 * set Typoscript Config Array
+	 *
+	 * @param unknown_type $config
+	 */
+	public function setTsConfig($config) {
+		$this->_TsConfig = (array) $config;
+	}
 	
 	/**
 	 * return TYPO3 cObj Reference

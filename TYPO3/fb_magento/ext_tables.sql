@@ -2,7 +2,7 @@
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-    firstname tinytext NOT NULL default '',
+    firstname varchar(50) NOT NULL default '',
 	tx_fbmagento_id int(11) default '0',
 );
 

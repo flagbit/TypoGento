@@ -148,6 +148,16 @@ class tx_fbmagento_interface {
 		}
 	}
 	
+	/**
+	 * call Connector Functions directly
+	 *
+	 * @param string $name
+	 * @param array $args
+	 * @return unknown
+	 */
+	public function __call($name, $args) {
+		return call_user_method_array($name, $this->connector, $args);
+	}
 	
 	/**
 	 * generate Headerdata from Shopsystem
@@ -195,6 +205,10 @@ class tx_fbmagento_interface {
 		}
 	}	
 	
+}
+
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_interface.php']) {
+	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_interface.php']);
 }
 
 ?>
