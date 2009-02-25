@@ -40,7 +40,7 @@ class tx_fbmagento_interface {
 	 *
 	 * @var Flagbit_Typo3connect
 	 */
-	protected $connector = null;
+	public $connector = null;
 	
 	/**
 	 * enable or disable debug Mode
@@ -183,7 +183,12 @@ class tx_fbmagento_interface {
 		}
 		
 		return implode("\n", $head);
-	}	
+	}
+	
+	public function getBodyData(){
+		Mage::log(get_class($this->connector->getResponse()));
+		return $this->connector->getResponse()->outputBody(true);
+	}
 	
 	/**
 	 * Class autoload

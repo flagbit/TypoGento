@@ -84,8 +84,8 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
+		//t3lib_div::print_array($params);
 		$this->mage->dispatch($params);
-		
 		
 		// render Block specified by Typoscript
 		if(isset($this->conf['block'])){
@@ -93,9 +93,14 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			if($this->conf['block'] == 'typo3header'){
 				return $this->mage->getHeaderData();
 				
-			}elseif($this->mage->getBlock( $this->conf['block'] ) !== null){
+			}
+			elseif($this->conf['block'] == '__responseBody'){
+				$content .= $this->mage->getBodyData();
+			}
+			elseif($this->mage->getBlock( $this->conf['block'] ) !== null){
 				$content .= $this->mage->getBlock( $this->conf['block'] )->toHtml ();
 			}
+			
 			
 		// render default Blocks	
 		}else{
@@ -109,12 +114,12 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			// get Content
 			if($this->mage->getBlock( 'content' ) !== null){
 				// $content .= $this->mage->getBlock( 'checkout.progress' )->toHtml ();
-				
+				//t3lib_div :: print_array($this->mage->connector->getBlocks()); die();
 				$content .= $this->mage->getBlock( 'content' )->toHtml ();
 			}
 		}
 
-		return isset($this->conf['nowrap']) ? $content : $this->pi_wrapInBaseClass ( $content );
+		return isset($this->conf['nowrap']) && $this->conf['nowrap'] ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
 	
 	/**
