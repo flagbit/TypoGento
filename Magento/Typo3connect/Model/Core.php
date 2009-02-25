@@ -31,14 +31,7 @@ class Flagbit_Typo3connect_Model_Core {
      *
      * @var Zend_Controller_Response_Http
      */
-    protected $_response;	
-	
-    /**
-     * Response object
-     *
-     * @var Flagbit_Typo3connect_Model_Core
-     */
-    protected static $_instance;	
+    protected $_response;
 	
 	/**
 	 * Router
@@ -59,7 +52,6 @@ class Flagbit_Typo3connect_Model_Core {
 		}
 		
 		if ($this->isEnabled ()) {
-			
 			// init Typo3Connect Router and set it
 			$this->_router = new Flagbit_Typo3connect_Controller_Router ( );
 			$this->_router->collectRoutes ( 'frontend', 'standard' );
@@ -101,7 +93,6 @@ class Flagbit_Typo3connect_Model_Core {
 		
 		// set dispatch Params
 		$this->setParams ( $params );
-		
 		try{
 			// get Front Controller
 			$front = Mage::app ()->getFrontController ();
@@ -113,7 +104,6 @@ class Flagbit_Typo3connect_Model_Core {
 			$this->getResponse()->sendResponse();
 			
 		}catch (Exception $e){
-			
 			if($this->debug){
 				if(strstr($e->getMessage(), 'reached 100')){
 					var_dump($params);
@@ -191,7 +181,7 @@ class Flagbit_Typo3connect_Model_Core {
 						&& isset($routeSet[$paramName]))
 						){
 							$setPid = false;
-							break 2;
+							break 1;
 						}
 					
 				}

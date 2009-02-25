@@ -45,6 +45,8 @@ class Flagbit_Typo3connect_Model_Layout extends Mage_Core_Model_Layout {
 		foreach ( $this->_blocks as $key => $block ) {
 			Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->setBlock ( $key, $block );
 		}
+		
+		//return parent::getOutput();
 
 		if (! empty ( $this->_output )) {
 			foreach ( $this->_output as $callback ) {

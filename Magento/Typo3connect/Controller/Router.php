@@ -90,7 +90,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 		}
 
 		// instantiate controller class
-		$controllerInstance = new $controllerClassName($request, Flagbit_Typo3connect_Model_Core::getInstance()->getResponse());
+		$controllerInstance = new $controllerClassName($request, Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse());
 
 		if (!$controllerInstance->hasAction($action)) {
 			return false;
