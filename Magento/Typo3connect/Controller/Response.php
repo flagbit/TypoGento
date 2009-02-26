@@ -112,6 +112,8 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 		$this->sendHeaders ();
 		$this->_isRedirect = true;
 		
+		die($url);
+		
 		header ( 'Location: ' . t3lib_div::locationHeaderUrl ( $url ) );
 		exit ();
 		

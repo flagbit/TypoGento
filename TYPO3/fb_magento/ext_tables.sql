@@ -3,7 +3,7 @@
 #
 CREATE TABLE fe_users (
     firstname varchar(50) NOT NULL default '',
-	tx_fbmagento_id int(11) default '0',
+	tx_fbmagento_id int(11) default '0'
 );
 
 #

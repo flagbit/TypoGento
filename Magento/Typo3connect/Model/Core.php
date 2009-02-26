@@ -77,8 +77,6 @@ class Flagbit_Typo3connect_Model_Core {
     public function getResponse(){
         if (empty($this->_response)) {
             $this->_response = new Flagbit_Typo3connect_Controller_Response();
-            $this->_response->headersSentThrowsException = Mage::$headersSentThrowsException;
-            $this->_response->setHeader("Content-Type", "text/html; charset=UTF-8");
         }
         return $this->_response;
     }	
@@ -87,13 +85,14 @@ class Flagbit_Typo3connect_Model_Core {
 	 * start Mage dispatch process with injected params
 	 *
 	 * @param array $params
-	 * @return boolan
+	 * @return boolean
 	 */
 	public function dispatch($params){
 		
-		// set dispatch Params
-		$this->setParams ( $params );
 		try{
+			// set dispatch Params
+			$this->setParams ( $params );
+			
 			// get Front Controller
 			$front = Mage::app ()->getFrontController ();
 			
