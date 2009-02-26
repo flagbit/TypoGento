@@ -51,7 +51,7 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		$customer->load ( $customer->getId () );
 		
 		if ($customer->getTypo3_uid ()) {
-			$feUsers->setId ( $customer->getTypo3_uid () );
+			$feUsers->setId ( $customer->getTypo3Uid () );
 		}
 		
 		foreach ( $fields as $key => $value ) {
