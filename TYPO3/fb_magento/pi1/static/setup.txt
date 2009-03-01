@@ -1,0 +1,22 @@
+
+/*
+* Example which removes complete TYPO3 Output on Magento Picture Popup
+*/
+
+/*
+[userFunc = tx_fbmagento_getvars(route|catalog)] && [userFunc = tx_fbmagento_getvars(controller|product)] && [userFunc = tx_fbmagento_getvars(action|gallery)] 
+
+page.10 >
+page.10 = USER_INT
+
+page.10 {
+	userFunc = tx_fbmagento_pi1->main
+	block=content
+	route=catalog
+	controller=products
+	action=gallery
+	nowrap=1
+}
+
+[global]
+*/

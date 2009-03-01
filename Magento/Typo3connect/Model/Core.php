@@ -172,12 +172,14 @@ class Flagbit_Typo3connect_Model_Core {
 				$setPid = true;
 				
 				foreach ($compareParams as $paramName){
+					
+					// default controller / action name
+					if(!isset($params[$paramName]) or !$params[$paramName]){
+						$params[$paramName] = 'index';
+					}
 
-					if((isset($params[$paramName])
-						&& isset($routeSet[$paramName])
-						&& $params[$paramName] != $routeSet[$paramName])
-						|| (!isset($params[$paramName]) 
-						&& isset($routeSet[$paramName]))
+					if((isset($params[$paramName]) && isset($routeSet[$paramName]) && $params[$paramName] != $routeSet[$paramName])
+						|| (!isset($params[$paramName]) && isset($routeSet[$paramName]))
 						){
 							$setPid = false;
 							break 1;
