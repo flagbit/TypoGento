@@ -180,6 +180,7 @@ class tx_fbmagento_interface {
 			$head[] = $objHead->getCssJsHtml();
 			$head[] = $objHead->getChildHtml();
 			$head[] = $objHead->helper('core/js')->getTranslatorScript();
+			
 		}
 		
 		return implode("\n", $head);

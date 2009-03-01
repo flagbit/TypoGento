@@ -27,6 +27,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 	var $scriptRelPath = 'pi1/class.tx_fbmagento_pi1.php'; // Path to this script relative to the extension dir.
 	var $extKey = 'fb_magento'; // The extension key.
 	var $emConf = null;
+	var $pi_checkCHash = true;
 	
 	/**
 	 * The main method of the PlugIn
@@ -84,8 +85,13 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
-		//t3lib_div::print_array($params);
 		$this->mage->dispatch($params);
+		
+		// set Page Title
+		$objHead = $this->mage->getBlock( 'head' );
+		if($objHead instanceof Mage_Page_Block_Html_Head){
+			$GLOBALS['TSFE']->page['title'] = $objHead->getTitle();
+		}
 		
 		// render Block specified by Typoscript
 		if(isset($this->conf['block'])){
@@ -113,8 +119,6 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			
 			// get Content
 			if($this->mage->getBlock( 'content' ) !== null){
-				// $content .= $this->mage->getBlock( 'checkout.progress' )->toHtml ();
-				//t3lib_div :: print_array($this->mage->connector->getBlocks()); die();
 				$content .= $this->mage->getBlock( 'content' )->toHtml ();
 			}
 		}

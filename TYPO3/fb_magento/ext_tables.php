@@ -13,7 +13,7 @@ t3lib_extMgm::addPlugin(array('LLL:EXT:fb_magento/locallang_db.xml:tt_content.li
 t3lib_extMgm::addPiFlexFormValue($_EXTKEY .'_pi1', 'FILE:EXT:fb_magento/pi1/flexform.xml');
 
 
-t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","Magento");
+t3lib_extMgm::addStaticFile($_EXTKEY,"pi1/static/","TypoGento");
 
 
 if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["tx_fbmagento_pi1_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_fbmagento_pi1_wizicon.php';
@@ -83,6 +83,8 @@ t3lib_div::loadTCA("be_users");
 t3lib_extMgm::addTCAcolumns("be_users",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("be_users","tx_fbmagento_group;;;;1-1-1");
 */
+
+
 
 if (TYPO3_MODE=="BE")	{
 
