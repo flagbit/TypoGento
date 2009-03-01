@@ -20,6 +20,8 @@
  */
 class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Response_Http {
 	
+	public $lastUrl = null;
+	
 	/**
 	 * Echo the body segments
 	 *
@@ -102,17 +104,16 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return Zend_Controller_Response_Abstract
 	 */
 	public function setRedirect($url, $code = 302) {
-		
-		if (strstr ( $url, Mage::app ()->getStore ()->getBaseUrl () )) {
-			$url = Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->getTypolink ();
+				
+		// set last URL for the _isUrlInternal workaround
+		if($url == Mage::app()->getStore()->getBaseUrl() && $this->lastUrl){
+			$url = $this->lastUrl;
 		}
 		
 		$this->canSendHeaders ( true );
-		$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl ( $url ), true )->setHttpResponseCode ( $code );
+		#$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl ( $url ), true )->setHttpResponseCode ( $code );
 		$this->sendHeaders ();
 		$this->_isRedirect = true;
-		
-		die($url);
 		
 		header ( 'Location: ' . t3lib_div::locationHeaderUrl ( $url ) );
 		exit ();

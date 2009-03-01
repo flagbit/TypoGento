@@ -69,11 +69,22 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 		unset($params['_use_rewrite']);
 		
 		if($params['_current']){
-				unset($params['_current']);
-				return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolinkKeepPIvars($params);
-			}else{
-				return Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolink($params);
+			unset($params['_current']);
+			$url = Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolinkKeepPIvars($params);
+		}else{
+			$url = Mage::getSingleton('Flagbit_Typo3connect/Core')->getTypolink($params);
 		}
+		
+	    // Complete the typolink URL absolute using the base url
+		if (strpos($url, 'http') !== 0) {
+			$urlComponents = parse_url($this->getBaseUrl());
+			$url = $urlComponents['scheme'] . '://' . $urlComponents['host'] . '/' . $url;
+		}
+		
+		// save last URL in Response for the _isUrlInternal workaround
+		Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse()->lastUrl= $url;
+		
+		return $url;		
 	}
 
 	/**
