@@ -36,67 +36,118 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 
 		// get Params from TYPO3
 		$params = Mage::getSingleton('Flagbit_Typo3connect/Core')->getParams();
-		extract($params);
-		$module = $route;
-
+		if ($params['route']) {
+			$config = $params['route'];
+			if ($params['controller']) {
+				$config .= '/'.$params['controller'];
+				if ($params['action']) {
+					$config .= '/'.$params['action'];
+				}
+			}
+			unset ($params['route'], $params['controller'], $params['action']);
+			
+			$frontController = Mage::app ()->getFrontController ();
+			$urlModel = Mage::getModel('core/url');
+			$oldUrl = '/'.$urlModel->getUrl($config, $params, true);
+			
+			// Remove the query string from REQUEST_URI
+            if ($pos = strpos($oldUrl, '?')) {
+                $oldUrl = substr($oldUrl, 0, $pos);
+            }
+			
+            $request->setPathInfo($oldUrl);
+			$frontController->rewrite();
+		}
+		#$result = parent::match($request);
+		
 		if (Mage::app()->getStore()->isAdmin()) {
 			return false;
 		}
 
-
 		$this->fetchDefault();
 		$front = $this->getFront();
-
-		$realModule = $this->getModuleByFrontName($module);
-		if (!$realModule) {
-			if ($moduleFrontName = array_search($module, $this->_modules)) {
-				$realModule = $module;
-				$module = $moduleFrontName;
-			} else {
-				return false;
-			}
-		}
-
-		$request->setRouteName($this->getRouteByFrontName($module));
-
-		if(!$controller){
-			$controller = $front->getDefault('controller');
-		}
-		if(!$action){
-			$action = $front->getDefault('action');
-		}
 		
+		$p = explode('/', trim($request->getPathInfo(), '/'));
+        
+		// get module name
+        if ($request->getModuleName()) {
+            $module = $request->getModuleName();
+        } else {
+            if(!empty($p[0])) {
+            	$module = $p[0];
+            } else {
+            	$module = $this->getFront()->getDefault('module');
+                $request->setAlias(Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,	'');
+            }
+        }
+        if (!$module) {
+            return false;
+        }
+        $realModule = $this->getModuleByFrontName($module);
+        if (!$realModule) {
+            if ($moduleFrontName = array_search($module, $this->_modules)) {
+                $realModule = $module;
+                $module = $moduleFrontName;
+            } else {
+                return false;
+            }
+        }
 
-		$controllerFileName = $this->getControllerFileName($realModule, $controller);
-		if (!$this->validateControllerFileName($controllerFileName)) {
-			return false;
-		}
+        $request->setRouteName($this->getRouteByFrontName($module));
 
-		$controllerClassName = $this->getControllerClassName($realModule, $controller);
-		if (!$controllerClassName) {
-			return false;
-		}
+        // get controller name
+        if ($request->getControllerName()) {
+            $controller = $request->getControllerName();
+        } else {
+            if (!empty($p[1])) {
+                $controller = $p[1];
+            } else {
+            	$controller = $front->getDefault('controller');
+            	$request->setAlias(
+            	   Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,
+            	   ltrim($request->getOriginalPathInfo(), '/')
+            	);
+            }
+        }
+        $controllerFileName = $this->getControllerFileName($realModule, $controller);
+        if (!$this->validateControllerFileName($controllerFileName)) {
+            return false;
+        }
 
-		// include controller file if needed
-		if (!class_exists($controllerClassName, false)) {
-			if (!file_exists($controllerFileName)) {
-				return false;
-			}
-			include $controllerFileName;
+        $controllerClassName = $this->getControllerClassName($realModule, $controller);
+        if (!$controllerClassName) {
+            return false;
+        }
 
-			if (!class_exists($controllerClassName, false)) {
-				throw Mage::exception('Mage_Core', Mage::helper('core')->__('Controller file was loaded but class does not exist'));
-			}
-		}
+        // get action name
+        if (empty($action)) {
+            if ($request->getActionName()) {
+                $action = $request->getActionName();
+            } else {
+                $action = !empty($p[2]) ? $p[2] : $front->getDefault('action');
+            }
+        }
 
+        $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);
+
+        // include controller file if needed
+        if (!class_exists($controllerClassName, false)) {
+            if (!file_exists($controllerFileName)) {
+                return false;
+            }
+            include $controllerFileName;
+            if (!class_exists($controllerClassName, false)) {
+                throw Mage::exception('Mage_Core', Mage::helper('core')->__('Controller file was loaded but class does not exist'));
+            }
+        }
+		
 		// instantiate controller class
 		$controllerInstance = new $controllerClassName($request, Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse());
-
 		if (!$controllerInstance->hasAction($action)) {
 			return false;
 		}
 
-		$request->setModuleName($route);
+		$request->setModuleName($module);
 		$request->setControllerName($controller);
 		$request->setActionName($action);
 		$request->setParams($params);
@@ -107,6 +158,4 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 
 		return true;
 	}
-
-
 }

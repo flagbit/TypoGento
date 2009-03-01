@@ -36,13 +36,13 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 	 * @param   array $routeParams
 	 * @return  string
 	 */
-	public function getUrl($routePath=null, $routeParams=null)
+	public function getUrl($routePath=null, $routeParams=null, $getOriginalData=false)
 	{
 		
-		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled()){
+		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled() || $getOriginalData){
 			return parent::getUrl($routePath, $routeParams);	
 		}
-
+		
 		$escapeQuery = false;
 
 		if (isset($routeParams['_fragment'])) {
@@ -83,12 +83,12 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 	 * @param array $routeParams
 	 * @return string
 	 */
-	public function getRouteUrl($routePath=null, $routeParams=null)
+	public function getRouteUrl($routePath=null, $routeParams=null, $getOriginalData=false)
 	{
 		
-		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled()){
+		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled() || $getOriginalData){
 			return parent::getRouteUrl($routePath, $routeParams);	
-		}		
+		}
 		
 		$this->unsetData('route_params');
 
