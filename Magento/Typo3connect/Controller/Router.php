@@ -47,7 +47,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 			unset ($params['route'], $params['controller'], $params['action']);
 			
 			$frontController = Mage::app ()->getFrontController ();
-			$urlModel = Mage::getModel('core/url');
+			$urlModel = Mage::getModel('core/url')->setStore(Mage::app()->getStore());
 			$oldUrl = '/'.$urlModel->getUrl($config, $params, true);
 			
 			// Remove the query string from REQUEST_URI
