@@ -41,6 +41,13 @@ class Flagbit_Typo3connect_Model_Core {
 	protected $_router = null;
 	
 	/**
+	 * TYPO3 Base URL
+	 *
+	 * @var string $_typo3BaseUrl
+	 */
+	protected $_typo3BaseUrl = null;
+	
+	/**
 	 * Class Constuctor
 	 *
 	 * @param array $params
@@ -56,6 +63,10 @@ class Flagbit_Typo3connect_Model_Core {
 			$this->_router = new Flagbit_Typo3connect_Controller_Router ( );
 			$this->_router->collectRoutes ( 'frontend', 'standard' );
 			Mage::app ()->getFrontController ()->addRouter ( 'standard', $this->_router );
+			
+			if ($this->getTypo3BaseUrl ()) {
+				Mage::app ()->getStore ()->setTypo3BaseUrl ($this->getTypo3BaseUrl ());
+			}
 		}
 	}
 	
@@ -79,7 +90,11 @@ class Flagbit_Typo3connect_Model_Core {
             $this->_response = new Flagbit_Typo3connect_Controller_Response();
         }
         return $this->_response;
-    }	
+    }
+    
+    public function getTypo3BaseUrl() {
+    	return $this->_typo3BaseUrl;
+    }
 	
 	/**
 	 * start Mage dispatch process with injected params

@@ -105,11 +105,20 @@ class tx_fbmagento_interface {
 		$store = tx_fbmagento_tools::getFELangStoreCode();
 		Mage::app()->setCurrentStore(Mage::app()->getStore($store));
 
-		// Init Typo3connect
-		$this->connector = Mage::getSingleton ( 'Flagbit_Typo3connect/Core', array ('enabled' => true ) );
-		
 		if($GLOBALS['TSFE']->cObj instanceof tslib_cObj) {
-			$this->connector->setcObj ( $GLOBALS['TSFE']->cObj );
+			$cObj = $GLOBALS['TSFE']->cObj;
+			$baseUrl = $cObj->getTypoLink_URL($GLOBALS['TSFE']->id);
+		}
+		
+		// Init Typo3connect
+		$params = array ('enabled' => true);
+		if ('' != $baseUrl) {
+			$params['_typo3BaseUrl'] = t3lib_div :: locationHeaderUrl($baseUrl);
+		}
+		$this->connector = Mage::getSingleton ( 'Flagbit_Typo3connect/Core',  $params);
+		
+		if (null !== $cObj) {
+			$this->connector->setcObj ( $cObj );
 		}
 				
 	}

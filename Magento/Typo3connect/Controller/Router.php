@@ -58,7 +58,6 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
             $request->setPathInfo($oldUrl);
 			$frontController->rewrite();
 		}
-		#$result = parent::match($request);
 		
 		if (Mage::app()->getStore()->isAdmin()) {
 			return false;
@@ -67,8 +66,11 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 		$this->fetchDefault();
 		$front = $this->getFront();
 		
+		// extract params to original information
 		$p = explode('/', trim($request->getPathInfo(), '/'));
-        
+		
+		// set path back to original path information to face Magento URL restrictions
+		$request->setPathInfo($request->getOriginalPathInfo());
 		// get module name
         if ($request->getModuleName()) {
             $module = $request->getModuleName();
@@ -80,9 +82,11 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
                 $request->setAlias(Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,	'');
             }
         }
+        
         if (!$module) {
             return false;
         }
+        
         $realModule = $this->getModuleByFrontName($module);
         if (!$realModule) {
             if ($moduleFrontName = array_search($module, $this->_modules)) {
@@ -109,6 +113,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
             	);
             }
         }
+        
         $controllerFileName = $this->getControllerFileName($realModule, $controller);
         if (!$this->validateControllerFileName($controllerFileName)) {
             return false;
@@ -127,7 +132,6 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
                 $action = !empty($p[2]) ? $p[2] : $front->getDefault('action');
             }
         }
-
         $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);
 
         // include controller file if needed
@@ -146,7 +150,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 		if (!$controllerInstance->hasAction($action)) {
 			return false;
 		}
-
+		
 		$request->setModuleName($module);
 		$request->setControllerName($controller);
 		$request->setActionName($action);

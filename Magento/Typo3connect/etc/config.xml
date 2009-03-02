@@ -21,6 +21,7 @@
 				<rewrite>
 					<layout>Flagbit_Typo3connect_Model_Layout</layout>
 					<url>Flagbit_Typo3connect_Model_Url</url>
+					<store>Flagbit_Typo3connect_Model_Store</store>
 				</rewrite>
 			</core>
 

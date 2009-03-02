@@ -86,7 +86,6 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return $this
 	 */
 	public function setBody($content, $name = null) {
-		Mage::log("setting body");
 		$this->ajaxHandler($content);
 		parent::setBody ( $content, $name );
 		
