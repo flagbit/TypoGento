@@ -61,5 +61,46 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		$customer->setData ( 'typo3_uid', $feUsers->getData ( 'uid' ) );
 		$customer->getResource ()->saveAttribute ( $customer, 'typo3_uid' );
 	}
+	
+	/**
+	 * Check if raw access is permitted to the magento frontend
+	 *
+	 * @param Varien_Event_Observer $observer
+	 */
+	public function controllerActionPredispatch($observer)
+	{
+		if (defined('TYPO3_MODE')) return;
+		
+		if (! Mage::app()->getStore()->isAdmin())
+		{
+			if (! Mage::getStoreConfig('typo3connect/config/direct_mage_access'))
+			{
+				if ($uaRegex = Mage::getStoreConfig('typo3connect/config/ua_regex'))
+				{
+					if ($this->_checkUserAgentAgainstRegexps($uaRegex)) return;
+				}
+				Mage::app()->getResponse()->setRedirect(Mage::getStoreConfig('typo3connect/config/redirect_url'));
+			}
+		}
+	}
+    
+	/**
+	 * Match the User Agent Header value agains the given regex
+	 *
+	 * @param string $regexp
+	 * @return bool
+	 */
+	protected function _checkUserAgentAgainstRegexps($regexp)
+	{
+		if (!empty($_SERVER['HTTP_USER_AGENT'])) {
+			if (!empty($regexp)) {
+				if (false === strpos($regexp, '/', 0)) {
+					$regexp = '/' . $regexp . '/';
+				}
+				if (@preg_match($regexp, $_SERVER['HTTP_USER_AGENT'])) return true;
+			}
+		}
+		return false;
+	}
 }
 

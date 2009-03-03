@@ -43,19 +43,7 @@
                         <table>fe_users</table>                  
                     </typo3_feusers>
                 </entities>
-            </Flagbit_Typo3connect_Mysql4>			
-			
-			
-			<!-- 
-			<typo3connect_entity>
-			    <class>Flagbit_Typo3connect_Model_Entity</class>
-			    <entities>
-			        <customer>
-			            <table>fe_users</table>
-			        </customer>
-			    </entities>
-			</typo3connect_entity>			
-			-->
+            </Flagbit_Typo3connect_Mysql4>
 	
 		</models>
 		
@@ -71,12 +59,6 @@
           </Flagbit_Typo3connect_setup>
           <Flagbit_Typo3connect_read>
               <connection>
-              	<!-- 
-                  <host><![CDATA[localhost]]></host>
-                  <username><![CDATA[root]]></username>
-                  <password><![CDATA[lingo]]></password>
-                  <dbname><![CDATA[typogento_TYPO3]]></dbname>
-                -->
                   <active>1</active>
                   <model>mysql4</model>
                   <type>pdo_mysql</type>
@@ -117,7 +99,16 @@
 						<method>logoutEvent</method>
 					</flagbit_typo3connect_logout>
 				</observers>
-			</customer_logout>			
+			</customer_logout>
+			<controller_action_predispatch>
+				<observers>
+					<flagbit_typo3connect_access_check>
+						<type>singleton</type>
+						<class>Flagbit_Typo3connect/observer</class>
+						<method>controllerActionPredispatch</method>
+					</flagbit_typo3connect_access_check>
+				</observers>
+			</controller_action_predispatch>
 		</events>		
 	</global>
 	
@@ -142,4 +133,14 @@
             </resources>
         </acl>
     </adminhtml>
+    
+    <default>
+    	<typo3connect>
+    		<config>
+    			<direct_mage_access>1</direct_mage_access>
+    			<ua_regex>0</ua_regex>
+    			<redirect_url>/</redirect_url>
+    		</config>
+    	</typo3connect>
+    </default>
 </config>
