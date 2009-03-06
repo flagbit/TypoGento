@@ -31,8 +31,11 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		if (! Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->isEnabled ())
 			return;
 		
+		// no TYPO3 db data given -> nothing to do
+		if (!Mage::getStoreConfig ( 'typo3connect/typo3_db/host' ) || !Mage::getStoreConfig ( 'typo3connect/typo3_db/username' ) ||	!Mage::getStoreConfig ( 'typo3connect/typo3_db/password' ) || !Mage::getStoreConfig ( 'typo3connect/typo3_db/dbname' ))
+			return;
+
 		$customer = $observer->getCustomer();
-		
 		
 		// assign the fields
 		$fields = array (
@@ -46,20 +49,25 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 			'tx_fbmagento_id' => $customer->getId () 
 		);
 		
-		// get fe_users Model
-		$feUsers = Mage::getSingleton ( 'Flagbit_Typo3connect/Typo3_FeUsers' );
-		$customer->load ( $customer->getId () );
-		
-		if ($customer->getTypo3_uid ()) {
-			$feUsers->setId ( $customer->getTypo3Uid () );
+		try {
+			// get fe_users Model
+			$feUsers = Mage::getSingleton ( 'Flagbit_Typo3connect/Typo3_FeUsers' );
+			$customer->load ( $customer->getId () );
+			
+			if ($customer->getTypo3_uid ()) {
+				$feUsers->setId ( $customer->getTypo3Uid () );
+			}
+			
+			foreach ( $fields as $key => $value ) {
+				$feUsers->setData ( $key, $value );
+			}
+			
+			$feUsers->save ();
+			$customer->setData ( 'typo3_uid', $feUsers->getData ( 'uid' ) );
+			$customer->getResource ()->saveAttribute ( $customer, 'typo3_uid' );
+		} catch (Exception $e) {
+			Mage::log($e->getMessage());
 		}
-		
-		foreach ( $fields as $key => $value ) {
-			$feUsers->setData ( $key, $value );
-		}
-		$feUsers->save ();
-		$customer->setData ( 'typo3_uid', $feUsers->getData ( 'uid' ) );
-		$customer->getResource ()->saveAttribute ( $customer, 'typo3_uid' );
 	}
 	
 	/**
