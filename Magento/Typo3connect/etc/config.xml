@@ -138,7 +138,7 @@
     	<typo3connect>
     		<config>
     			<direct_mage_access>1</direct_mage_access>
-    			<ua_regex>0</ua_regex>
+    			<ua_regex></ua_regex>
     			<redirect_url>/</redirect_url>
     		</config>
     	</typo3connect>

@@ -21,6 +21,12 @@
  */
 class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 {
+	/**
+	 * Set if the request is being made via SOAP or XMLRPC
+	 * 
+	 * @var boolean
+	 */
+	protected $_apiRequest;
 
 	/**
 	 * create or update an TYPO3 Frontend User
@@ -79,7 +85,7 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 	{
 		if (defined('TYPO3_MODE')) return;
 		
-		if (! Mage::app()->getStore()->isAdmin())
+		if (! Mage::app()->getStore()->isAdmin() && ! $this->_isApiRequest())
 		{
 			if (! Mage::getStoreConfig('typo3connect/config/direct_mage_access'))
 			{
@@ -90,6 +96,16 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 				Mage::app()->getResponse()->setRedirect(Mage::getStoreConfig('typo3connect/config/redirect_url'));
 			}
 		}
+	}
+	
+	/**
+	 * Return true if the request is being made via SOAP or XMLRPC
+	 * 
+	 * @return boolean
+	 */
+	protected function _isApiRequest()
+	{
+		return Mage::app()->getRequest()->getModuleName() === 'api';
 	}
     
 	/**
