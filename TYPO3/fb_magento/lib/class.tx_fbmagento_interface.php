@@ -165,10 +165,7 @@ class tx_fbmagento_interface {
 	 * @return unknown
 	 */
 	public function __call($name, $args) {
-		if (method_exists($this->connector, $name)) {
-			return $this->connector->{$name}($args);
-		}
-		throw new Exception('Method ' . $name . ' not found.');
+		return $this->connector->{$name}($args);
 	}
 	
 	/**
