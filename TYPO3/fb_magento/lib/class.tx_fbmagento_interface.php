@@ -165,7 +165,7 @@ class tx_fbmagento_interface {
 	 * @return unknown
 	 */
 	public function __call($name, $args) {
-		return $this->connector->{$name}($args);
+		return call_user_func_array(array($this->connector, $name), $args);
 	}
 	
 	/**
