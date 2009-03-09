@@ -70,8 +70,12 @@
 						<TCEforms>
 							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_route</label>
 							<displayCond>FIELD:show:=:USER</displayCond>
+							<onChange>reload</onChange>
 							<config>
-								<type>input</type>
+								<type>select</type>
+								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_modules</itemsProcFunc>
+								<maxitems>1</maxitems>
+								<size>1</size>
 							</config>
 						</TCEforms>
 					</route>					
@@ -79,8 +83,12 @@
 						<TCEforms>
 							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_controller</label>
 							<displayCond>FIELD:show:=:USER</displayCond>
+							<onChange>reload</onChange>
 							<config>
-								<type>input</type>
+								<type>select</type>
+								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_controllers</itemsProcFunc>
+								<maxitems>1</maxitems>
+								<size>1</size>
 							</config>
 						</TCEforms>
 					</controller>
@@ -89,7 +97,10 @@
 							<label>LLL:EXT:fb_magento/locallang_db.xml:flexform.label_action</label>
 							<displayCond>FIELD:show:=:USER</displayCond>
 							<config>
-								<type>input</type>
+								<type>select</type>
+								<itemsProcFunc>EXT:fb_magento/lib/class.tx_fbmagento_tcafields.php:tx_fbmagento_tcafields->itemsProcFunc_actions</itemsProcFunc>
+								<maxitems>1</maxitems>
+								<size>1</size>
 							</config>
 						</TCEforms>
 					</action>					

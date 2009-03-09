@@ -34,7 +34,26 @@
                         <method>items</method>
                     </list>
                 </methods>
-            </typo3connect_admin_roles>            
+            </typo3connect_admin_roles> 
+            <typo3connect_modules translate="title" module="Flagbit_Typo3connect">
+                <model>Flagbit_Typo3connect/modules_api</model>
+                <title>Typo3connect Api</title>
+                <acl>typo3connect/modules</acl>
+                <methods>
+                    <list translate="title" module="Flagbit_Typo3connect">
+                        <title>List of Modules</title>
+                        <method>items</method>
+                    </list>
+                    <controllers translate="title" module="Flagbit_Typo3connect">
+                        <title>List of Controllers</title>
+                        <method>controllers</method>
+                    </controllers>                    
+                    <actions translate="title" module="Flagbit_Typo3connect">
+                        <title>List of Actions</title>
+                        <method>actions</method>
+                    </actions>                    
+                </methods>
+            </typo3connect_modules>                                  
         </resources>
         <acl>
             <resources>
@@ -50,7 +69,10 @@
                         </urlkeys>                        
                         <roles translate="title" module="Flagbit_Typo3connect">
                             <title>Admin Roles</title>
-                        </roles>                        
+                        </roles>  
+                        <modules translate="title" module="Flagbit_Typo3connect">
+                            <title>Modules</title>
+                        </modules>                                              
                     </typo3connect>
                 </all>
             </resources>

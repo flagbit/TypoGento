@@ -70,6 +70,162 @@ class tx_fbmagento_tcafields {
 			$params['items'][]=Array($role['label'], $role['value']);
 		}
 	}
+
+	/**
+	 * generates an Modulelist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_modules(&$params,&$pObj){
+			#print_r($pObj);	
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$modules = $soapClient->typo3connect_modules()->list();
+			
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
+		
+		foreach ((array) $modules as $module){
+			$params['items'][]=Array(ucfirst($module), $module);
+		}
+	}
+
+	/**
+	 * generates an Controllerlist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_controllers(&$params,&$pObj){
+		
+		$module = $this->getFlexformData($pObj, 'route', 'main');
+		
+		if(!$module) return;
+		
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$controllers = $soapClient->typo3connect_modules()->controllers($module);
+
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
+		
+		foreach ((array) $controllers as $controller){
+			$params['items'][]=Array(ucfirst($controller), $controller);
+		}
+	}
+
+	/**
+	 * generates an Actionlist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_actions(&$params,&$pObj){
+		
+		$module = $this->getFlexformData($pObj, 'route', 'main');
+		if(!$module) return;		
+		
+		$controller = $this->getFlexformData($pObj, 'controller', 'main');
+		if(!$controller) return;
+		
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$actions = $soapClient->typo3connect_modules()->actions($module, $controller);
+
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
+		
+		foreach ((array) $actions as $action){
+			$params['items'][]=Array($action, $action);
+		}
+	}
+	
+	/**
+	 * returns the Value of an Flexform Field from TCEforms
+	 *
+	 * @param t3lib_TCEforms $TCEforms
+	 * @param string $fieldName
+	 * @param string $sheet
+	 * @param string $lang
+	 * @param string $value
+	 * @return unknown
+	 */
+	protected function getFlexformData(t3lib_TCEforms &$TCEforms, $fieldName, $sheet='sDEF',$lang='lDEF',$value='vDEF'){
+		
+		try {
+			$data = current($TCEforms->cachedTSconfig);
+			$flexform = $data['_THIS_ROW']['pi_flexform'];
+			$flexformArray = t3lib_div::xml2array($flexform);
+	
+			return $this->getFFvalue($flexformArray, $fieldName, $sheet, $lang, $value);
+			
+		}catch (Exception $e){
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * Return value from somewhere inside a FlexForm structure
+	 *
+	 * @param	array		FlexForm data
+	 * @param	string		Field name to extract. Can be given like "test/el/2/test/el/field_templateObject" where each part will dig a level deeper in the FlexForm data.
+	 * @param	string		Sheet pointer, eg. "sDEF"
+	 * @param	string		Language pointer, eg. "lDEF"
+	 * @param	string		Value pointer, eg. "vDEF"
+	 * @return	string		The content.
+	 */
+	protected function getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	{
+		$sheetArray = is_array($T3FlexForm_array) ? $T3FlexForm_array['data'][$sheet][$lang] : '';
+		if (is_array($sheetArray))	{
+			return $this->getFFvalueFromSheetArray($sheetArray,explode('/',$fieldName),$value);
+		}
+	}
+
+	/**
+	 * Returns part of $sheetArray pointed to by the keys in $fieldNameArray
+	 *
+	 * @param	array		Multidimensiona array, typically FlexForm contents
+	 * @param	array		Array where each value points to a key in the FlexForms content - the input array will have the value returned pointed to by these keys. All integer keys will not take their integer counterparts, but rather traverse the current position in the array an return element number X (whether this is right behavior is not settled yet...)
+	 * @param	string		Value for outermost key, typ. "vDEF" depending on language.
+	 * @return	mixed		The value, typ. string.
+	 * @access private
+	 * @see pi_getFFvalue()
+	 */
+	protected function getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
+
+		$tempArr=$sheetArray;
+		foreach($fieldNameArr as $k => $v)	{
+			if (t3lib_div::testInt($v))	{
+				if (is_array($tempArr))	{
+					$c=0;
+					foreach($tempArr as $values)	{
+						if ($c==$v)	{
+							$tempArr=$values;
+							break;
+						}
+						$c++;
+					}
+				}
+			} else {
+				$tempArr = $tempArr[$v];
+			}
+		}
+		return $tempArr[$value];
+	}	
 	
 	/**
 	 * generates an Storeviewlist as Array for TCA Select fields
@@ -78,7 +234,7 @@ class tx_fbmagento_tcafields {
 	 * @param object $pObj
 	 */
 	public function itemsProcFunc_languages(&$params,&$pObj){
-		
+
 		$conf = tx_fbmagento_tools::getExtConfig();
 
 		try {

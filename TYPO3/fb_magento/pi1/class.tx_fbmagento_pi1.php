@@ -79,7 +79,10 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 					$action = $this->pi_getFFvalue ( $this->cObj->data ["pi_flexform"], 'action', 'main' );
 					$params = array ('route' => $route, 'controller' => $controller, 'action' => $action);
 					break;					
-			}	
+			}
+
+			$params = t3lib_div::array_merge_recursive_overrule($params, (array) $this->piVars ['shop']);
+			
 		}
 
 		// get an Magento Instance
