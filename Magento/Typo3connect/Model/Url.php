@@ -78,7 +78,7 @@ class Flagbit_Typo3connect_Model_Url extends Mage_Core_Model_Url {
 	    // Complete the typolink URL absolute using the base url
 		if (strpos($url, 'http') !== 0) {
 			$urlComponents = parse_url($this->getBaseUrl());
-			$url = $urlComponents['scheme'] . '://' . $urlComponents['host'] . '/' . $url;
+			$url = $urlComponents['scheme'] . '://' . rtrim($urlComponents['host'], '/') . '/' . ltrim($url, '/');
 		}
 		
 		// save last URL in Response for the _isUrlInternal workaround
