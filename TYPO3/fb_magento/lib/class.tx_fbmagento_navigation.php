@@ -116,9 +116,13 @@ class tx_fbmagento_navigation {
 			'controller' => 'category',
 			'action' =>'view'
 		);
-		$menuArray ['_OVERRIDE_HREF'] = $GLOBALS['TSFE']->cObj->getTypoLink_URL($this->conf['pid'], array('tx_fbmagento' => array('shop' => $params)));;
-		//$menuArray['ITEM_STATE'] = 'ACT';
 		
+		$menuArray ['_OVERRIDE_HREF'] = $GLOBALS['TSFE']->cObj->getTypoLink_URL($this->conf['pid'], array('tx_fbmagento' => array('shop' => $params)));;
+		$get = t3lib_div :: _GET('tx_fbmagento');
+		
+		if($category->getId () == intval($get['shop']['id'])) {
+			$menuArray ['ITEM_STATE'] = 'ACT';	
+		}	
 
 		if ($hasChildren) {
 			$j = 0;
