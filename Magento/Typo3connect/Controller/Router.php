@@ -29,7 +29,7 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 	 */
 	public function match(Zend_Controller_Request_Http $request)
 	{
-
+		// if module is not active -> use standard Router
 		if(!Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled()){
 			return parent::match($request);
 		}
@@ -62,104 +62,149 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 		if (Mage::app()->getStore()->isAdmin()) {
 			return false;
 		}
+		
+		//checkings before even try to findout that current module
+        //should use this router
+        if (!$this->_beforeModuleMatch()) {
+            return false;
+        }
 
-		$this->fetchDefault();
-		$front = $this->getFront();
-		
-		// extract params to original information
-		$p = explode('/', trim($request->getPathInfo(), '/'));
-		
-		// set path back to original path information to face Magento URL restrictions
-		$request->setPathInfo($request->getOriginalPathInfo());
-		// get module name
+        $this->fetchDefault();
+
+        $front = $this->getFront();
+
+        $p = explode('/', trim($request->getPathInfo(), '/'));
+
+        // get module name
         if ($request->getModuleName()) {
             $module = $request->getModuleName();
         } else {
             if(!empty($p[0])) {
-            	$module = $p[0];
+                $module = $p[0];
             } else {
-            	$module = $this->getFront()->getDefault('module');
+                $module = $this->getFront()->getDefault('module');
                 $request->setAlias(Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,	'');
             }
         }
-        
         if (!$module) {
-            return false;
+            if (Mage::app()->getStore()->isAdmin()) {
+                $module = 'admin';
+            } else {
+                return false;
+            }
         }
-        
-        $realModule = $this->getModuleByFrontName($module);
-        if (!$realModule) {
-            if ($moduleFrontName = array_search($module, $this->_modules)) {
-                $realModule = $module;
+
+        /**
+         * Searching router args by module name from route using it as key
+         */
+        $modules = $this->getModuleByFrontName($module);
+
+        /**
+         * If we did not found anything  we searching exact this module
+         * name in array values
+         */
+        if ($modules === false) {
+            if ($moduleFrontName = $this->getModuleByName($module, $this->_modules)) {
+                $modules = array($module);
                 $module = $moduleFrontName;
             } else {
                 return false;
             }
         }
 
-        $request->setRouteName($this->getRouteByFrontName($module));
-
-        // get controller name
-        if ($request->getControllerName()) {
-            $controller = $request->getControllerName();
-        } else {
-            if (!empty($p[1])) {
-                $controller = $p[1];
-            } else {
-            	$controller = $front->getDefault('controller');
-            	$request->setAlias(
-            	   Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,
-            	   ltrim($request->getOriginalPathInfo(), '/')
-            	);
-            }
-        }
-        
-        $controllerFileName = $this->getControllerFileName($realModule, $controller);
-        if (!$this->validateControllerFileName($controllerFileName)) {
+        //checkings after we foundout that this router should be used for current module
+        if (!$this->_afterModuleMatch()) {
             return false;
         }
 
-        $controllerClassName = $this->getControllerClassName($realModule, $controller);
-        if (!$controllerClassName) {
-            return false;
-        }
+        /**
+         * Going through modules to find appropriate controller
+         */
+        $found = false;
+        foreach ($modules as $realModule) {
+            $request->setRouteName($this->getRouteByFrontName($module));
 
-        // get action name
-        if (empty($action)) {
-            if ($request->getActionName()) {
-                $action = $request->getActionName();
+            // get controller name
+            if ($request->getControllerName()) {
+                $controller = $request->getControllerName();
             } else {
-                $action = !empty($p[2]) ? $p[2] : $front->getDefault('action');
+                if (!empty($p[1])) {
+                    $controller = $p[1];
+                } else {
+                    $controller = $front->getDefault('controller');
+                    $request->setAlias(
+                        Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,
+                        ltrim($request->getOriginalPathInfo(), '/')
+                    );
+                }
             }
-        }
-        $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);
 
-        // include controller file if needed
-        if (!class_exists($controllerClassName, false)) {
-            if (!file_exists($controllerFileName)) {
+            // get action name
+            if (empty($action)) {
+                if ($request->getActionName()) {
+                    $action = $request->getActionName();
+                } else {
+                    $action = !empty($p[2]) ? $p[2] : $front->getDefault('action');
+                }
+            }
+
+            //checking if this place should be secure
+            $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);
+
+            $controllerClassName = $this->_validateControllerClassName($realModule, $controller);
+            if (!$controllerClassName) {
+                continue;
+            }
+
+            // instantiate own controller class
+			$controllerInstance = new $controllerClassName($request, Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse());
+            
+			if (!$controllerInstance->hasAction($action)) {
+                continue;
+            }
+
+            $found = true;
+            break;
+        }
+
+        /**
+         * if we did not found any siutibul
+         */
+        if (!$found) {
+            if ($this->_noRouteShouldBeApplied()) {
+                $controller = 'index';
+                $action = 'noroute';
+
+                $controllerClassName = $this->_validateControllerClassName($realModule, $controller);
+                if (!$controllerClassName) {
+                    return false;
+                }
+
+                // instantiate own controller class
+                $controllerInstance = new $controllerClassName($request, Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse());
+
+                if (!$controllerInstance->hasAction($action)) {
+                    return false;
+                }
+            } else {
                 return false;
             }
-            include $controllerFileName;
-            if (!class_exists($controllerClassName, false)) {
-                throw Mage::exception('Mage_Core', Mage::helper('core')->__('Controller file was loaded but class does not exist'));
-            }
         }
-		
-		// instantiate controller class
-		$controllerInstance = new $controllerClassName($request, Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse());
-		if (!$controllerInstance->hasAction($action)) {
-			return false;
-		}
-		
-		$request->setModuleName($module);
-		$request->setControllerName($controller);
-		$request->setActionName($action);
-		$request->setParams($params);
 
-		// dispatch action
-		$request->setDispatched(true);
-		$controllerInstance->dispatch($action);
+        // set values only after all the checks are done
+        $request->setModuleName($module);
+        $request->setControllerName($controller);
+        $request->setActionName($action);
 
-		return true;
+        // set parameters from pathinfo
+        for ($i=3, $l=sizeof($p); $i<$l; $i+=2) {
+            $request->setParam($p[$i], isset($p[$i+1]) ? $p[$i+1] : '');
+        }
+
+        // dispatch action
+        $request->setDispatched(true);
+        $controllerInstance->dispatch($action);
+
+        return true;
 	}
 }
