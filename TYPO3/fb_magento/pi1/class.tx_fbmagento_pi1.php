@@ -58,6 +58,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 
 		// route throw Flexform
 		} else{
+			$params = array();
 			if(!$this->view){
 				$this->getRoutingDataFromPage();			
 			}
