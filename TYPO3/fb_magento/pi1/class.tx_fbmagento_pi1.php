@@ -103,6 +103,9 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 			if($this->conf['block'] == 'typo3header'){
 				return $this->mage->getHeaderData();
 				
+			}elseif($this->conf['block'] == 'pagetitle'){
+				return $objHead->getTitle();
+				
 			}
 			elseif($this->conf['block'] == '__responseBody'){
 				$content .= $this->mage->getBodyData();
@@ -126,9 +129,11 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 				$content .= $this->mage->getBlock( 'content' )->toHtml ();
 			}
 		}
+		$content .= microtime();
 
 		return isset($this->conf['nowrap']) && $this->conf['nowrap'] ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
+
 	
 	/**
 	 * gets routing Data from the current Page an the included Plugins

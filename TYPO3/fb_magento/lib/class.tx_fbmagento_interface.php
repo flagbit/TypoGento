@@ -99,7 +99,8 @@ class tx_fbmagento_interface {
 		error_reporting ( E_ALL & ~ E_NOTICE );		
 		
 		// overwrite Magento Autoload Funktion
-		spl_autoload_register ( array (&$this, 'autoload' ) );	
+		spl_autoload_unregister(array(Varien_Autoload::instance(), 'autoload'));
+		spl_autoload_register ( array (&$this, 'autoload' ) );		
 
 		// Init Mage
 		$store = tx_fbmagento_tools::getFELangStoreCode();
