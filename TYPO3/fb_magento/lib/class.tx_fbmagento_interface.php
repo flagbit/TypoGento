@@ -102,7 +102,7 @@ class tx_fbmagento_interface {
 		error_reporting ( E_ALL & ~ E_NOTICE );		
 		
 		// overwrite Magento Autoload Funktion
-		if(class_exists('Varien_Autoload')){
+		if(class_exists('Varien_Autoload', false)){
 			spl_autoload_unregister(array(Varien_Autoload::instance(), 'autoload'));
 		}
 		spl_autoload_register ( array (&$this, 'autoload' ) );		
