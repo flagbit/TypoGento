@@ -18,6 +18,9 @@
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
+
+
+
 class tx_fbmagento_interface {
 
 	/**
@@ -99,7 +102,9 @@ class tx_fbmagento_interface {
 		error_reporting ( E_ALL & ~ E_NOTICE );		
 		
 		// overwrite Magento Autoload Funktion
-		spl_autoload_unregister(array(Varien_Autoload::instance(), 'autoload'));
+		if(class_exists('Varien_Autoload')){
+			spl_autoload_unregister(array(Varien_Autoload::instance(), 'autoload'));
+		}
 		spl_autoload_register ( array (&$this, 'autoload' ) );		
 
 		// Init Mage
@@ -201,6 +206,49 @@ class tx_fbmagento_interface {
 		return $this->connector->getResponse()->outputBody(true);
 	}
 	
+
+	/**
+	 * generate a duplicate of a Class with an other Name
+	 * Mage_Core_Model_App -> Flagbit_Typo3connect_Rewrite_Core_Model_App
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	protected function rewriteClass($className){
+	
+		// cache Path
+		$cachePath = $this->config['path'].'var/cache/';
+		
+		// get Filename from Classname
+		$fileName = $this->getFilename($className);
+		
+		// generate a new Version of Classfile if not exists
+		if(!file_exists($cachePath.$fileName)){
+			
+			// get source of the original Class
+			$content = file_get_contents($this->config['path'].'app/code/core/'.uc_words ( $className, DS ) . '.php');
+
+			// change Classname
+			$content = preg_replace('/class(.*)'.$className.'/iU','class\1Flagbit_Typo3connect_Rewrite'.substr($className, 4), $content);
+			
+			// write new Class
+			t3lib_div::writeFile($cachePath.$fileName, $content);
+		}
+		
+		return $cachePath.$fileName;
+	}
+	
+	/**
+	 * get the Filename of a Class
+	 *
+	 * @param string $className
+	 * @return string
+	 */
+	protected function getFilename($className){
+		
+		return substr(strrchr(uc_words ( $className, DS),DS) . '.php', 1);
+	}
+	
 	/**
 	 * Class autoload
 	 *
@@ -209,9 +257,23 @@ class tx_fbmagento_interface {
 	 */
 	public function autoload($class) {
 		
-		if (strpos ( $class, '/' ) !== false) {
+		if (strpos ( $class, DS ) !== false) {
 			return;
 		}
+		
+		// to some dirty Class reflection because of Mage«s unrewriteable Classes
+		$filename = $this->getFilename($class);
+		$rewritePath = $this->config['path'].'app/code/'.$this->config['namespace'].'/Flagbit/Typo3connect/Rewrites/'.$filename;
+		
+		if(file_exists($rewritePath) 
+			&& $filename != '.php' && $filename){
+
+			include($this->rewriteClass($class));
+						
+			include($rewritePath);
+			return;
+		}		
+		
 		$classFile = uc_words ( $class, DS ) . '.php';
 		
 		try{

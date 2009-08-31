@@ -15,3 +15,6 @@ auto_header =
 
 # cat=basic;type=boolean; label=enable Realurl Functions
 realurl = 
+
+# cat=basic;type=text; label=Namespace of the Magento Modul (community, local)
+namespace = community

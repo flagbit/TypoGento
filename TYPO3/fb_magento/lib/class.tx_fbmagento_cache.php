@@ -92,6 +92,7 @@ class tx_fbmagento_cache {
 				require_once ($config['path'] . 'lib/Zend/Registry.php');
 				$this->_handler = Zend_Registry::getInstance();
 				break;
+							
 		}	
 	}
 	

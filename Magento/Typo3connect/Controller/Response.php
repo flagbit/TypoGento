@@ -103,12 +103,10 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return Zend_Controller_Response_Abstract
 	 */
 	public function setRedirect($url, $code = 302) {
-				
 		// set last URL for the _isUrlInternal workaround
 		if($url == Mage::app()->getStore()->getBaseUrl() && $this->lastUrl){
 			$url = $this->lastUrl;
 		}
-		
 		$this->canSendHeaders ( true );
 		#$this->setHeader ( 'Location', t3lib_div::locationHeaderUrl ( $url ), true )->setHttpResponseCode ( $code );
 		$this->sendHeaders ();
