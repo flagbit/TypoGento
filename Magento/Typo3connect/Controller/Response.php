@@ -62,8 +62,15 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	public function outputBody($returnBody = false) {
 		
 		$content = implode('', (array) $this->_body);
-		if (! $returnBody) $this->ajaxHandler($content);
-		else return $content;
+		
+		if (! $returnBody){
+			
+			$this->ajaxHandler($content);
+			
+		}else{
+			
+			return $content;
+		}
 	}
 	
 	/**
@@ -86,7 +93,15 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 	 * @return $this
 	 */
 	public function setBody($content, $name = null) {
-		$this->ajaxHandler($content);
+		
+		// handle Paypal redirect
+		if(strstr($content, 'paypal_standard_checkout')){
+			echo $content;
+			exit();
+		}
+		
+		// not longer necessary because of the rewriting of the app Model we can change die Response Object everywhere
+		//$this->ajaxHandler($content);
 		parent::setBody ( $content, $name );
 		
 		return $this;

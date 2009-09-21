@@ -26,6 +26,13 @@ class Flagbit_Typo3connect_Model_Core {
 	protected $_params = array ();
 	protected $_TsConfig = array ();
 	
+	/**
+	 * set for Debug Output
+	 *
+	 * @var unknown_type
+	 */
+	public $debug = false;
+	
     /**
      * Response object
      *

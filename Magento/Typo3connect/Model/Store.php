@@ -10,8 +10,12 @@ class Flagbit_Typo3connect_Model_Store extends Mage_Core_Model_Store {
 	protected $typo3BaseUrl;
 	
 	public function getBaseUrl($type = self::URL_TYPE_LINK, $secure = null) {
+		
+		$classReflection = new ReflectionClass($this);
+	
 		$cacheKey = $type . '/' . (is_null ( $secure ) ? 'null' : ($secure ? 'true' : 'false'));
 		if (! isset ( $this->_baseUrlCache [$cacheKey] )) {
+			
 			switch ($type) {
 				case self::URL_TYPE_WEB :
 					$secure = is_null ( $secure ) ? $this->isCurrentlySecure () : ( bool ) $secure;
@@ -29,7 +33,7 @@ class Flagbit_Typo3connect_Model_Store extends Mage_Core_Model_Store {
 					}
 					break;
 
-				case self::URL_TYPE_DIRECT_LINK:
+				case $classReflection->getConstant('URL_TYPE_DIRECT_LINK') !== false && self::URL_TYPE_DIRECT_LINK == $type:
 					if ($this->getTypo3BaseUrl()) {
 						$url = $this->getTypo3BaseUrl ();
 					} else {
