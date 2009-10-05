@@ -27,6 +27,18 @@ class user_tx_fbmagento_navigation extends tx_fbmagento_navigation {
 
 class tx_fbmagento_navigation {
 	
+	protected $_categoryTree = array();
+	
+	protected $_get = null;
+	
+	
+	public function __construct() {
+		if (! is_array($this->_get)) {
+			$this->_get = t3lib_div :: _GET('tx_fbmagento');
+		}
+	}
+	
+	
 	/**
 	 * Enter description here...
 	 *
@@ -98,7 +110,7 @@ class tx_fbmagento_navigation {
 	 * @param boolan $last
 	 * @return array
 	 */
-	protected function createMenuArrayItem($category, $level = 0, $last = false) {
+	protected function createMenuArrayItem($category, $level = 0, $last = false, $parent = null) {
 		$menuArray = array ();
 		
 		if (! $category->getIsActive ()) {
@@ -118,18 +130,20 @@ class tx_fbmagento_navigation {
 		);
 		
 		$menuArray ['_OVERRIDE_HREF'] = $GLOBALS['TSFE']->cObj->getTypoLink_URL($this->conf['pid'], array('tx_fbmagento' => array('shop' => $params)));;
-		$get = t3lib_div :: _GET('tx_fbmagento');
 		
-		if($category->getId () == intval($get['shop']['id'])) {
+		if($category->getAct ()) {
 			$menuArray ['ITEM_STATE'] = 'ACT';	
-		}	
-
-		if ($hasChildren) {
-			$j = 0;
-			foreach ( $children as $child ) {
-				if ($child->getIsActive ()) {
-					$menuArray ['_SUB_MENU'] [] = $this->createMenuArrayItem ( $child, $level + 1, ++ $j >= 0 );
+			
+			if ($hasChildren) {
+				$j = 0;
+				foreach ( $children as $child ) {
+					if ($child->getIsActive ()) {
+						$menuArray ['_SUB_MENU'] [] = $this->createMenuArrayItem ( $child, $level + 1, ++ $j >= 0 );
+					}
 				}
+			}
+			else {
+				$menuArray ['_SUB_MENU'] [] = array ('DO_NOT_RENDER' => 1 );
 			}
 		} else {
 			$menuArray ['_SUB_MENU'] [] = array ('DO_NOT_RENDER' => 1 );
@@ -173,7 +187,7 @@ class tx_fbmagento_navigation {
      * @param   boolean $asCollection
      * @return  Varien_Data_Tree_Node_Collection|Mage_Catalog_Model_Resource_Eav_Mysql4_Category_Collection|array
      */
-    public function getStoreCategories($parent=null, $sorted=false, $asCollection=false, $toLoad=true)
+    public function getStoreCategories($parent=null)
     {
         if(!$parent) $parent = Mage::app()->getStore()->getRootCategoryId();
         /**
@@ -182,9 +196,6 @@ class tx_fbmagento_navigation {
         $category = Mage::getModel('catalog/category');
         /* @var $category Mage_Catalog_Model_Category */
         if (!$category->checkId($parent)) {
-            if ($asCollection) {
-                return new Varien_Data_Collection();
-            }
             return array();
         }
 
@@ -197,14 +208,27 @@ class tx_fbmagento_navigation {
             ->loadChildren($recursionLevel)
             ->getChildren();
 
-        $tree->addCollectionData(null, $sorted, $parent, $toLoad, true);
-
-        if ($asCollection) {
-            return $tree->getCollection();
-        } else {
-            return $nodes;
-        }
-    }	
+        $tree->addCollectionData(null, false, $parent, true, true);
+		
+        $this->_parseNodes($nodes);
+        return $nodes;
+    }
+    
+    
+    /**
+     * Simple parse function that is thought for menu status changes
+     * 
+     * @param array $nodes array with all menu item nodes
+     * @return boolean True if current category is active
+     */
+    protected function _parseNodes($nodes) {
+    	foreach($nodes as $node) {
+    		if ($node->getId() ==  intval($this->_get['shop']['id']) || ($node->getChildren() && $this->_parseNodes($node->getChildren()))) {
+    			$node->setAct(true);
+    			return true;
+    		}
+    	}
+    }
 
 }
 
