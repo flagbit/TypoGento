@@ -61,7 +61,9 @@ t3lib_div::loadTCA("sys_language");
 t3lib_extMgm::addTCAcolumns("sys_language",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("sys_language","tx_fbmagento_store;;;;1-1-1");
 
-/*
+
+
+
 // add group mapping
 $tempColumns = Array (
 	"tx_fbmagento_group" => Array(
@@ -82,11 +84,11 @@ $tempColumns = Array (
 t3lib_div::loadTCA("be_users");
 t3lib_extMgm::addTCAcolumns("be_users",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("be_users","tx_fbmagento_group;;;;1-1-1");
-*/
 
 
 
-if (TYPO3_MODE=="BE")	{
+
+if (TYPO3_MODE=="BE" && !empty($GLOBALS['BE_USER']->user['tx_fbmagento_group']))	{
 
 		// add module after 'Web'
 	if (!isset($TBE_MODULES['txfbmagentoMgroup']))	{

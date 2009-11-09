@@ -22,8 +22,8 @@ define('TYPO3_MOD_PATH', '../typo3conf/ext/fb_magento/mod_admin/');
 $BACK_PATH='../../../../typo3/';
 
 // for developing environment
-if($_SERVER['SERVER_ADMIN'] == 'weller@leopard.local') {
-	$BACK_PATH='/Users/weller/Sites/typogento/typo3/';
+if($_SERVER['SERVER_NAME'] == 'typogento-main.dev.local') {
+	$BACK_PATH='/var/www/virtual/typogento/typogento-main/typo3/';
 }
 $MCONF['name']='txfbmagentoMgroup_txfbmagentoMadmin';
 

@@ -55,80 +55,125 @@ class tx_fbmagento_modadmin {
 		// Declare globals
 		global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
+		if(empty($BE_USER->user['tx_fbmagento_group'])){
+			$this->accessDenied();
+		}
 		
-		$config = tx_fbmagento_tools::getExtConfig();
-
-		header('Location: '.$config['url'].'admin/');
-
-	}
-	
-	/**
-	 * for singlesignon not used yet
-	 *
-	 */
-	function createUser(){
-			
 		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 
-		if (Mage::getSingleton('admin/session')->isLoggedIn()) {
-			die('drin');
-		}
+		/*@var $mageUser Mage_Admin_Model_User */
+		$mageUser = Mage::getSingleton('admin/user');
 		
-		$username = 'typo3_'.$BE_USER->user['username'];
+		$mageUser->loadByUsername($BE_USER->user['username']);
 		
-		$model = Mage::getModel('admin/user');
-		
-		/* @var $user Mage_Admin_Model_User */
-		$user = $model->loadByUsername($username);
-		if($user instanceof Mage_Admin_Model_User && $user->getId()){
-			$result = $user->login($user, $BE_USER->user['password']);
-			$user->getResource()->recordLogin($user);
-			header('Location: '.$this->emConf['url'].'admin/');
-			exit();
-		}
-		
-		$data = array(
-			'username' => $username,
-			'firstname' => '',
-			'lastname' => $BE_USER->user['realName'],
-			'email' => $BE_USER->user['email'],
-			'password' => $BE_USER->user['password'],
-			'password_confirmation' => $BE_USER->user['password'],
-			'is_active' => '1',
-		);
-		
-        $model = Mage::getModel('admin/user');
-        $model->setData($data);
-        try {
-            $model->save();
-            $uRoles = (int) $BE_USER->user['tx_fbmagento_group'];
-            if ( $uRoles ) {
-                $model->setRoleIds(array($uRoles))
-                    ->setRoleUserId($model->getUserId())
-                    ->saveRelations();
-                    die('ok');
-            }
-            Mage::getSingleton('adminhtml/session')->setUserData(false);
+		if($mageUser->getId()){
+			if($mageUser->getRole()->getId() != $BE_USER->user['tx_fbmagento_group']){
+				
+				var_dump($mageUser->getRole()->getId());
+				var_dump($BE_USER->user['tx_fbmagento_group']);
+				
+				$this->accessDenied('different Roles are set!');
+			}		
+		}else{
+			
+			$mageUser->setData(array(
+				'username' => $BE_USER->user['username'],
+				'password' => $BE_USER->user['password'],
+				'firstname' => $BE_USER->user['realName'],
+				'lastname' => $BE_USER->user['realName'],
+				'email' => $BE_USER->user['email'],
+				'is_active' => true
+			));
 
-            return;
-            
-        } catch (Exception $e) {
-			echo $e->getMessage();
-        }		
+			$mageUser->save();		
+			$mageUser->setRoleIds( array($BE_USER->user['tx_fbmagento_group']) )->setRoleUserId( $mageUser->getUserId() )->saveRelations();
+		}
+		
+					
+		/*@var $mageSession Mage_Admin_Model_Session */
+		$mageSession = Mage::getSingleton('admin/session');
+		
+		// login User
+		$this->loginMageUser($BE_USER->user['username']);
 	}
-
+	
 	/**
-	 * Prints the content of the module directly to the browser
-	 *
-	 * @return	void
+	 * login Magento Backenduser
+	 * 
+	 * @param string $username
 	 */
-	function printContent()	{
-		echo $this->content;
+	protected function loginMageUser($username){
+		
+        try {
+        	
+        	$session = Mage::getSingleton('admin/session');
+        	
+        	if($session->isLoggedIn()){
+        		$requestUri = Mage::getSingleton('adminhtml/url')->addSessionParam()->getUrl('adminhtml/dashboard/*', array('_current' => true));
+				header('Location: ' . $requestUri);
+				die();        	
+        	}
+        	
+            /* @var $user Mage_Admin_Model_User */
+            $user = Mage::getModel('admin/user');
+            $user->loadByUsername($username);
+
+            
+            if ($user->getId()) {
+            	
+	            Mage::dispatchEvent('admin_user_authenticate_after', array(
+	                'username' => $user->getUsername(),
+	                'password' => $user->getPassword(),
+	                'user'     => $user,
+	                'result'   => true,
+	            ));
+
+	            $user->getRole();
+	            $user->getResource()->recordLogin($user);
+
+                if (Mage::getSingleton('adminhtml/url')->useSecretKey()) {
+                    Mage::getSingleton('adminhtml/url')->renewSecretUrls();
+                }
+                
+                $session->setIsFirstVisit(true);
+                $session->setUser($user);
+                $session->setAcl(Mage::getResourceModel('admin/acl')->loadAcl());
+                
+		        $requestUri = Mage::getSingleton('adminhtml/url')->addSessionParam()->getUrl('adminhtml/dashboard/*', array('_current' => true));
+	        
+				header('Location: ' . $requestUri);
+		        
+            }
+            else {
+                $this->accessDenied('Magento Backend Login failt!');
+            }
+        }
+        catch (Mage_Core_Exception $e) {
+			$this->accessDenied('Magento Backend Login failt!');
+        }
+		
+		
 	}
+	
+	/**
+	 * access Denied
+	 * 
+	 * @param string $msg
+	 */
+	public function accessDenied($msg = null){
+		
+		if($msg === null){
+			$msg = 'Access denied!';
+		}
+		
+		tx_fbmagento_tools::displayError($msg, true);
+	}
+	
+
 }
 
 // Make instance:

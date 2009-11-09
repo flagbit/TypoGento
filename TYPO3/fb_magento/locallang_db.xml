@@ -22,6 +22,8 @@
 			<label index="flexform.label_action">Action</label>				
 			<label index="be_users.tx_fbmagento_group">Magento Role</label>
 			<label index="be_users.tx_fbmagento_group.0">none</label>
+			<label index="fe_groups.tx_fbmagento_group">Magento Customer Group</label>
+			<label index="fe_groups.tx_fbmagento_group.0">none</label>			
 		</languageKey>
 		<languageKey index="de" type="array">
 			<label index="tt_content.list_type_pi1">Magento</label>
@@ -38,8 +40,10 @@
 			<label index="flexform.label_route">Route</label>	
 			<label index="flexform.label_controller">Controller</label>	
 			<label index="flexform.label_action">Action</label>	
-			<label index="be_users.tx_fbmagento_group">Magento Gruppe</label>
-			<label index="be_users.tx_fbmagento_group.0">keine</label>			
+			<label index="be_users.tx_fbmagento_group">Magento Gruppe</label>	
+			<label index="be_users.tx_fbmagento_group.0">keine</label>	
+			<label index="fe_groups.tx_fbmagento_group">Magento Kundengruppe</label>
+			<label index="fe_groups.tx_fbmagento_group.0">keine</label>				
 		</languageKey>
 	</data>
 </T3locallang>

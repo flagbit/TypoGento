@@ -19,3 +19,5 @@ CREATE TABLE sys_language (
 CREATE TABLE be_users (
 	tx_fbmagento_group int(11) default '0',
 );
+
+

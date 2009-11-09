@@ -48,7 +48,7 @@ class tx_fbmagento_tcafields {
 	}
 
 	/**
-	 * generates an Grouplist as Array for TCA Select fields
+	 * generates a Grouplist as Array for TCA Select fields
 	 *
 	 * @param array $params
 	 * @param object $pObj
@@ -68,6 +68,30 @@ class tx_fbmagento_tcafields {
 		
 		foreach ((array) $roles as $role){
 			$params['items'][]=Array($role['label'], $role['value']);
+		}
+	}
+
+	/**
+	 * generates a frontend Grouplist as Array for TCA Select fields
+	 *
+	 * @param array $params
+	 * @param object $pObj
+	 */
+	public function itemsProcFunc_feusergroups(&$params,&$pObj){
+		
+		$conf = tx_fbmagento_tools::getExtConfig();
+		
+		try {
+			
+			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
+			$roles = $soapClient->customer_group()->list();
+
+		}catch (Exception $e){
+			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		}		
+		
+		foreach ((array) $roles as $role){
+			$params['items'][]=Array($role['customer_group_code'], $role['customer_group_id']);
 		}
 	}
 

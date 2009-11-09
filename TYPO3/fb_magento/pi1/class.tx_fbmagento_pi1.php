@@ -111,7 +111,14 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 				$content .= $this->mage->getBodyData();
 			}
 			elseif($this->mage->getBlock( $this->conf['block'] ) !== null){
-				$content .= $this->mage->getBlock( $this->conf['block'] )->toHtml ();
+				$block = $this->mage->getBlock( $this->conf['block'] );
+				
+				// if Mage_Core_Block_Text
+				if ($block instanceof Mage_Core_Block_Text) {
+					$block->setText('');
+				}
+				
+				$content .= $block->toHtml ();
 			}
 			
 			
@@ -129,7 +136,6 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 				$content .= $this->mage->getBlock( 'content' )->toHtml ();
 			}
 		}
-		$content .= microtime();
 
 		return isset($this->conf['nowrap']) && $this->conf['nowrap'] ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
