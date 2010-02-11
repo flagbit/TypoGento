@@ -115,6 +115,14 @@ class tx_fbmagento_interface {
 		if($GLOBALS['TSFE']->cObj instanceof tslib_cObj) {
 			$cObj = $GLOBALS['TSFE']->cObj;
 			$baseUrl = $cObj->getTypoLink_URL($GLOBALS['TSFE']->id);
+			
+			// get rid of trailing .html because of Real URL
+			$pos = strrpos($baseUrl, '.');
+			$extension = substr($baseUrl, $pos);
+			
+			if (strpos($extension, '/') === false) {
+				$baseUrl = substr($baseUrl, 0, $pos);
+			}
 		}
 		
 		// Init Typo3connect
@@ -229,9 +237,10 @@ class tx_fbmagento_interface {
 			$content = file_get_contents($this->config['path'].'app/code/core/'.uc_words ( $className, DS ) . '.php');
 
 			// change Classname
-			$content = preg_replace('/class(.*)'.$className.'/iU','class\1Flagbit_Typo3connect_Rewrite'.substr($className, 4), $content);
+			$content = preg_replace('/class(.*)'.$className.'/iU','class\1Flagbit_Typo3connect_Rewrite_' . $className, $content);
 			
 			// write new Class
+			t3lib_div::mkdir_deep($cachePath, substr($fileName, 0, strrpos($fileName, '/') + 1));
 			t3lib_div::writeFile($cachePath.$fileName, $content);
 		}
 		
@@ -245,8 +254,8 @@ class tx_fbmagento_interface {
 	 * @return string
 	 */
 	protected function getFilename($className){
-		
-		return substr(strrchr(uc_words ( $className, DS),DS) . '.php', 1);
+		$filename = uc_words ( $className, DS) . '.php';
+		return $filename;
 	}
 	
 	/**
