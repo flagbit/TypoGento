@@ -110,7 +110,8 @@ class tx_fbmagento_interface {
 		// Init Mage
 		$store = tx_fbmagento_tools::getFELangStoreCode();
 		Mage::app()->setCurrentStore(Mage::app()->getStore($store));
-
+		restore_error_handler();
+		
 		if($GLOBALS['TSFE']->cObj instanceof tslib_cObj) {
 			$cObj = $GLOBALS['TSFE']->cObj;
 			$baseUrl = $cObj->getTypoLink_URL($GLOBALS['TSFE']->id);
@@ -202,7 +203,6 @@ class tx_fbmagento_interface {
 	}
 	
 	public function getBodyData(){
-		Mage::log(get_class($this->connector->getResponse()));
 		return $this->connector->getResponse()->outputBody(true);
 	}
 	
@@ -261,7 +261,7 @@ class tx_fbmagento_interface {
 			return;
 		}
 		
-		// to some dirty Class reflection because of Mage«s unrewriteable Classes
+		// to some dirty Class reflection because of Mageï¿½s unrewriteable Classes
 		$filename = $this->getFilename($class);
 		$rewritePath = $this->config['path'].'app/code/'.$this->config['namespace'].'/Flagbit/Typo3connect/Rewrites/'.$filename;
 		
@@ -277,7 +277,7 @@ class tx_fbmagento_interface {
 		$classFile = uc_words ( $class, DS ) . '.php';
 		
 		try{
-			include ($classFile);
+			@include ($classFile);
 		}catch (Exception $m){
 			// no output since TYPO3 Classes will also be loaded throw autoload
 		}

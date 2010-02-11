@@ -16,6 +16,7 @@ page.10 {
 	controller=products
 	action=gallery
 	nowrap=1
+	useTYPO3pageNotFound=1
 }
 
 [global]

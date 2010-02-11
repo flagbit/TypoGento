@@ -91,6 +91,15 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
 		$this->mage->dispatch($params);
 		
+		
+		// if Magento reports 404 error -> use TYPO3 page not found behavior
+		if (isset($this->conf['useTYPO3pageNotFound'])
+				&& $this->conf['useTYPO3pageNotFound']
+				&& strpos(serialize((array) Mage::app()->getResponse()->getHeaders()), '404 File not found')
+			) {
+			$GLOBALS['TSFE']->pageNotFoundAndExit();
+		}
+		
 		// set Page Title
 		$objHead = $this->mage->getBlock( 'head' );
 		if($objHead instanceof Mage_Page_Block_Html_Head){
