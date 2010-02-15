@@ -36,7 +36,7 @@ class Flagbit_Typo3connect_Helper_Login extends Mage_Core_Helper_Abstract {
 	
         if($customer->getTypo3_uid()){
         	
-        	$feUsers = Mage::getSingleton('Flagbit_Typo3connect/Typo3_FeUsers');
+        	$feUsers = Mage::getSingleton('Flagbit_Typo3connect/typo3_frontend_user');
         	$tempuser = $feUsers->getUserById($customer->getTypo3_uid());
         	
         	$GLOBALS['TSFE']->fe_user->createUserSession($tempuser);

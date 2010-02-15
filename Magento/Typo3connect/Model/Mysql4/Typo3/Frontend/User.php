@@ -13,26 +13,36 @@
  *                                                                        */
 
 /**
- * TypoGento Logout Helper
+ * TypoGento User Model
  *
- * @version $Id$
+ * @version $Id: User.php 23 2009-01-21 11:59:55Z vinai $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Flagbit_Typo3connect_Helper_Logout extends Mage_Core_Helper_Abstract {
-
+class Flagbit_Typo3connect_Model_Mysql4_Typo3_Frontend_User extends Flagbit_Typo3connect_Model_Mysql4_Typo3_Abstract {
+	
 	/**
-	 * called by Customer Logout, kills TYPO3 fe_user Session
+	 * Constuctor
 	 *
-	 * @param unknown_type $observer
 	 */
-	static public function logoutEvent($observer){
-		
-		if (! Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->isEnabled ()) return;
-		
-		Mage::getSingleton('Flagbit_Typo3connect/Core')->logout();
-
+	protected function _construct() {
+		$this->_init ( 'Flagbit_Typo3connect/typo3_frontend_user', 'uid' );
+		$this->_resourcePrefix = 'Flagbit_Typo3connect';
 	}
 	
+	
+	/**
+	 * Get an TYPO3 fe_user
+	 *
+	 * @param   int unique ID
+	 * @return  array
+	 */
+	public function getUserById($id) {
+		$read = $this->_getReadAdapter ();
+		$select = $read->select ();
+		
+		$select->from ( array ('main_table' => $this->getMainTable () ) )->where ( $this->getIdFieldName () . ' = ?', $id )->limit ( 1 );
+		
+		return $read->fetchRow ( $select );
+	}
 }
 
-?>

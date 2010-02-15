@@ -12,27 +12,14 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-/**
- * TypoGento Logout Helper
- *
- * @version $Id$
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- */
-class Flagbit_Typo3connect_Helper_Logout extends Mage_Core_Helper_Abstract {
+$installer = $this;
+/* @var $installer Mage_Core_Model_Resource_Setup */
 
-	/**
-	 * called by Customer Logout, kills TYPO3 fe_user Session
-	 *
-	 * @param unknown_type $observer
-	 */
-	static public function logoutEvent($observer){
-		
-		if (! Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->isEnabled ()) return;
-		
-		Mage::getSingleton('Flagbit_Typo3connect/Core')->logout();
+$installer->startSetup();
 
-	}
-	
-}
+$installer->run("
+ALTER TABLE {$this->getTable('customer_group')} ADD  `typo3_group_id` INT NULL;
+ALTER TABLE  {$this->getTable('customer_group')} ADD INDEX (  `typo3_group_id` );
+");
 
-?>
+$installer->endSetup();

@@ -6,7 +6,7 @@
 			<active>true</active>
 			<!-- Note: remove this, rather set in app/etc/modules/Flagbit_Typo3connect.xml -->
 			<!-- <codePool>community</codePool> -->
-			<version>0.6.0</version>
+			<version>0.6.1</version>
 		</Flagbit_Typo3connect>
 	</modules>
 	<global>
@@ -39,13 +39,24 @@
             <Flagbit_Typo3connect_Mysql4>
                 <class>Flagbit_Typo3connect_Model_Mysql4</class>
                 <entities>
-                    <typo3_feusers>
+                    <typo3_frontend_user>
                         <table>fe_users</table>                  
-                    </typo3_feusers>
+                    </typo3_frontend_user>
+                	<typo3_frontend_group>
+                		<table>fe_groups</table>                  
+                	</typo3_frontend_group>                	
                 </entities>
             </Flagbit_Typo3connect_Mysql4>
 	
 		</models>
+
+		<blocks>
+			<adminhtml>
+				<rewrite>
+					<customer_group_edit_form>Flagbit_Typo3connect_Block_Customer_Edit_Form</customer_group_edit_form>
+				</rewrite>
+			</adminhtml>
+		</blocks>		
 		
       <resources>
           <Flagbit_Typo3connect_setup>
@@ -109,6 +120,15 @@
 					</flagbit_typo3connect_access_check>
 				</observers>
 			</controller_action_predispatch>
+			<customer_group_save_before>
+				<observers>
+					<flagbit_typo3connect_customer_group_save_before>
+						<type>singleton</type>
+						<class>Flagbit_Typo3connect/observer</class>
+						<method>customerGroupSaveBefore</method>
+					</flagbit_typo3connect_customer_group_save_before>
+				</observers>				
+			</customer_group_save_before>
 		</events>		
 	</global>
 	

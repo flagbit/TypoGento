@@ -34,7 +34,7 @@
                         <method>items</method>
                     </list>
                 </methods>
-            </typo3connect_admin_roles> 
+            </typo3connect_admin_roles>              
             <typo3connect_modules translate="title" module="Flagbit_Typo3connect">
                 <model>Flagbit_Typo3connect/modules_api</model>
                 <title>Typo3connect Api</title>

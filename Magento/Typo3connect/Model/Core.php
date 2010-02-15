@@ -25,6 +25,7 @@ class Flagbit_Typo3connect_Model_Core {
 	protected $_cObj = null;
 	protected $_params = array ();
 	protected $_TsConfig = array ();
+	protected $_logoutAlreadyRuns = false;
 	
 	/**
 	 * set for Debug Output
@@ -273,6 +274,28 @@ class Flagbit_Typo3connect_Model_Core {
 		}
 		
 		return self::$_instance;
+	}
+	
+	/**
+	 * logout both Magento Customer and TYPO3 Frontend User
+	 * prevent infinite loops 
+	 */
+	public function logout(){
+		
+		if($this->_logoutAlreadyRuns === true){
+			return;
+		}
+		
+		$this->_logoutAlreadyRuns = true;
+		
+		// logout Magento 
+		/*@var $customerSession Mage_Customer_Model_Session */
+		$customerSession = Mage::getModel('customer/session');	
+		$customerSession->logout();	
+
+		// logout TYPO3
+        $GLOBALS['TSFE']->fe_user->logoff();
+		
 	}
 	
 	/**

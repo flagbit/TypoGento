@@ -15,19 +15,21 @@
 /**
  * TypoGento FeUsers Model
  *
- * @version $Id$
+ * @version $Id: FeUsers.php 23 2009-01-21 11:59:55Z vinai $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Flagbit_Typo3connect_Model_Mysql4_Typo3_FeUsers extends Mage_Core_Model_Mysql4_Abstract {
+class Flagbit_Typo3connect_Model_Mysql4_Typo3_Abstract extends Mage_Core_Model_Mysql4_Abstract {
+	
 	
 	/**
-	 * Constuctor
+	 * Class Constructor
 	 *
 	 */
-	protected function _construct() {
-		$this->_init ( 'Flagbit_Typo3connect/typo3_feusers', 'uid' );
-		$this->_resourcePrefix = 'Flagbit_Typo3connect';
-	}
+    protected function _construct()
+    {  
+        parent::_construct();
+    }
+	
 	
 	/**
 	 * Get connection by name or type
@@ -54,19 +56,6 @@ class Flagbit_Typo3connect_Model_Mysql4_Typo3_FeUsers extends Mage_Core_Model_My
 		return $this->_connections [$connectionName];
 	}
 	
-	/**
-	 * Get an TYPO3 fe_user
-	 *
-	 * @param   int unique ID
-	 * @return  array
-	 */
-	public function getUserById($id) {
-		$read = $this->_getReadAdapter ();
-		$select = $read->select ();
-		
-		$select->from ( array ('main_table' => $this->getMainTable () ) )->where ( $this->getIdFieldName () . ' = ?', $id )->limit ( 1 );
-		
-		return $read->fetchRow ( $select );
-	}
+
 }
 

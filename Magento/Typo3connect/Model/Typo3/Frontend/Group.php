@@ -13,26 +13,31 @@
  *                                                                        */
 
 /**
- * TypoGento Logout Helper
+ * TypoGento Group Model
  *
- * @version $Id$
+ * @version $Id: FeUsers.php 19 2008-11-25 17:50:44Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Flagbit_Typo3connect_Helper_Logout extends Mage_Core_Helper_Abstract {
+class Flagbit_Typo3connect_Model_Typo3_Frontend_Group extends Mage_Core_Model_Abstract {
 
 	/**
-	 * called by Customer Logout, kills TYPO3 fe_user Session
+	 * Class Constructor
 	 *
-	 * @param unknown_type $observer
 	 */
-	static public function logoutEvent($observer){
-		
-		if (! Mage::getSingleton ( 'Flagbit_Typo3connect/Core' )->isEnabled ()) return;
-		
-		Mage::getSingleton('Flagbit_Typo3connect/Core')->logout();
+    public function _construct()
+    {
+    
+        $this->_init('Flagbit_Typo3connect/typo3_frontend_group');
+    }	
+    
+    /**
+     * get fe_group by uid
+     *
+     * @param int $id
+     * @return array Group Data
+     */
+    public function getGroupById($id){
+    	return $this->_getResource()->getGroupById($id);
+    }
 
-	}
-	
 }
-
-?>

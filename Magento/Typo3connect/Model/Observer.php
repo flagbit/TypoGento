@@ -31,6 +31,7 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 	/**
 	 * create or update an TYPO3 Frontend User
 	 *
+	 * @param Varien_Event_Observer $observer
 	 */
 	public function customerSaveAfterEvent($observer) {
 		
@@ -57,10 +58,10 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		
 		try {
 			// get fe_users Model
-			$feUsers = Mage::getSingleton ( 'Flagbit_Typo3connect/Typo3_FeUsers' );
+			$feUsers = Mage::getSingleton ( 'Flagbit_Typo3connect/typo3_frontend_user' );
 			$customer->load ( $customer->getId () );
 			
-			if ($customer->getTypo3_uid ()) {
+			if ($customer->getTypo3Uid ()) {
 				$feUsers->setId ( $customer->getTypo3Uid () );
 			}
 			
@@ -76,6 +77,19 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 		}
 	}
 	
+	
+	/**
+	 * save typo3 group id
+	 * 
+	 * @param Varien_Event_Observer $observer
+	 */
+	public function customerGroupSaveBefore($observer){
+		
+		$observer->getObject()->setData('typo3_group_id', intval(Mage::app()->getRequest()->getParam('typo3_group_id')));
+
+	}
+	
+	
 	/**
 	 * Check if raw access is permitted to the magento frontend
 	 *
@@ -83,7 +97,7 @@ class Flagbit_Typo3connect_Model_Observer extends Mage_Core_Model_Abstract
 	 */
 	public function controllerActionPredispatch($observer)
 	{
-		if (defined('TYPO3_MODE')) return;
+		if (Mage::getSingleton('Flagbit_Typo3connect/Core')->isEnabled()) return;
 		
 		if (! Mage::app()->getStore()->isAdmin() && ! $this->_isApiRequest())
 		{

@@ -98,6 +98,7 @@ class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Resp
 		if(strstr($content, 'paypal_standard_checkout') 
 			or strstr($content, 'clickandbuy_checkout')
 			or strstr($content, 'payone_checkout')
+			or strstr($content, 'moneybookers_checkout')
 			){
 				
 			echo $content;
