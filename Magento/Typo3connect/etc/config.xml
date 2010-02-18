@@ -6,7 +6,7 @@
 			<active>true</active>
 			<!-- Note: remove this, rather set in app/etc/modules/Flagbit_Typo3connect.xml -->
 			<!-- <codePool>community</codePool> -->
-			<version>0.6.1</version>
+			<version>0.7.0</version>
 		</Flagbit_Typo3connect>
 	</modules>
 	<global>
