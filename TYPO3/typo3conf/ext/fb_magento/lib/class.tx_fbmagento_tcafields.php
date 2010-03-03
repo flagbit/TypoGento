@@ -54,7 +54,7 @@ class tx_fbmagento_tcafields {
 	 * @param object $pObj
 	 */
 	public function itemsProcFunc_usergroups(&$params,&$pObj){
-		
+
 		$conf = tx_fbmagento_tools::getExtConfig();
 		
 		try {

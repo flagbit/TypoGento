@@ -27,6 +27,16 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 	protected $_mageCustomer = null;
 	protected $_feUserCache = array();
 	
+	/**
+	 * Constuctor to initialize Mage
+	 */
+	public function __construct(){
+
+		$this->emConf = tx_fbmagento_tools::getExtConfig();
+		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+
+	}
+	
     /**
      * Magento single sign on
      *

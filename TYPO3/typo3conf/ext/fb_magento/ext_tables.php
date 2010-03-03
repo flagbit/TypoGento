@@ -86,9 +86,7 @@ t3lib_extMgm::addTCAcolumns("be_users",$tempColumns,1);
 t3lib_extMgm::addToAllTCAtypes("be_users","tx_fbmagento_group;;;;1-1-1");
 
 
-
-
-if (TYPO3_MODE=="BE" && !empty($GLOBALS['BE_USER']->user['tx_fbmagento_group']))	{
+if (TYPO3_MODE=="BE" /* && !empty($GLOBALS['BE_USER']->user['tx_fbmagento_group'])*/)	{
 
 		// add module after 'Web'
 	if (!isset($TBE_MODULES['txfbmagentoMgroup']))	{

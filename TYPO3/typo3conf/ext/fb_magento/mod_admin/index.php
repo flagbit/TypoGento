@@ -72,10 +72,7 @@ class tx_fbmagento_modadmin {
 		
 		if($mageUser->getId()){
 			if($mageUser->getRole()->getId() != $BE_USER->user['tx_fbmagento_group']){
-				
-				var_dump($mageUser->getRole()->getId());
-				var_dump($BE_USER->user['tx_fbmagento_group']);
-				
+	
 				$this->accessDenied('different Roles are set!');
 			}		
 		}else{

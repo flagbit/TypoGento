@@ -47,6 +47,10 @@ class tx_fbmagento_tools {
      */
     public static function displayError($warning, $stop=true){
     	
+    	if(class_exists('t3lib_exception')){
+    		throw new t3lib_exception($warning);
+    	}
+    	
     	$warning = '<h3>TYPOGENTO</h3>'.$warning;
     	
     	t3lib_BEfunc::typo3PrintError('', $warning, '', $stop ? 0 : 1);
@@ -83,88 +87,6 @@ class tx_fbmagento_tools {
 			}
 		}
 		return $store;
-	}
-	
-	
-public static function typogentoErrorHandler($errno, $errstr, $errfile, $errline){
-	    if (strpos($errstr, 'DateTimeZone::__construct')!==false) {
-	        // there's no way to distinguish between caught system exceptions and warnings
-	        return false;
-	    }
-	
-	    $errno = $errno & error_reporting();
-	    if ($errno == 0) {
-	        return false;
-	    }
-	    if (!defined('E_STRICT')) {
-	        define('E_STRICT', 2048);
-	    }
-	    if (!defined('E_RECOVERABLE_ERROR')) {
-	        define('E_RECOVERABLE_ERROR', 4096);
-	    }
-	
-	    // PEAR specific message handling
-	    if (stripos($errfile.$errstr, 'pear') !== false) {
-	         // ignore strict notices
-	        if ($errno == E_STRICT) {
-	            return false;
-	        }
-	        // ignore attempts to read system files when open_basedir is set
-	        if ($errno == E_WARNING && stripos($errstr, 'open_basedir') !== false) {
-	            return false;
-	        }
-	    }
-	
-	    $errorMessage = '';
-	
-	    switch($errno){
-	        case E_ERROR:
-	            $errorMessage .= "Error";
-	            break;
-	        case E_WARNING:
-	            $errorMessage .= "Warning";
-	            break;
-	        case E_PARSE:
-	            $errorMessage .= "Parse Error";
-	            break;
-	        
-	        // No Exception on notices - TYPO3 is not as strict as Magento
-	        case E_NOTICE:
-	            return true;
-	        case E_CORE_ERROR:
-	            $errorMessage .= "Core Error";
-	            break;
-	        case E_CORE_WARNING:
-	            $errorMessage .= "Core Warning";
-	            break;
-	        case E_COMPILE_ERROR:
-	            $errorMessage .= "Compile Error";
-	            break;
-	        case E_COMPILE_WARNING:
-	            $errorMessage .= "Compile Warning";
-	            break;
-	        case E_USER_ERROR:
-	            $errorMessage .= "User Error";
-	            break;
-	        case E_USER_WARNING:
-	            $errorMessage .= "User Warning";
-	            break;
-	        case E_USER_NOTICE:
-	            $errorMessage .= "User Notice";
-	            break;
-	        case E_STRICT:
-	            $errorMessage .= "Strict Notice";
-	            break;
-	        case E_RECOVERABLE_ERROR:
-	            $errorMessage .= "Recoverable Error";
-	            break;
-	        default:
-	            $errorMessage .= "Unknown error ($errno)";
-	            break;
-	    }
-	
-	    $errorMessage .= ": {$errstr}  in {$errfile} on line {$errline}";
-	    throw new Exception($errorMessage);
 	}
 	
 }
