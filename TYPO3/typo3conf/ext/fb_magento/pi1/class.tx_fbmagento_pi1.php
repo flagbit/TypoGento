@@ -41,7 +41,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		$this->pi_setPiVarDefaults ();
 		$this->pi_loadLL ();
 		$this->pi_USER_INT_obj=1;
-
+		
 		// Flexform
 		$this->pi_initPIflexForm ();
 
@@ -145,7 +145,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 				$content .= $this->mage->getBlock( 'content' )->toHtml ();
 			}
 		}
-
+		
 		return isset($this->conf['nowrap']) && $this->conf['nowrap'] ? $content : $this->pi_wrapInBaseClass ( $content );
 	}
 
