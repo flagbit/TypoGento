@@ -59,7 +59,7 @@ class tx_fbmagento_realurl {
 			return $this->rewriter($cfg, $params);
 		}
 
-		return $params ['value'];
+		return $params['value'] ? $params['value'] : 0;
 	}	
 	
 	/**
@@ -241,7 +241,7 @@ class tx_fbmagento_realurl {
 	 * @return string alias
 	 */
 	protected function id2alias($cfg, $value) {
-		
+				
 		if(!$value) return 0;
 		
 		// is allready an Alias Cached then return it
