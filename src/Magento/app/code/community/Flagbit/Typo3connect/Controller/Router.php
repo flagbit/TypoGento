@@ -149,9 +149,9 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
             }
 
             //checking if this place should be secure
-            $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);
-
+            $this->_checkShouldBeSecure($request, '/'.$module.'/'.$controller.'/'.$action);       	
             $controllerClassName = $this->_validateControllerClassName($realModule, $controller);
+
             if (!$controllerClassName) {
                 continue;
             }
@@ -207,4 +207,5 @@ class Flagbit_Typo3connect_Controller_Router extends Mage_Core_Controller_Varien
 
         return true;
 	}
+
 }

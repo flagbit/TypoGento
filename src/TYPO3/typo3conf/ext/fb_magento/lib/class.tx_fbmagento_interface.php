@@ -228,7 +228,7 @@ class tx_fbmagento_interface {
 		$cachePath = $this->config['path'].'var/cache/';
 		
 		// get Filename from Classname
-		$fileName = $this->getFilename($className);
+		$fileName = $this->_getClassPath($className);
 		
 		// generate a new Version of Classfile if not exists
 		if(!file_exists($cachePath.$fileName)){
@@ -238,8 +238,10 @@ class tx_fbmagento_interface {
 
 			// change Classname
 			$content = preg_replace('/class(.*)'.$className.'/iU','class\1Flagbit_Typo3connect_Rewrite_' . $className, $content);
-			
+
 			// write new Class
+			$classPath = substr($fileName, 0, strrpos($fileName, '/') + 1);
+			
 			t3lib_div::mkdir_deep($cachePath, substr($fileName, 0, strrpos($fileName, '/') + 1));
 			t3lib_div::writeFile($cachePath.$fileName, $content);
 		}
@@ -248,12 +250,35 @@ class tx_fbmagento_interface {
 	}
 	
 	/**
+	 * get absolute class path by class name
+	 * 
+	 * @param string $className
+	 * @retirn string
+	 */
+	protected function _getClassPath($className){
+		
+		$fileName = $this->_getFilename($className);
+		
+		if(substr($fileName,1,1) != '/'){
+			$includePaths = explode(':',get_include_path());
+			foreach($includePaths as $includePath){
+				if($includePath == '.'){
+					$includePath = rtrim($this->config['path'], '/');
+				}
+				if(file_exists($includePath.'/'.$fileName)){
+					return $includePath.'/'.$fileName;
+				}
+			}
+		}
+	}
+	
+	/**
 	 * get the Filename of a Class
 	 *
 	 * @param string $className
 	 * @return string
 	 */
-	protected function getFilename($className){
+	protected function _getFilename($className){
 		$filename = uc_words ( $className, DS) . '.php';
 		return $filename;
 	}
@@ -270,14 +295,15 @@ class tx_fbmagento_interface {
 			return;
 		}
 		
-		// to some dirty Class reflection because of Mage�s unrewriteable Classes
-		$filename = $this->getFilename($class);
+		// to some dirty Class reflection because of Mages unrewriteable Classes
+		$filename = $this->_getFilename($class);
 		$rewritePath = $this->config['path'].'app/code/'.$this->config['namespace'].'/Flagbit/Typo3connect/Rewrites/'.$filename;
 		
 		if(file_exists($rewritePath) 
 			&& $filename != '.php' && $filename){
-
-			include($this->rewriteClass($class));
+			
+			$newClassFile = $this->rewriteClass($class);
+			include($newClassFile);
 						
 			include($rewritePath);
 			return;

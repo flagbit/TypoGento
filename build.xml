@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="TypoGento" default="testme" basedir=".">
+<project name="TypoGento" default="deploy-dev.local" basedir=".">
     
     <property file="build.properties"/>
     <property file="build.default.properties"/>
    
 	
     <target name="deploy-dev.local">
-        <copy todir="${dev.local.deployDir}">
-            <fileset dir="./">
+
+        <copy todir="${dev.local.deployDir}" verbose="true" overwrite="true">
+            <fileset dir="./src/TYPO3/">
                 <include name="**/*"/>
-                <modified />
                 <exclude name="**/.svn"/>
-                <exclude name=".buildpath"/>
-                <exclude name=".project"/>
-                <exclude name=".settings"/>
-                <exclude name="cache.properties"/>
-                <exclude name="build.default.properties"/>
-                <exclude name="build.properties"/>
-                <exclude name="build.xml"/>
-                <exclude name="TODO"/>
+            	<modified/>
             </fileset>
         </copy>
+        <copy todir="${dev.local.deployDir}/magento" verbose="true" overwrite="true">
+            <fileset dir="./src/Magento/">
+                <include name="**/*"/>
+                <exclude name="**/.svn"/>
+            	<modified/>
+            </fileset>
+        </copy>		
     </target>	
 
     <target name="deploy-24nexx">	

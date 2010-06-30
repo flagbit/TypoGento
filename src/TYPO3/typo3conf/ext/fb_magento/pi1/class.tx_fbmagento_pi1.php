@@ -89,8 +89,8 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		// get an Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
-		$this->mage->dispatch($params);
-		
+
+		$this->mage->dispatch($params);		
 		
 		// if Magento reports 404 error -> use TYPO3 page not found behavior
 		if (isset($this->conf['useTYPO3pageNotFound'])

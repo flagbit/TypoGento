@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Flagbit_Typo3connect>
+			<active>true</active>
+			<codePool>community</codePool>
+		</Flagbit_Typo3connect>
+	</modules>
+</config>

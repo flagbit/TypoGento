@@ -17,19 +17,20 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_fbmagento_pi1.php','_pi1','list
 // logout hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'][] = 'EXT:fb_magento/lib/class.tx_fbmagento_hookobserver.php:tx_fbmagento_hookobserver->logoff';
 
-/**
- * Check $_GET Var Values
- *
- * @param string key|value $param
- * @return boolan
- */
-function tx_fbmagento_getvars($param) {
-	list($key, $value) = explode('|', $param);
-	
-	$pi_getVars = t3lib_div::_GET('tx_fbmagento');
-	return ($pi_getVars['shop'][$key] == $value ? true : false);
+if(!function_exists('tx_fbmagento_getvars')){
+	/**
+	 * Check $_GET Var Values
+	 *
+	 * @param string key|value $param
+	 * @return boolan
+	 */
+	function tx_fbmagento_getvars($param) {
+		list($key, $value) = explode('|', $param);
+		
+		$pi_getVars = t3lib_div::_GET('tx_fbmagento');
+		return ($pi_getVars['shop'][$key] == $value ? true : false);
+	}
 }
-
 
 t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_fbmagento_auth_sv1' /* sv key */,
         array(

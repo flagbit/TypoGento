@@ -4,9 +4,7 @@
 	<modules>
 		<Flagbit_Typo3connect>
 			<active>true</active>
-			<!-- Note: remove this, rather set in app/etc/modules/Flagbit_Typo3connect.xml -->
-			<!-- <codePool>community</codePool> -->
-			<version>0.7.0</version>
+			<version>1.0.0</version>
 		</Flagbit_Typo3connect>
 	</modules>
 	<global>
@@ -155,6 +153,11 @@
     </adminhtml>
     
     <default>
+    	<web>
+    		<url>
+    			<redirect_to_base>0</redirect_to_base>
+			</url>
+    	</web>
     	<typo3connect>
     		<config>
     			<direct_mage_access>1</direct_mage_access>
