@@ -223,11 +223,18 @@ class tx_fbmagento_navigation {
      */
     protected function _parseNodes($nodes) {
     	foreach($nodes as $node) {
-    		if ($node->getId() ==  intval($this->_get['shop']['id']) || ($node->getChildren() && $this->_parseNodes($node->getChildren()))) {
-    			$node->setAct(true);
-    			return true;
-    		}
-    	}
+            if(isset($this->_get['shop']['category'])){
+	            if ($node->getId() ==  intval($this->_get['shop']['category']) || ($node->getChildren() && $this->_parseNodes($node->getChildren()))) {
+	                    $node->setAct(true);
+	                    return true;
+	        	}
+        	}else{
+	            if ($node->getId() ==  intval($this->_get['shop']['id']) || ($node->getChildren() && $this->_parseNodes($node->getChildren()))) {
+	                    $node->setAct(true);
+	                    return true;
+	                }
+        	}
+        }
     }
 
 }
