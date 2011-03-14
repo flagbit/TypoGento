@@ -21,49 +21,6 @@
             	<modified/>
             </fileset>
         </copy>		
-    </target>	
-
-    <target name="deploy-24nexx">	
-        <scp
-            todir="${24nexx.user}@${24nexx.server}:${24nexx.path.magento}" 
-            password="${24nexx.pass}"
-        	verbose="true"
-        	>
-            <fileset dir="./Magento/">
-            	<modified />
-                <include name="**/*"/>
-                <exclude name="**/.svn"/>
-                <exclude name=".buildpath"/>
-                <exclude name=".project"/>
-                <exclude name=".settings"/>
-                <exclude name="cache.properties"/>
-                <exclude name="build.default.properties"/>
-                <exclude name="build.properties"/>
-                <exclude name="build.xml"/>
-                <exclude name="TODO"/>                
-            </fileset>
-        </scp>    	
-        <scp
-            todir="${24nexx.user}@${24nexx.server}:${24nexx.path.typo3}" 
-            password="${24nexx.pass}"
-        	verbose="true"
-        	>
-            <fileset dir="./TYPO3/">
-            	<modified />
-                <include name="**/*"/>
-                <exclude name="**/.svn"/>
-                <exclude name=".buildpath"/>
-                <exclude name=".project"/>
-                <exclude name=".settings"/>
-                <exclude name="cache.properties"/>
-                <exclude name="build.default.properties"/>
-                <exclude name="build.properties"/>
-                <exclude name="build.xml"/>
-                <exclude name="TODO"/>                
-            </fileset>
-        </scp>    	
-    	
-
     </target>
 	
 </project>
