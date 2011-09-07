@@ -18,9 +18,6 @@
  * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once (PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
 
 class tx_fbmagento_pi1 extends tslib_pibase {
 	var $prefixId = 'tx_fbmagento'; // Same as class name
