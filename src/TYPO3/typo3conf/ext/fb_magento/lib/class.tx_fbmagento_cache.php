@@ -21,29 +21,28 @@ require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.p
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_cache {
-	
-	
+
 	/**
 	 * Cache Handler
 	 *
 	 * @var ArrayObject
 	 */
-	protected $_handler = null;	
-	
+	protected $_handler = null;
+
 	/**
 	 * Singleton instance
 	 *
 	 * @var tx_fbmagento_cache
 	 */
 	protected static $_instance = null;
-	
-    /**
-     * Setter/Getter underscore transformation cache
-     *
-     * @var array
-     */
-    protected static $_underscoreCache = array();	
-	
+
+	/**
+	 * Setter/Getter underscore transformation cache
+	 *
+	 * @var array
+	 */
+	protected static $_underscoreCache = array();
+
 	/**
 	 * Singleton pattern implementation makes "new" unavailable
 	 *
@@ -51,7 +50,7 @@ class tx_fbmagento_cache {
 	 */
 	private function __construct() {
 	}
-	
+
 	/**
 	 * Singleton pattern implementation makes "clone" unavailable
 	 *
@@ -59,7 +58,7 @@ class tx_fbmagento_cache {
 	 */
 	private function __clone() {
 	}
-	
+
 	/**
 	 * Returns an instance of tx_fbmagento_cache
 	 *
@@ -71,10 +70,10 @@ class tx_fbmagento_cache {
 	 */
 	public static function getInstance($type) {
 		if (null === self::$_instance) {
-			self::$_instance = new self ( );
-			self::$_instance->init ( $type );
+			self::$_instance = new self();
+			self::$_instance->init($type);
 		}
-		
+
 		return self::$_instance;
 	}
 
@@ -84,18 +83,16 @@ class tx_fbmagento_cache {
 	 * @param string $type
 	 */
 	protected function init($type) {
-		
+
 		switch ($type) {
-			
-			case "memory":
+			case 'memory':
 				$config = tx_fbmagento_tools::getExtConfig();
-				require_once ($config['path'] . 'lib/Zend/Registry.php');
+				require_once($config['path'] . 'lib/Zend/Registry.php');
 				$this->_handler = Zend_Registry::getInstance();
 				break;
-							
-		}	
+		}
 	}
-	
+
 	/**
 	 * return Handler
 	 *
@@ -104,100 +101,100 @@ class tx_fbmagento_cache {
 	private function getHandler(){
 		return $this->_handler;
 	}
-	
-    /**
-     * Set/Get attribute wrapper
-     *
-     * @param   string $method
-     * @param   array $args
-     * @return  mixed
-     */
-    public function __call($method, $args)
-    {
-        switch (substr($method, 0, 3)) {
-            case 'get' :
-                $key = $this->_underscore(substr($method,3));
-                return $this->getData($key);
 
-            case 'set' :
-                $key = $this->_underscore(substr($method,3));
-                return $this->setData($key, $args[0]);
+	/**
+	 * Set/Get attribute wrapper
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 */
+	public function __call($method, $args) {
+		switch (substr($method, 0, 3)) {
+			case 'get' :
+				$key = $this->_underscore(substr($method,3));
+				return $this->getData($key);
 
-            case 'uns' :
-                $key = $this->_underscore(substr($method,3));
-                return $this->unsData($key);
+			case 'set' :
+				$key = $this->_underscore(substr($method,3));
+				return $this->setData($key, $args[0]);
 
-            case 'has' :
-                $key = $this->_underscore(substr($method,3));
-                return $this->hasData($key);
-        }
-        
-        tx_fbmagento_tools::throwException("Invalid method ".get_class($this)."::".$method."(".print_r($args,1).")");
-    }
+			case 'uns' :
+				$key = $this->_underscore(substr($method,3));
+				return $this->unsData($key);
 
-    /**
-     * get Data
-     *
-     * @param string $key
-     * @return unknown
-     */
-    public function getData($key){
-    	return $this->getHandler()->{$key};
-    }
-    
-    /**
-     * set Data
-     *
-     * @param string $key
-     * @param unknown_type $value
-     * @return unknown
-     */
-    public function setData($key, $value){
-    	return $this->getHandler()->{$key} = isset($value) ? $value : null;
-    }    
-    
-    /**
-     * isset Data
-     *
-     * @param string $key
-     * @return unknown
-     */
-    public function hasData($key){
-    	return isset($this->getHandler()->{$key});
-    }
+			case 'has' :
+				$key = $this->_underscore(substr($method,3));
+				return $this->hasData($key);
+		}
 
-    /**
-     * unset Data
-     *
-     * @param string $key
-     * @return unknown
-     */
-    public function unsData($key){
-    	unset($this->getHandler()->{$key});
-    	return true;
-    }    
-    
-    /**
-     * Converts field names for setters and geters
-     * Uses cache to eliminate unneccessary preg_replace
-     *
-     * @param string $name
-     * @return string
-     */
-    protected function _underscore($name)
-    {
-        if (isset(self::$_underscoreCache[$name])) {
-            return self::$_underscoreCache[$name];
-        }
+		tx_fbmagento_tools::throwException("Invalid method " . get_class($this) . "::" . $method . "(" . print_r($args, 1) . ")");
+	}
 
-        $result = strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $name));
-        self::$_underscoreCache[$name] = $result;
-        return $result;
-    }    
-    
+	/**
+	 * get Data
+	 *
+	 * @param string $key
+	 * @return unknown
+	 */
+	public function getData($key) {
+		return $this->getHandler()->{$key};
+	}
+
+	/**
+	 * set Data
+	 *
+	 * @param string $key
+	 * @param unknown_type $value
+	 * @return unknown
+	 */
+	public function setData($key, $value) {
+		return $this->getHandler()->{$key} = isset($value) ? $value : null;
+	}
+
+	/**
+	 * isset Data
+	 *
+	 * @param string $key
+	 * @return unknown
+	 */
+	public function hasData($key) {
+		return isset($this->getHandler()->{$key});
+	}
+
+	/**
+	 * unset Data
+	 *
+	 * @param string $key
+	 * @return unknown
+	 */
+	public function unsData($key) {
+		unset($this->getHandler()->{$key});
+
+		return true;
+	}
+
+	/**
+	 * Converts field names for setters and geters
+	 * Uses cache to eliminate unneccessary preg_replace
+	 *
+	 * @param string $name
+	 * @return string
+	 */
+	protected function _underscore($name) {
+		if (isset(self::$_underscoreCache[$name])) {
+			return self::$_underscoreCache[$name];
+		}
+
+		$result = strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $name));
+		self::$_underscoreCache[$name] = $result;
+		return $result;
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_cache.php']) {
 	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_cache.php']);
 }
 
+?>

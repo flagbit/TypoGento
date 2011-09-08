@@ -32,21 +32,20 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 	 *
 	 * @return mixed user array or false
 	 */
-	public function getUser(){
-			// get Extension Config
+	public function getUser() {
+		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 
-			// get an Magento Instance
+		// get some Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
 
-			// get Magento Customer
+		// get Magento Customer
 		$this->_mageCustomer = Mage::getSingleton('customer/customer')->setWebsiteId($this->emConf['website']);
 		$this->getMageCustomer()->loadByEmail($this->login['uname']);
 		$this->getMageCustomer()->getAttributes();
 
-
 		switch (true) {
-			// Magento Customer and TYPO3 Frontend User allready exists
+			// Magento Customer and TYPO3 Frontend User already exist
 			case $this->getMageCustomer()->getData('typo3_uid')
 				&& $this->_loadUserByFieldValue('uid', $this->getMageCustomer()->getData('typo3_uid')):
 
@@ -55,19 +54,19 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 				return $this->_loadUserByFieldValue('uid', $uid);
 				break;
 
-			// Magento Customer  exists but TYPO Frontend User not
+			// Magento Customer exists but TYPO Frontend User does not
 			case $this->getMageCustomer()->getId()
 				&& $this->_loadUserByFieldValue('username', $this->login['uname']) === null:
 
 				$uid = $this->_createOrUpdateFrontendUser();
 
-				$this->getMageCustomer()->setData( 'typo3_uid', $uid );
-				$this->getMageCustomer()->getResource()->saveAttribute( $this->getMageCustomer(), 'typo3_uid' );
+				$this->getMageCustomer()->setData('typo3_uid', $uid);
+				$this->getMageCustomer()->getResource()->saveAttribute($this->getMageCustomer(), 'typo3_uid');
 
-				return $this->_loadUserByFieldValue('uid',  $feUsers->getData ( 'uid' ) );	
+				return $this->_loadUserByFieldValue('uid',  $feUsers->getData ( 'uid' ) );
 				break;
 
-				// Magento Customer and TYPO3 User exists but with no link
+			// Magento Customer and TYPO3 User exist but with no link
 			case $this->getMageCustomer()->getId()
 				&& ($feUser = $this->_loadUserByFieldValue('username', $this->login['uname'])):
 
@@ -76,10 +75,10 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 				$this->getMageCustomer()->setData( 'typo3_uid', $uid );
 				$this->getMageCustomer()->getResource()->saveAttribute( $this->getMageCustomer(), 'typo3_uid' );
 
-				return $this->_loadUserByFieldValue('uid',  $uid );	
+				return $this->_loadUserByFieldValue('uid',  $uid );
 				break;
 
-			// Magento Customer not exists but TYPO3 Frontend User 
+			// Magento Customer does not exist but TYPO3 Frontend User 
 			case !$this->getMageCustomer()->getId() && $this->_loadUserByFieldValue('username', $this->login['uname']):
 
 				$feUser = $this->_loadUserByFieldValue('username', $this->login['uname']);
@@ -110,38 +109,36 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 	 */
 	protected function _createOrUpdateFrontendUser($id=null) {
 
-		$feUsers = Mage::getSingleton ( 'Flagbit_Typo3connect/typo3_frontend_user' );
-		if($id != null){
+		$feUsers = Mage::getSingleton ('Flagbit_Typo3connect/typo3_frontend_user');
+		if ($id != null) {
 			$feUsers->load($id);
 		}
 
 		$fields = array (
-			'username' => $this->getMageCustomer()->getData ( 'email' ),
-			'name' => $this->getMageCustomer()->getData ( 'lastname' ),
-			'firstname' => $this->getMageCustomer()->getData ( 'firstname' ),
-			'email' => $this->getMageCustomer()->getData ( 'email' ),
-			'password' => $this->getMageCustomer()->getData ( 'password_hash' ),
-			'pid' => Mage::helper ( 'Flagbit_Typo3connect' )->getConfigData ( 'fe_user_pid' ),
-			'usergroup' => $this->getMageCustomer()->getData ( 'typo3_group_id' ) ? $this->getMageCustomer()->getData ( 'typo3_group_id' ) : Mage::helper ( 'Flagbit_Typo3connect' )->getConfigData ( 'fe_user_group_uid' ),
-			'tx_fbmagento_id' => $this->getMageCustomer()->getId ()
+			'username' => $this->getMageCustomer()->getData('email'),
+			'name' => $this->getMageCustomer()->getData('lastname'),
+			'firstname' => $this->getMageCustomer()->getData('firstname'),
+			'email' => $this->getMageCustomer()->getData('email'),
+			'password' => $this->getMageCustomer()->getData('password_hash'),
+			'pid' => Mage::helper('Flagbit_Typo3connect')->getConfigData('fe_user_pid'),
+			'usergroup' => $this->getMageCustomer()->getData('typo3_group_id') ? $this->getMageCustomer()->getData('typo3_group_id') : Mage::helper('Flagbit_Typo3connect')->getConfigData('fe_user_group_uid'),
+			'tx_fbmagento_id' => $this->getMageCustomer()->getId()
 		);
 		$feUsers->addData($fields);
-		$feUsers->save();    	
+		$feUsers->save();
 
 		return $feUsers->getId();
 	}
-	
-	
+
 	/**
 	 * get Mage Customer
 	 *
 	 * @return Mage_Customer_Model_Customer
 	 */
-	protected function getMageCustomer(){
-		
+	protected function getMageCustomer() {
+
 		return $this->_mageCustomer;
 	}
-	
 
 	/**
 	 * load a TYPO3 fe_user by field and value
@@ -151,7 +148,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 	 */
 	protected function _loadUserByFieldValue($field, $value) {
 
-		if(empty($_feUserCache[$field][$value])){
+		if (empty($_feUserCache[$field][$value])) {
 
 			$_feUserCache[$field][$value] = null;
 
@@ -162,17 +159,16 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 							($this->db_user['checkPidList'] ? ' AND pid IN ('.$GLOBALS['TYPO3_DB']->cleanIntList($this->db_user['checkPidList']).')' : '').
 							' AND '.$field.' = "'.$GLOBALS['TYPO3_DB']->quoteStr($value, $this->db_user['table']).'"'.
 							$this->db_user['enable_clause']
-			 );
+			);
 
 			if ($dbres && $GLOBALS['TYPO3_DB']->sql_num_rows($dbres)) {
 				$_feUserCache[$field][$value] = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($dbres);
 				$GLOBALS['TYPO3_DB']->sql_free_result($dbres);
 			}
-		}	
+		}
 
 		return $_feUserCache[$field][$value];
 	}
-
 
 	/**
 	 * Authenticate a user
@@ -184,10 +180,10 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 
-		// get an Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+		// get some Magento Instance
+		$this->mage = tx_fbmagento_interface::getInstance($this->emConf);
 
-		if(empty($user['tx_fbmagento_id'])){
+		if (empty($user['tx_fbmagento_id'])){
 			return 100;
 		}
 
@@ -199,9 +195,9 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 			return 100;
 		}
 
-		try{
+		try {
 			Mage::getSingleton('customer/session')->login($this->login['uname'], $this->login['uident']);
-		}catch(Exeption $e){
+		} catch(Exeption $e) {
 			return 100;
 		}
 
