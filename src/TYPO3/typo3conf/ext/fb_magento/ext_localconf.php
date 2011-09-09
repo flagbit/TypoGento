@@ -1,10 +1,8 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
-t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg','
-	tt_content.CSS_editor.ch.tx_fbmagento_pi1 = < plugin.tx_fbmagento_pi1.CSS_editor
-',43);
+// Extending TypoScript from static template uid=43 to set up userdefined tag:
+t3lib_extMgm::addTypoScript($_EXTKEY,'editorcfg', 'tt_content.CSS_editor.ch.tx_fbmagento_pi1 = < plugin.tx_fbmagento_pi1.CSS_editor', 43);
 
 // RealURL autoconfiguration
 if($_EXTCONF['realurl']){
@@ -17,7 +15,7 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_fbmagento_pi1.php','_pi1','list
 // logout hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'][] = 'EXT:fb_magento/lib/class.tx_fbmagento_hookobserver.php:tx_fbmagento_hookobserver->logoff';
 
-if(!function_exists('tx_fbmagento_getvars')){
+if (!function_exists('tx_fbmagento_getvars')) {
 	/**
 	 * Check $_GET Var Values
 	 *
@@ -26,31 +24,30 @@ if(!function_exists('tx_fbmagento_getvars')){
 	 */
 	function tx_fbmagento_getvars($param) {
 		list($key, $value) = explode('|', $param);
-		
+
 		$pi_getVars = t3lib_div::_GET('tx_fbmagento');
 		return ($pi_getVars['shop'][$key] == $value ? true : false);
 	}
 }
 
 t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_fbmagento_auth_sv1' /* sv key */,
-        array(
+	array(
 
-            'title' => 'Magento Customer Login',
-            'description' => 'Login a frontend user automatically if one is found in the Magento Customer Table.',
+		'title' => 'Magento Customer Login',
+		'description' => 'Login a frontend user automatically if one is found in the Magento Customer Table.',
 
-            'subtype' => 'getUserFE,authUserFE,getGroupsFE',
+		'subtype' => 'getUserFE,authUserFE,getGroupsFE',
 
-            'available' => TRUE,
-            'priority' => 60,
-            'quality' => 50,
+		'available' => TRUE,
+		'priority' => 60,
+		'quality' => 50,
 
-            'os' => '',
-            'exec' => '',
+		'os' => '',
+		'exec' => '',
 
-            'classFile' => t3lib_extMgm::extPath($_EXTKEY).'lib/class.tx_fbmagento_auth_sv1.php',
-            'className' => 'tx_fbmagento_auth_sv1',
-        )
-    );
-
+		'classFile' => t3lib_extMgm::extPath($_EXTKEY).'lib/class.tx_fbmagento_auth_sv1.php',
+		'className' => 'tx_fbmagento_auth_sv1',
+	)
+);
 
 ?>
