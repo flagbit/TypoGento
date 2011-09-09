@@ -29,7 +29,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 	var $scriptRelPath = 'pi1/class.tx_fbmagento_pi1.php'; // Path to this script relative to the extension dir.
 	var $extKey = 'fb_magento'; // The extension key.
 	var $emConf = null;
-	var $pi_checkCHash = true;
+	var $pi_checkCHash = false;
 
 	/**
 	 * The main method of the PlugIn
