@@ -1,8 +1,6 @@
 <?php
 class Mage_Core_Model_App extends Flagbit_Typo3connect_Rewrite_Mage_Core_Model_App
 {
-	
-
     /**
      * Retrieve response object
      *
@@ -12,6 +10,5 @@ class Mage_Core_Model_App extends Flagbit_Typo3connect_Rewrite_Mage_Core_Model_A
     {
         return Mage::getSingleton('Flagbit_Typo3connect/Core')->getResponse();
     }	
-	
-	
+
 }

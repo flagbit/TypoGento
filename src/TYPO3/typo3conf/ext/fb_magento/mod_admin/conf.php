@@ -15,7 +15,6 @@
 /**
  * Module config
  *
- * @version $Id: class.tx_fbmagento_pi1.php 19 2008-11-25 17:50:44Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 define('TYPO3_MOD_PATH', '../typo3conf/ext/fb_magento/mod_admin/');

@@ -17,7 +17,6 @@ require_once(t3lib_extmgm::extPath('sv').'class.tx_sv_auth.php');
 /**
  * TypoGento Customer Auth
  *
- * @version $Id: class.tx_fbmagento_interface.php 25 2009-01-21 16:43:16Z vinai $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_auth_sv1 extends tx_sv_auth {

@@ -15,7 +15,6 @@
 /**
  * TypoGento Login Helper
  *
- * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Helper_Login extends Mage_Core_Helper_Abstract {

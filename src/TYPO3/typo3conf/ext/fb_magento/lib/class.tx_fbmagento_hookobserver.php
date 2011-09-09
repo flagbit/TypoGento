@@ -15,7 +15,6 @@
 /**
  * TypoGento hookobserver
  *
- * @version $Id: class.tx_fbmagento_interface.php 25 2009-01-21 16:43:16Z vinai $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_hookobserver {

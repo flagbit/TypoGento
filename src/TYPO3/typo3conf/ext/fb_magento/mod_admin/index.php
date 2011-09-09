@@ -25,7 +25,6 @@ require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interfa
 /**
  * TYPO3 Backend Module tx_fbmagento_modadmin
  *
- * @version $Id: class.tx_fbmagento_pi1.php 19 2008-11-25 17:50:44Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 

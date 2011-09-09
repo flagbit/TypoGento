@@ -15,7 +15,6 @@
 /**
  * TypoGento Autoloader
  *
- * @version $Id$
  * @author Frederic Gaus <gaus@flagbit.de>
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */

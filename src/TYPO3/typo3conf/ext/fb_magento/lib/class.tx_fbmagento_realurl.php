@@ -18,7 +18,6 @@ require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.p
 /**
  * TypoGento Realurl
  *
- * @version $Id: class.tx_fbmagento_tcafields.php 26 2009-01-23 08:38:02Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class tx_fbmagento_realurl {

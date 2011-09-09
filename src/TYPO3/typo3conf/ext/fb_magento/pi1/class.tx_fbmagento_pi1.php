@@ -19,7 +19,6 @@ require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interfa
 /**
  * TypoGento pi1
  *
- * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 
