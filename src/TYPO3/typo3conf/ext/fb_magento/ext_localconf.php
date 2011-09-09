@@ -15,7 +15,10 @@ t3lib_extMgm::addPItoST43($_EXTKEY,'pi1/class.tx_fbmagento_pi1.php','_pi1','list
 // logout hook
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['logoff_pre_processing'][] = 'EXT:fb_magento/lib/class.tx_fbmagento_hookobserver.php:tx_fbmagento_hookobserver->logoff';
 
-if (!function_exists('tx_fbmagento_getvars')) {
+//hook to inject TypoGento autoloader
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/index_ts.php']['preprocessRequest']['fb_magento'] = 'EXT:fb_magento/lib/class.tx_fbmagento_hookobserver.php:tx_fbmagento_hookobserver->registerAutoloader';
+
+if(!function_exists('tx_fbmagento_getvars')){
 	/**
 	 * Check $_GET Var Values
 	 *

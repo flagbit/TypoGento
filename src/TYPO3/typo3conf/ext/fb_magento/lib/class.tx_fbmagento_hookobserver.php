@@ -30,7 +30,6 @@ class tx_fbmagento_hookobserver {
 	 * @param t3lib_userAuth $pObj
 	 */
 	public function logoff($params, &$pObj){
-
 		if (t3lib_div::GPvar('logintype') != 'logout'
 			or $pObj->loginType != 'FE'){
 
@@ -40,10 +39,22 @@ class tx_fbmagento_hookobserver {
 		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 
-		// get some Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+		// get an Magento Instance
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
 		$this->mage->connector->logout();
 
+	}
+
+
+	/**
+	 * register autoloader Hook
+	 * 
+	 * @param array empty array
+	 * @param array empty array
+	 */
+	public function registerAutoloader($params, &$pObj) {
+		require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_autoloader.php');
+		t3lib_div::makeInstance('tx_fbmagento_autoloader', tx_fbmagento_tools::getExtConfig());
 	}
 }
 

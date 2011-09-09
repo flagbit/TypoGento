@@ -102,8 +102,8 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 
 		}
 
-		// get some Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance($this->emConf);
+		// get an Magento Instance
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
 
 		$this->mage->dispatch($params);	
@@ -168,7 +168,6 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 	 * @return boolean
 	 */
 	protected function getRoutingDataFromPage() {
-
 		$rows = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 			'pi_flexform',
 			'tt_content',

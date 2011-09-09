@@ -59,9 +59,15 @@ class tx_fbmagento_modadmin {
 
 		// get Extension Config
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
+<<<<<<< HEAD
 
 		// get some Magento Instance
 		$this->mage = tx_fbmagento_interface::getInstance($this->emConf);
+=======
+				
+		// get an Magento Instance
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
+>>>>>>> bugfix_typo3_update_4_5_4
 
 		/*@var $mageUser Mage_Admin_Model_User */
 		$mageUser = Mage::getSingleton('admin/user');

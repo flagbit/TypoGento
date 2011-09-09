@@ -158,7 +158,7 @@ class tx_fbmagento_navigation {
 
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 		$this->conf = $conf;
-		$mage = tx_fbmagento_interface::getInstance($this->emConf);
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
 
 		$categories = $this->getStoreCategories($this->conf['startcategory']);
 
