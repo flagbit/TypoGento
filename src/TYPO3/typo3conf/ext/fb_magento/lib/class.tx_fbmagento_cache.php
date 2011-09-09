@@ -12,8 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
-
 /**
  * TypoGento Cache
  *

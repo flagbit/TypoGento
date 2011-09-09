@@ -12,9 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
-
 /**
  * TypoGento hookobserver
  *
@@ -53,7 +50,6 @@ class tx_fbmagento_hookobserver {
 	 * @param array empty array
 	 */
 	public function registerAutoloader($params, &$pObj) {
-		require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_autoloader.php');
 		t3lib_div::makeInstance('tx_fbmagento_autoloader', tx_fbmagento_tools::getExtConfig());
 	}
 }

@@ -13,8 +13,6 @@
  *                                                                        */
 
 require_once(t3lib_extmgm::extPath('sv').'class.tx_sv_auth.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
 
 /**
  * TypoGento Customer Auth
