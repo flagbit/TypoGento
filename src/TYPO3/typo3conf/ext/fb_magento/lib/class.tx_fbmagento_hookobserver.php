@@ -39,11 +39,23 @@ class tx_fbmagento_hookobserver {
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
 		// get an Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );    	
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
 		$this->mage->connector->logout();
 
 	}
-    
+
+
+	/**
+	 * register autoloader Hook
+	 * 
+	 * @param array empty array
+	 * @param array empty array
+	 */
+	public function registerAutoloader($params, &$pObj) {
+		require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_autoloader.php');
+		t3lib_div::makeInstance('tx_fbmagento_autoloader', tx_fbmagento_tools::getExtConfig());
+	}
+
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_hookobserver.php']) {

@@ -105,7 +105,7 @@ class tx_fbmagento_soapinterface {
 	 * @return tx_fbmagento_cache
 	 */
 	protected function getCache(){
-		return tx_fbmagento_cache::getInstance($this->cache);
+		return t3lib_div::makeInstance('tx_fbmagento_cache', $this->cache);
 	}
 	
 	/**

@@ -41,7 +41,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
 		// get an Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );    	
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
     	
 		// get Magento Customer
 		$this->_mageCustomer = Mage::getSingleton('customer/customer')->setWebsiteId($this->emConf['website']);
@@ -191,7 +191,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 		$this->emConf = tx_fbmagento_tools::getExtConfig();
 				
 		// get an Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );     	
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );	
     	
     	if(empty($user['tx_fbmagento_id'])){
     		return 100;

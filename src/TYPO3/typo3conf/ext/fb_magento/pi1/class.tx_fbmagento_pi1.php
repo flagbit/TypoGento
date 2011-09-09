@@ -87,7 +87,7 @@ class tx_fbmagento_pi1 extends tslib_pibase {
 		}
 
 		// get an Magento Instance
-		$this->mage = tx_fbmagento_interface::getInstance( $this->emConf );
+		$this->mage = t3lib_div::makeInstance('tx_fbmagento_interface', $this->emConf );
 		$this->mage->setTsConfig($GLOBALS['TSFE']->tmpl->setup['plugin.']['tx_fbmagento_pi1.']);
 
 		$this->mage->dispatch($params);		

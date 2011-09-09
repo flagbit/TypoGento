@@ -20,7 +20,7 @@ require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.p
  * @version $Id: class.tx_fbmagento_interface.php 25 2009-01-21 16:43:16Z vinai $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class tx_fbmagento_cache {
+class tx_fbmagento_cache implements t3lib_Singleton {
 	
 	
 	/**
@@ -30,13 +30,6 @@ class tx_fbmagento_cache {
 	 */
 	protected $_handler = null;	
 	
-	/**
-	 * Singleton instance
-	 *
-	 * @var tx_fbmagento_cache
-	 */
-	protected static $_instance = null;
-	
     /**
      * Setter/Getter underscore transformation cache
      *
@@ -45,55 +38,18 @@ class tx_fbmagento_cache {
     protected static $_underscoreCache = array();	
 	
 	/**
-	 * Singleton pattern implementation makes "new" unavailable
+	 * constructor function
 	 *
 	 * @return void
 	 */
-	private function __construct() {
-	}
-	
-	/**
-	 * Singleton pattern implementation makes "clone" unavailable
-	 *
-	 * @return void
-	 */
-	private function __clone() {
-	}
-	
-	/**
-	 * Returns an instance of tx_fbmagento_cache
-	 *
-	 * Singleton pattern implementation
-	 *
-	 * @param Zend_Cache_Core
-	 * @param Zend_Db_Adapter_Abstract 
-	 * @return Flagbit_Settings Provides a fluent interface
-	 */
-	public static function getInstance($type) {
-		if (null === self::$_instance) {
-			self::$_instance = new self ( );
-			self::$_instance->init ( $type );
-		}
-		
-		return self::$_instance;
-	}
-
-	/**
-	 * init function
-	 *
-	 * @param string $type
-	 */
-	protected function init($type) {
-		
+	public function __construct($type) {
 		switch ($type) {
-			
 			case "memory":
 				$config = tx_fbmagento_tools::getExtConfig();
 				require_once ($config['path'] . 'lib/Zend/Registry.php');
 				$this->_handler = Zend_Registry::getInstance();
 				break;
-							
-		}	
+		}
 	}
 	
 	/**
