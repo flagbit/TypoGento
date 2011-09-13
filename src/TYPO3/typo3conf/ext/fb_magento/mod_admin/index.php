@@ -98,10 +98,9 @@ class tx_fbmagento_modadmin {
 	 *
 	 * @param string $username
 	 */
-	protected function loginMageUser($username){
+	protected function loginMageUser($username) {
 
 		try {
-
 			$session = Mage::getSingleton('admin/session');
 
 			if ($session->isLoggedIn()) {

@@ -53,7 +53,7 @@ class tx_fbmagento_autoloader implements t3lib_Singleton {
 	 * @param string $className
 	 * @return string
 	 */
-	protected function rewriteClass($className){
+	protected function rewriteClass($className) {
 
 		// cache Path
 		$cachePath = $this->config['path'].'var/cache/';
@@ -87,7 +87,7 @@ class tx_fbmagento_autoloader implements t3lib_Singleton {
 	 * @param string $className
 	 * @retirn string
 	 */
-	protected function _getClassPath($className){
+	protected function _getClassPath($className) {
 
 		$fileName = $this->_getFilename($className);
 
@@ -111,7 +111,7 @@ class tx_fbmagento_autoloader implements t3lib_Singleton {
 	 * @param string $className
 	 * @return string
 	 */
-	protected function _getFilename($className){
+	protected function _getFilename($className) {
 		$filename = uc_words ( $className, DS) . '.php';
 		return $filename;
 	}
