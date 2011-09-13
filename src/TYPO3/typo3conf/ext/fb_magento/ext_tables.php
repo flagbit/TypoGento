@@ -94,4 +94,9 @@ if (TYPO3_MODE=="BE" /* && !empty($GLOBALS['BE_USER']->user['tx_fbmagento_group'
 	t3lib_extMgm::addModule('txfbmagentoMgroup','txfbmagentoMadmin','',t3lib_extmgm::extPath($_EXTKEY).'mod_admin/');
 
 }
+
+// register Magento autoloader for backend
+//TODO calling a hook direct before session is started would be nicer. But there is none.
+t3lib_div::makeInstance('tx_fbmagento_autoloader', tx_fbmagento_tools::getExtConfig());
+
 ?>
