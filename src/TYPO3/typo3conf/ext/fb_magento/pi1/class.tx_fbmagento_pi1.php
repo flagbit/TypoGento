@@ -12,10 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once (PATH_tslib . 'class.tslib_pibase.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_interface.php');
-
 /**
  * TypoGento pi1
  *
