@@ -11,7 +11,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Magento',
+	'title' => 'TypoGento',
 	'description' => 'connects TYPO3 and Magento',
 	'category' => 'fe',
 	'author' => 'Joerg Weller',
