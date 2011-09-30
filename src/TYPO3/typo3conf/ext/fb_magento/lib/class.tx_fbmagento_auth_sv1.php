@@ -67,7 +67,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 			case $this->getMageCustomer()->getId()
 				&& ($feUser = $this->_loadUserByFieldValue('username', $this->login['uname'])):
 
-				$uid = $this->_createOrUpdateFrontendUser($feUser['uid']);	
+				$uid = $this->_createOrUpdateFrontendUser($feUser['uid']);
 
 				$this->getMageCustomer()->setData( 'typo3_uid', $uid );
 				$this->getMageCustomer()->getResource()->saveAttribute( $this->getMageCustomer(), 'typo3_uid' );
@@ -75,7 +75,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 				return $this->_loadUserByFieldValue('uid',  $uid );
 				break;
 
-			// Magento Customer does not exist but TYPO3 Frontend User 
+			// Magento Customer does not exist but TYPO3 Frontend User
 			case !$this->getMageCustomer()->getId() && $this->_loadUserByFieldValue('username', $this->login['uname']):
 
 				$feUser = $this->_loadUserByFieldValue('username', $this->login['uname']);
@@ -101,12 +101,12 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 
 	/**
 	 * create or update a TYPO3 fe_user
-	 * 
-	* @param unknown_type $id
+	 *
+	 * @param unknown_type $id
 	 */
 	protected function _createOrUpdateFrontendUser($id=null) {
 
-		$feUsers = Mage::getSingleton ('Flagbit_Typo3connect/typo3_frontend_user');
+		$feUsers = Mage::getSingleton ('Flagbit_Typo3connect/Typo3_FeUsers');
 		if ($id != null) {
 			$feUsers->load($id);
 		}
@@ -139,7 +139,7 @@ class tx_fbmagento_auth_sv1 extends tx_sv_auth {
 
 	/**
 	 * load a TYPO3 fe_user by field and value
-	 * 
+	 *
 	 * @param unknown_type $field
 	 * @param unknown_type $value
 	 */
