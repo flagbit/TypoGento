@@ -12,8 +12,6 @@
  * Public License for more details.                                       *
  *                                                                        */
 
-require_once(t3lib_extmgm::extPath('sv').'class.tx_sv_auth.php');
-
 /**
  * TypoGento Customer Auth
  *
