@@ -32,7 +32,11 @@ class tx_fbmagento_autoloader implements t3lib_Singleton {
 
 		// include Mage
 		if(!class_exists('Mage', false)){
-			require_once ($this->config ['path'] . 'app/Mage.php');
+			$magentoMagePath = $this->config['path'] . 'app/Mage.php';
+			if (!file_exists($magentoMagePath)) {
+				throw new Exception(sprintf('%s not found', $magentoMagePath));
+			}
+			require_once ($this->config['path'] . 'app/Mage.php');
 		}
 
 		// disable Notices
