@@ -230,7 +230,7 @@ class tx_fbmagento_tcafields {
 		$tempArr = $sheetArray;
 
 		foreach ($fieldNameArr as $k => $v) {
-			if (t3lib_div::testInt($v)) {
+			if (is_int($v)) {
 				if (is_array($tempArr)) {
 					$c = 0;
 
