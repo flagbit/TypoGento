@@ -60,18 +60,6 @@ class tx_fbmagento_soapinterface {
 	}
 
 	/**
-	 * enable Cache
-	 *
-	 * @param string $type
-	 * @return $this
-	 */
-	public function enableCache($type = 'memory') {
-
-		$this->cache = $type;
-		return $this;
-	}
-
-	/**
 	 * call Soap Interface
 	 *
 	 * @param string $resource

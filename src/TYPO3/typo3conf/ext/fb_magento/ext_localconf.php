@@ -53,4 +53,8 @@ t3lib_extMgm::addService($_EXTKEY,  'auth' /* sv type */,  'tx_fbmagento_auth_sv
 	)
 );
 
+if (!is_array($TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['fb_magento_cache'])) {
+    $TYPO3_CONF_VARS['SYS']['caching']['cacheConfigurations']['fb_magento_cache'] = array();
+}
+
 ?>

@@ -25,7 +25,7 @@ class tx_fbmagento_cache implements t3lib_Singleton {
 	 * @var ArrayObject
 	 */
 	protected $_handler = null;
-	
+
 	/**
 	 * Setter/Getter underscore transformation cache
 	 *
@@ -39,22 +39,26 @@ class tx_fbmagento_cache implements t3lib_Singleton {
 	 *
 	 * @return void
 	 */
-	public function __construct($type) {
-		switch ($type) {
-			case "memory":
-				$config = tx_fbmagento_tools::getExtConfig();
-				require_once($config['path'] . 'lib/Zend/Registry.php');
-				$this->_handler = Zend_Registry::getInstance();
-				break;
-		}
+	public function __construct() {
+		$this->initializeTypo3Cache();
 	}
+
+    /**
+     * Initialize cache instance to be ready to use
+     *
+     * @return void
+     */
+    protected function initializeTypo3Cache() {
+        \TYPO3\CMS\Core\Cache\Cache::initializeCachingFramework();
+		$this->_handler = $GLOBALS['typo3CacheManager']->getCache('fb_magento_cache');
+    }
 
 	/**
 	 * return Handler
 	 *
 	 * @return ArrayObject
 	 */
-	private function getHandler(){
+	protected function getHandler(){
 		return $this->_handler;
 	}
 
@@ -91,47 +95,48 @@ class tx_fbmagento_cache implements t3lib_Singleton {
 	 * get Data
 	 *
 	 * @param string $key
-	 * @return unknown
+	 * @return void
 	 */
 	public function getData($key) {
-		return $this->getHandler()->{$key};
+		return $this->getHandler()->get($key);
 	}
 
 	/**
 	 * set Data
 	 *
 	 * @param string $key
-	 * @param unknown_type $value
-	 * @return unknown
+	 * @param mixed $value
+	 * @param integer $expire, cache expire time in seconds, default 0 = unlimited
+	 * @return boolean
 	 */
-	public function setData($key, $value) {
-		return $this->getHandler()->{$key} = isset($value) ? $value : null;
+	public function setData($key, $value, $expire = 0) {
+		$value = isset($value) ? $value : null;
+		return $this->getHandler()->set($key, $value, array('typogento'), $expire);
 	}
 
 	/**
 	 * isset Data
 	 *
 	 * @param string $key
-	 * @return unknown
+	 * @return boolean
 	 */
 	public function hasData($key) {
-		return isset($this->getHandler()->{$key});
+		return isset($this->getHandler()->get($key));
 	}
 
 	/**
 	 * unset Data
 	 *
 	 * @param string $key
-	 * @return unknown
+	 * @return boolean
 	 */
 	public function unsData($key) {
-		unset($this->getHandler()->{$key});
-
-		return true;
+		return $this->getHandler()->remove($key);
 	}
 
 	/**
-	 * Converts field names for setters and geters
+	 * Converts UpperCamelCase to upper_camel_case
+	 * Used for field names for setters and geters
 	 * Uses cache to eliminate unneccessary preg_replace
 	 *
 	 * @param string $name
