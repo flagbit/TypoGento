@@ -26,7 +26,7 @@ class tx_fbmagento_hookobserver {
 	 * @param t3lib_userAuth $pObj
 	 */
 	public function logoff($params, &$pObj){
-		if (t3lib_div::GPvar('logintype') != 'logout'
+		if (t3lib_div::_GP('logintype') != 'logout'
 			or $pObj->loginType != 'FE'){
 
 			return;
