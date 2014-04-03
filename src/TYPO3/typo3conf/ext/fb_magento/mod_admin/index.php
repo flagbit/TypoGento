@@ -15,7 +15,6 @@
 unset($MCONF);
 require ('conf.php');
 require ($BACK_PATH.'init.php');
-require ($BACK_PATH.'template.php');
 
 $BE_USER->modAccess($MCONF, 1);
 
@@ -152,7 +151,7 @@ class tx_fbmagento_modadmin {
 	public function accessDenied($msg = null){
 
 		if($msg === null){
-			$msg = 'Access denied!';
+			$msg = 'Access denied! Please set Magento Role in TYPO3 backenduser config.';
 		}
 
 		tx_fbmagento_tools::displayError($msg, true);
