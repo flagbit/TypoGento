@@ -1,23 +1,23 @@
-# cat=basic; type=text; label=path to Magento root
+# cat=basic//10;type=text; label=path to Magento root
 path =
 
-# cat=basic; type=text; label=Frontend URL to your Shop
+# cat=basic//20;type=text; label=Frontend URL to your Shop
 url = http://www.example-shop.com/
 
-# cat=basic;type=text; label=Magento User which has API access
+# cat=basic//30;type=text; label=Magento User which has API access
 username = 
 
-# cat=basic;type=text; label=Password of the Magento User
+# cat=basic//40;type=text; label=Password of the Magento User
 password = 
 
-# cat=basic;type=boolean; label=enable automatic Magento Header integration
+# cat=basic//50;type=boolean; label=enable automatic Magento Header integration
 auto_header = 
 
-# cat=basic;type=boolean; label=enable Realurl Functions
+# cat=basic//60;type=boolean; label=enable Realurl Functions
 realurl = 
 
-# cat=basic;type=text; label=Namespace of the Magento Modul (community, local)
+# cat=basic//70;type=text; label=Namespace of the Magento Modul (community, local)
 namespace = community
 
-# cat=basic;type=text; label=Website ID (default is 1)
+# cat=basic//80;type=text; label=Website ID (default is 1)
 website = 1
