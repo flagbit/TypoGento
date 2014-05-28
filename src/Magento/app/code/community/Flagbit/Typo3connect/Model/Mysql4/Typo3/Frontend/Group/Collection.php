@@ -15,7 +15,6 @@
 /**
  * TypoGento Login Helper
  *
- * @version $Id: Login.php 19 2008-11-25 17:50:44Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 

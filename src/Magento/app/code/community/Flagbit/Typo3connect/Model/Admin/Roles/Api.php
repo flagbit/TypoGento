@@ -15,7 +15,6 @@
 /**
  * TypoGento Api Admin Roles Model
  *
- * @version $Id: Core.php 19 2008-11-25 17:50:44Z weller $
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Model_Admin_Roles_Api extends Mage_Api_Model_Resource_Abstract

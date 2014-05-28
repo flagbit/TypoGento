@@ -15,11 +15,8 @@
 /**
  * TypoGento tcafields
  *
- * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_soapinterface.php');
-require_once(t3lib_extmgm::extPath('fb_magento').'lib/class.tx_fbmagento_tools.php');
 
 class tx_fbmagento_tcafields {
 
@@ -29,21 +26,21 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_products(&$params,&$pObj){
-		
+	public function itemsProcFunc_products(&$params,&$pObj) {
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$products = $soapClient->catalog_product()->list();
-			
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-		
-		foreach ((array) $products as $product){
-			$params['items'][]=Array($product['name'].' - '.$product['sku'], $product['product_id']);
+
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
+		foreach ((array) $products as $product) {
+			$params['items'][]=Array($product['name'] . ' - ' . $product['sku'], $product['product_id']);
 		}
 	}
 
@@ -53,20 +50,20 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_usergroups(&$params,&$pObj){
+	public function itemsProcFunc_usergroups(&$params,&$pObj) {
 
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$roles = $soapClient->typo3connect_admin_roles()->list();
-			
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-		
-		foreach ((array) $roles as $role){
+
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
+		foreach ((array) $roles as $role) {
 			$params['items'][]=Array($role['label'], $role['value']);
 		}
 	}
@@ -77,20 +74,20 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_feusergroups(&$params,&$pObj){
-		
+	public function itemsProcFunc_feusergroups(&$params,&$pObj) {
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$roles = $soapClient->customer_group()->list();
 
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-		
-		foreach ((array) $roles as $role){
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
+		foreach ((array) $roles as $role) {
 			$params['items'][]=Array($role['customer_group_code'], $role['customer_group_id']);
 		}
 	}
@@ -101,20 +98,20 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_modules(&$params,&$pObj){
-			#print_r($pObj);	
+	public function itemsProcFunc_modules(&$params,&$pObj) {
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$modules = $soapClient->typo3connect_modules()->list();
-			
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-		
-		foreach ((array) $modules as $module){
+
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
+		foreach ((array) $modules as $module) {
 			$params['items'][]=Array(ucfirst($module), $module);
 		}
 	}
@@ -125,24 +122,24 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_controllers(&$params,&$pObj){
-		
+	public function itemsProcFunc_controllers(&$params,&$pObj) {
+
 		$module = $this->getFlexformData($pObj, 'route', 'main');
-		
-		if(!$module) return;
-		
+
+		if (!$module) return;
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$controllers = $soapClient->typo3connect_modules()->controllers($module);
 
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
 		}		
-		
-		foreach ((array) $controllers as $controller){
+
+		foreach ((array) $controllers as $controller) {
 			$params['items'][]=Array(ucfirst($controller), $controller);
 		}
 	}
@@ -153,30 +150,30 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_actions(&$params,&$pObj){
-		
+	public function itemsProcFunc_actions(&$params,&$pObj) {
+
 		$module = $this->getFlexformData($pObj, 'route', 'main');
-		if(!$module) return;		
-		
+		if (!$module) return;
+
 		$controller = $this->getFlexformData($pObj, 'controller', 'main');
-		if(!$controller) return;
-		
+		if (!$controller) return;
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$actions = $soapClient->typo3connect_modules()->actions($module, $controller);
 
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-		
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
 		foreach ((array) $actions as $action){
 			$params['items'][]=Array($action, $action);
 		}
 	}
-	
+
 	/**
 	 * returns the Value of an Flexform Field from TCEforms
 	 *
@@ -187,21 +184,20 @@ class tx_fbmagento_tcafields {
 	 * @param string $value
 	 * @return unknown
 	 */
-	protected function getFlexformData(t3lib_TCEforms &$TCEforms, $fieldName, $sheet='sDEF',$lang='lDEF',$value='vDEF'){
-		
+	protected function getFlexformData(t3lib_TCEforms &$TCEforms, $fieldName, $sheet='sDEF',$lang='lDEF',$value='vDEF') {
+
 		try {
 			$data = current($TCEforms->cachedTSconfig);
 			$flexform = $data['_THIS_ROW']['pi_flexform'];
 			$flexformArray = t3lib_div::xml2array($flexform);
-	
+
 			return $this->getFFvalue($flexformArray, $fieldName, $sheet, $lang, $value);
-			
-		}catch (Exception $e){
+
+		} catch (Exception $e) {
 			return null;
 		}
 	}
-	
-	
+
 	/**
 	 * Return value from somewhere inside a FlexForm structure
 	 *
@@ -212,9 +208,9 @@ class tx_fbmagento_tcafields {
 	 * @param	string		Value pointer, eg. "vDEF"
 	 * @return	string		The content.
 	 */
-	protected function getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF')	{
+	protected function getFFvalue($T3FlexForm_array,$fieldName,$sheet='sDEF',$lang='lDEF',$value='vDEF') {
 		$sheetArray = is_array($T3FlexForm_array) ? $T3FlexForm_array['data'][$sheet][$lang] : '';
-		if (is_array($sheetArray))	{
+		if (is_array($sheetArray)) {
 			return $this->getFFvalueFromSheetArray($sheetArray,explode('/',$fieldName),$value);
 		}
 	}
@@ -229,18 +225,21 @@ class tx_fbmagento_tcafields {
 	 * @access private
 	 * @see pi_getFFvalue()
 	 */
-	protected function getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value)	{
+	protected function getFFvalueFromSheetArray($sheetArray,$fieldNameArr,$value) {
 
-		$tempArr=$sheetArray;
-		foreach($fieldNameArr as $k => $v)	{
-			if (t3lib_div::testInt($v))	{
-				if (is_array($tempArr))	{
-					$c=0;
-					foreach($tempArr as $values)	{
-						if ($c==$v)	{
-							$tempArr=$values;
+		$tempArr = $sheetArray;
+
+		foreach ($fieldNameArr as $k => $v) {
+			if (is_int($v)) {
+				if (is_array($tempArr)) {
+					$c = 0;
+
+					foreach ($tempArr as $values) {
+						if ($c == $v) {
+							$tempArr = $values;
 							break;
 						}
+
 						$c++;
 					}
 				}
@@ -249,32 +248,31 @@ class tx_fbmagento_tcafields {
 			}
 		}
 		return $tempArr[$value];
-	}	
-	
+	}
+
 	/**
 	 * generates an Storeviewlist as Array for TCA Select fields
 	 *
 	 * @param array $params
 	 * @param object $pObj
 	 */
-	public function itemsProcFunc_languages(&$params,&$pObj){
+	public function itemsProcFunc_languages(&$params,&$pObj) {
 
 		$conf = tx_fbmagento_tools::getExtConfig();
 
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$storeviews = $soapClient->typo3connect_storeviews()->list();
-			
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
-		}		
-				
-		foreach ((array) $storeviews as $storeview){
+
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
+		}
+
+		foreach ((array) $storeviews as $storeview) {
 			$params['items'][]=Array($storeview['label'], $storeview['value']);
 		}
-	}	
-	
+	}
 
 	/**
 	 * generates an Category as Array for TCA Select fields
@@ -282,41 +280,41 @@ class tx_fbmagento_tcafields {
 	 * @param array $params
 	 * @param object $pObj
 	 */	
-	public function itemsProcFunc_categories(&$params,&$pObj){
-		
+	public function itemsProcFunc_categories(&$params,&$pObj) {
+
 		$conf = tx_fbmagento_tools::getExtConfig();
-		
+
 		try {
-			
+
 			$soapClient = new tx_fbmagento_soapinterface($conf['url'], $conf['username'], $conf['password']);
 			$categories = $soapClient->catalog_category()->tree();
-			
-		}catch (Exception $e){
-			tx_fbmagento_tools::displayError('SOAP API Error: '.$e->getMessage());
+
+		} catch (Exception $e) {
+			tx_fbmagento_tools::displayError('SOAP API Error: ' . $e->getMessage());
 		}
 
 		$this->getCategoryItems($params['items'], array($categories));
 	}
-	
+
 	/**
 	 * generates an recursive list of Categories
 	 *
 	 * @param array $items
 	 * @param array $categories
 	 */
-	protected function getCategoryItems(&$items, $categories){
-		
-		foreach ($categories as $category){
-			$items[] = array(str_repeat('-',$category['level']*2).$category['name'], $category['category_id']);
-			if(is_array($category['children'])){
+	protected function getCategoryItems(&$items, $categories) {
+
+		foreach ($categories as $category) {
+			$items[] = array(str_repeat('-', $category['level']*2) . $category['name'], $category['category_id']);
+			if (is_array($category['children'])) {
 				$this->getCategoryItems($items, $category['children'], $category['level']);
 			}
 		}
-		
 	}
-	
 }
 
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_tcafields.php']) {
 	include_once ($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/fb_magento/lib/class.tx_fbmagento_tcafields.php']);
 }
+
+?>

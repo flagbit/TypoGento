@@ -1,5 +1,16 @@
 (add new changes on top of this file)
 
+
+11-09-09 Frederic Gaus  <gaus@flagbit.de>
+
+	* BREAKING CHANGE: Only working with TYPO3 >4.3
+	* Code Cleanup according TYPO3 CGL
+	* Extract autoloading-features from Magento Interface class
+	* Fixed problem occured with TYPO3 4.5.4 during earlier session start
+	* Implemented Singleton classes with TYPO3 implementation
+	* make use of TYPO3 autoloader for TYPO3 classes
+	* Use preprocessRequest-Hook for replacing Magento's autoloader
+
 08-08-13 Joerg Weller  <weller@flagbit.de>
 
 	* Initial release

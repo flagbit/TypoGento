@@ -11,7 +11,7 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Magento',
+	'title' => 'TypoGento',
 	'description' => 'connects TYPO3 and Magento',
 	'category' => 'fe',
 	'author' => 'Joerg Weller',
@@ -29,7 +29,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
 	'author_company' => '',
-	'version' => '1.0.0',
+	'version' => '1.1.0-beta',
 	'constraints' => array(
 		'depends' => array(
 		),

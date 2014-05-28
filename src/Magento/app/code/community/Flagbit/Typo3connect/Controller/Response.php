@@ -15,7 +15,6 @@
 /**
  * TypoGento Response Controller
  *
- * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class Flagbit_Typo3connect_Controller_Response extends Mage_Core_Controller_Response_Http {

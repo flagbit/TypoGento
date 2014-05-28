@@ -35,7 +35,7 @@
 			<label index="flexform.label_productshow.0">Bitte wählen</label>
 			<label index="flexform.label_productshow.1">Produkt Detailansicht</label>
 			<label index="flexform.label_productshow.2">Produkt Liste</label>
-			<label index="flexform.label_productshow.2">Benutzerdefiniert</label>
+			<label index="flexform.label_productshow.3">Benutzerdefiniert</label>
 			<label index="flexform.label_productlist">Produkt</label>	
 			<label index="flexform.label_route">Route</label>	
 			<label index="flexform.label_controller">Controller</label>	
